@@ -179,8 +179,8 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error pushing branch {ret.stderr}")
         return 1
 
-    token = base64.b64encode(os.getenv("GITHUB_TOKEN").encode("utf-8")).decode("utf-8")
-    print(token)
+    pre_token = f'chris-garrett:{os.getenv("GITHUB_TOKEN")}'
+    token = base64.b64encode(pre_token.encode("utf-8")).decode("utf-8")
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
     ret = http_post(
         f"{repo_url}/pulls",
