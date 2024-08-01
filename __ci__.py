@@ -191,7 +191,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         },
     )
     if ret[0] != 201:
-        ctx.log.error(f"Error creating PR {ret[1]}")
+        ctx.log.error(f"Error creating PR {ret[0]} | {ret[1]} | {ret[2]}")
         return 1
 
     return 0
