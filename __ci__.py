@@ -181,7 +181,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     time.sleep(20)
 
     pre_token = f'{os.getenv("GITHUB_TOKEN")}'
-    token = base64.b64encode(pre_token.encode("utf-8")).decode("utf-8")
+    token = pre_token #base64.b64encode(pre_token.encode("utf-8")).decode("utf-8")
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
     ret = http_post(
         f"{repo_url}/pulls",
