@@ -1,3 +1,6 @@
+import base64
+import http.client
+import json
 import os
 from string import Template
 
@@ -65,6 +68,13 @@ class DockerBuilder:
         cmd += f" {self.context_dir}"
 
         return cmd
+
+
+def http_post(url: str, payload: dict, headers: dict):
+    conn = http.client.HTTPSConnection("api.github.com")
+    conn.request("POST", url, json.dumps(payload), headers)
+    res = conn.getresponse()
+    return (res.status, res.reason, res.read())
 
 
 def get_version(ctx: TaskContext, service_name: str):
@@ -150,7 +160,9 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error adding files {ret.stderr}")
         return 1
 
-    ret = ctx.exec(f'git commit -m "chore: {name} {ver.semver_full}"', env=git_env)
+    commit_msg = "chore: {name} {ver.semver_full}"
+
+    ret = ctx.exec(f'git commit -m "{commit_msg}"', env=git_env)
     if ret.returncode != 0:
         ctx.log.error(f"Error committing changes {ret.stderr}")
         return 1
@@ -158,6 +170,20 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     ret = ctx.exec(f"git push --set-upstream origin {branch}")
     if ret.returncode != 0:
         ctx.log.error(f"Error pushing branch {ret.stderr}")
+        return 1
+
+    token = base64.encode(os.getenv("GITHUB_TOKEN").encode("utf-8")).decode("utf-8")
+    repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
+    ret = http_post(
+        f"{repo_url}/pulls",
+        {"title": commit_msg, "head": branch, "base": "main"},
+        {
+            "Accept": "application/vnd.github.v3+json",
+            "Authorization": f"Basic {token}",
+        },
+    )
+    if ret[0] != 201:
+        ctx.log.error(f"Error creating PR {ret[1]}")
         return 1
 
     return 0
