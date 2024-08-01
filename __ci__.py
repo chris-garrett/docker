@@ -4,6 +4,13 @@ from string import Template
 from __tasklib__ import TaskContext, load_env
 from __version__ import VersionBuilder, VersionIncrement
 
+git_env = {
+    "GIT_AUTHOR_EMAIL": "cibot@users.noreply.github.com",
+    "GIT_COMMITTER_EMAIL": "cibot@users.noreply.github.com",
+    "GIT_AUTHOR_NAME": "CI Bot",
+    "GIT_COMMITTER_NAME": "CI Bot",
+}
+
 
 class DockerBuilder:
     def __init__(self, ctx: TaskContext):
@@ -132,6 +139,24 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.info(f"Branch {branch} already exists")
         return 0
 
+    # create branch
+    ret = ctx.exec(f"git checkout -b {branch}", capture=True)
+    if ret.returncode != 0:
+        ctx.log.error(f"Error creating branch {ret.stderr}")
+        return 1
+
+    ret = ctx.exec(f'git commit -m "chore: {name} {ver.semver_full}"', env=git_env)
+    if ret.returncode != 0:
+        ctx.log.error(f"Error committing changes {ret.stderr}")
+        return 1
+
+    ret = ctx.exec(f"git push --set-upstream origin {branch}")
+    if ret.returncode != 0:
+        ctx.log.error(f"Error pushing branch {ret.stderr}")
+        return 1
+
+    return 0
+
 
 def build_service(ctx: TaskContext, name: str):
     ctx.log.info(f"Building container for {name}")
@@ -155,12 +180,6 @@ def build_service(ctx: TaskContext, name: str):
 def tag_service(ctx: TaskContext, name: str):
     ver = get_version(ctx, name)
     ctx.log.info(f"Tagging container for {name} with {ver.tag}")
-    env = {
-        "GIT_AUTHOR_EMAIL": "cibot@users.noreply.github.com",
-        "GIT_COMMITTER_EMAIL": "cibot@users.noreply.github.com",
-        "GIT_AUTHOR_NAME": "CI Bot",
-        "GIT_COMMITTER_NAME": "CI Bot",
-    }
-    ctx.exec(f'git tag -f -a {ver.tag} -m "{ver.tag}"', env=env)
+    ctx.exec(f'git tag -f -a {ver.tag} -m "{ver.tag}"', env=git_env)
     if os.getenv("CI"):
         ctx.exec(f"git push --force origin {ver.tag}")
