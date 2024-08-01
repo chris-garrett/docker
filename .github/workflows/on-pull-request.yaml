@@ -3,7 +3,7 @@ name: On Pull Request
 on:
   workflow_dispatch:
   pull_request:
-    types: [opened, reopened]
+    types: [synchronize] # https://github.com/orgs/community/discussions/49257#discussioncomment-5214599
 
 concurrency:
   group: on-pr-opened-${{ github.ref }}
