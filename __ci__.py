@@ -79,7 +79,7 @@ def http_post(url: str, payload: dict, headers: dict):
         path += "?" + parsed_url.query
     print("POST host:", parsed_url.netloc)
     print("POST path:", path)
-    conn.request("POST", path, json.dumps(payload), headers)
+    conn.request("POST", path, body=json.dumps(payload), headers=headers)
     res = conn.getresponse()
     return (res.status, res.reason, res.read())
 
@@ -180,6 +180,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         return 1
 
     token = base64.b64encode(os.getenv("GITHUB_TOKEN").encode("utf-8")).decode("utf-8")
+    print(token)
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
     ret = http_post(
         f"{repo_url}/pulls",
