@@ -145,6 +145,11 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error creating branch {ret.stderr}")
         return 1
 
+    ret = ctx.exec("git add -A")
+    if ret.returncode != 0:
+        ctx.log.error(f"Error adding files {ret.stderr}")
+        return 1
+
     ret = ctx.exec(f'git commit -m "chore: {name} {ver.semver_full}"', env=git_env)
     if ret.returncode != 0:
         ctx.log.error(f"Error committing changes {ret.stderr}")
