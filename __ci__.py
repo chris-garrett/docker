@@ -189,7 +189,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         {
             "User-Agent": "CI Github Bot",
             "Accept": "application/vnd.github.v3+json",
-            "Authorization": f"Basic {token}",
+            "Authorization": f"Bearer {token}",
         },
     )
     if ret[0] != 201:
