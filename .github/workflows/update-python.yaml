@@ -26,12 +26,9 @@ jobs:
           fetch-depth: 0
 
       - name: Get branch name
-        run: |
-          export
-
-      - name: Get branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: get_branch
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
 
       - name: Update Dockerfile
         run: |
