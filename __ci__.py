@@ -167,7 +167,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error adding files {ret.stderr}")
         return 1
 
-    commit_msg = "chore: {name} {ver.semver_full}"
+    commit_msg = f"chore: {name} {ver.semver_full}"
 
     ret = ctx.exec(f'git commit -m "{commit_msg}"', env=git_env)
     if ret.returncode != 0:
@@ -179,7 +179,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error pushing branch {ret.stderr}")
         return 1
 
-    pre_token = f'chris-garrett:{os.getenv("GITHUB_TOKEN")}'
+    pre_token = f'{os.getenv("GITHUB_TOKEN")}'
     token = base64.b64encode(pre_token.encode("utf-8")).decode("utf-8")
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
     ret = http_post(
@@ -194,6 +194,8 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     if ret[0] != 201:
         ctx.log.error(f"Error creating PR {ret[0]} | {ret[1]} | {ret[2]}")
         return 1
+
+    print(f"PR created: {json.loads(ret[2])}")
 
     return 0
 
