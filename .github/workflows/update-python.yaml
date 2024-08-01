@@ -1,0 +1,36 @@
+name: 'Python: Update'
+
+on:
+  workflow_dispatch:
+  schedule:
+    # run at 4am for now
+    - cron: "* 4 * * *"
+
+concurrency:
+  group: python-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get branch name
+        id: get_branch
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        shell: bash
+
+      - name: Update Node
+        run: |
+          git switch ${{ steps.get_branch.outputs.branch }}
+          ./task python:update
+
