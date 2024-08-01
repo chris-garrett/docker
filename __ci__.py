@@ -1,4 +1,5 @@
 import base64
+import time
 import http.client
 import json
 import os
@@ -77,8 +78,6 @@ def http_post(url: str, payload: dict, headers: dict):
     path = parsed_url.path
     if parsed_url.query:
         path += "?" + parsed_url.query
-    print("POST host:", parsed_url.netloc)
-    print("POST path:", path)
     conn.request("POST", path, body=json.dumps(payload), headers=headers)
     res = conn.getresponse()
     return (res.status, res.reason, res.read())
@@ -179,7 +178,9 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error pushing branch {ret.stderr}")
         return 1
 
-    pre_token = f'{os.getenv("GITHUB_TOKEN")}'
+    time.sleep(20)
+
+    pre_token = f'username:{os.getenv("GITHUB_TOKEN")}'
     token = base64.b64encode(pre_token.encode("utf-8")).decode("utf-8")
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
     ret = http_post(
