@@ -77,6 +77,8 @@ def http_post(url: str, payload: dict, headers: dict):
     path = parsed_url.path
     if parsed_url.query:
         path += "?" + parsed_url.query
+    print("POST host:", parsed_url.netloc)
+    print("POST path:", path)
     conn.request("POST", path, json.dumps(payload), headers)
     res = conn.getresponse()
     return (res.status, res.reason, res.read())
