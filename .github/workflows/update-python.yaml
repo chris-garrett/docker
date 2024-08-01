@@ -35,3 +35,7 @@ jobs:
           git switch ${{ steps.get_branch.outputs.branch }}
           ./task python:update
 
+      - name: PR changes
+        run: |
+          ./task python:pr
+
