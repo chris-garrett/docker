@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export LOG_LEVEL=DEBUG
+export PYTHONDONTWRITEBYTECODE=1
+
+python3 -m __tasklib__ $@
