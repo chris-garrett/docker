@@ -27,7 +27,7 @@ jobs:
 
       - name: Get branch name
         id: get_branch
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Update Node
