@@ -2,6 +2,7 @@ import base64
 import http.client
 import json
 import os
+import urllib.parse
 from string import Template
 
 from __tasklib__ import TaskContext, load_env
@@ -71,8 +72,12 @@ class DockerBuilder:
 
 
 def http_post(url: str, payload: dict, headers: dict):
-    conn = http.client.HTTPSConnection("api.github.com")
-    conn.request("POST", url, json.dumps(payload), headers)
+    parsed_url = urllib.parse.urlparse(url)
+    conn = http.client.HTTPSConnection(parsed_url.netloc)
+    path = parsed_url.path
+    if parsed_url.query:
+        path += "?" + parsed_url.query
+    conn.request("POST", path, json.dumps(payload), headers)
     res = conn.getresponse()
     return (res.status, res.reason, res.read())
 
