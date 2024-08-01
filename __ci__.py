@@ -186,6 +186,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         f"{repo_url}/pulls",
         {"title": commit_msg, "head": branch, "base": "main"},
         {
+            "User-Agent": "CI Github Bot",
             "Accept": "application/vnd.github.v3+json",
             "Authorization": f"Basic {token}",
         },
