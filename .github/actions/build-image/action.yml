@@ -21,7 +21,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.github_token }}
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -30,6 +30,7 @@ runs:
       uses: docker/setup-buildx-action@v3
 
     - name: Setup env
+      shell: bash
       run: cat config.env >> $GITHUB_ENV
 
     - name: Build Image
