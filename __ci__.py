@@ -73,6 +73,7 @@ class DockerBuilder:
 
 
 def http_post(url: str, payload: dict, headers: dict):
+    print(f"http_post >> {url}")
     parsed_url = urllib.parse.urlparse(url)
     conn = http.client.HTTPSConnection(parsed_url.netloc)
     path = parsed_url.path
