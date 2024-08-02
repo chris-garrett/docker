@@ -181,6 +181,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     time.sleep(20)
 
     token = f'{os.getenv("GITHUB_TOKEN")}'
+    ci_token = f'{os.getenv("CI_GITHUB_TOKEN")}'
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
 
     # create PR
@@ -197,21 +198,21 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error creating PR {ret[0]} | {ret[1]} | {ret[2]}")
         return 1
 
-    #pull_number = json.loads(ret[2])["number"]
+    pull_number = json.loads(ret[2])["number"]
 
-    ## approve PR
-    #ret = http_post(
-    #    f"{repo_url}/pulls/{pull_number}/reviews",
-    #    {"body": "LGTM", "event": "APPROVE"},
-    #    {
-    #        "User-Agent": "CI Github Bot",
-    #        "Accept": "application/vnd.github.v3+json",
-    #        "Authorization": f"Bearer {token}",
-    #    },
-    #)
-    #if ret[0] != 201:
-    #    ctx.log.error(f"Error creating PR {ret[0]} | {ret[1]} | {ret[2]}")
-    #    return 1
+    # approve PR
+    ret = http_post(
+        f"{repo_url}/pulls/{pull_number}/reviews",
+        {"body": "LGTM", "event": "APPROVE"},
+        {
+            "User-Agent": "CI Github Bot",
+            "Accept": "application/vnd.github.v3+json",
+            "Authorization": f"Bearer {ci_token}",
+        },
+    )
+    if ret[0] != 201:
+        ctx.log.error(f"Error creating PR {ret[0]} | {ret[1]} | {ret[2]}")
+        return 1
 
     return 0
 
