@@ -2,13 +2,12 @@ name: 'Python: Update'
 
 on:
   workflow_dispatch:
-  pull_request:
   schedule:
     # run at 4 am for now
     - cron: "* 4 * * *"
 
 concurrency:
-  group: python-${{ github.ref }}
+  group: python-update-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
