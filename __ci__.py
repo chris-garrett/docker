@@ -72,14 +72,13 @@ class DockerBuilder:
         return cmd
 
 
-def http_post(url: str, payload: dict, headers: dict):
-    print(f"http_post >> {url}")
+def fetch(url: str, payload: dict, headers: dict, method="POST"):
     parsed_url = urllib.parse.urlparse(url)
     conn = http.client.HTTPSConnection(parsed_url.netloc)
     path = parsed_url.path
     if parsed_url.query:
         path += "?" + parsed_url.query
-    conn.request("POST", path, body=json.dumps(payload), headers=headers)
+    conn.request(method, path, body=json.dumps(payload), headers=headers)
     res = conn.getresponse()
     return (res.status, res.reason, res.read())
 
@@ -188,7 +187,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     time.sleep(sleep_sec)
 
     ctx.log.info(f"Creating PR for {name}")
-    ret = http_post(
+    ret = fetch(
         f"{repo_url}/pulls",
         {"title": commit_msg, "head": branch, "base": "main"},
         {
@@ -206,8 +205,8 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     # approve PR
     time.sleep(sleep_sec)
 
-    ctx.log.info(f"Accepting PR for {name} {pull_number}")
-    ret = http_post(
+    ctx.log.info(f"Accepting PR for {name} PR {pull_number}")
+    ret = fetch(
         f"{repo_url}/pulls/{pull_number}/reviews",
         {"body": "LGTM", "event": "APPROVE"},
         {
@@ -223,8 +222,8 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     # approve PR
     time.sleep(sleep_sec)
 
-    ctx.log.info(f"Merging PR for {name} {pull_number}")
-    ret = http_post(
+    ctx.log.info(f"Merging PR for {name} PR {pull_number}")
+    ret = fetch(
         f"{repo_url}/pulls/{pull_number}/merge",
         {
             "commit_title": commit_msg,
@@ -235,6 +234,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
             "Accept": "application/vnd.github.v3+json",
             "Authorization": f"Bearer {ci_token}",
         },
+        method="PUT",
     )
     if ret[0] != 200:
         ctx.log.error(f"Error merging PR {ret[0]} | {ret[1]} | {ret[2]}")
