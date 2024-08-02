@@ -1,0 +1,43 @@
+name: "Update Dockerfile"
+
+inputs:
+  service_name:
+    description: "Service name. Example: python"
+    required: true
+  github_token:
+    description: "GitHub token for creating/merging PR"
+    required: true
+  ci_github_token:
+    description: "GitHub token for accepting PR. Must be different than github_token."
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get branch name
+      shell: bash
+      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+      id: get_branch
+
+    - name: Setup env
+      shell: bash
+      run: cat config.env >> $GITHUB_ENV
+
+    - name: Update Dockerfile
+      shell: bash
+      run: |
+        git switch ${{ steps.get_branch.outputs.branch }}
+        ./task ${{ inputs.service_name }}:update
+
+    - name: Create PR
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        CI_GITHUB_TOKEN: ${{ inputs.ci_github_token }}
+      shell: bash
+      run: |
+        ./task ${{ inputs.service_name }}:pr

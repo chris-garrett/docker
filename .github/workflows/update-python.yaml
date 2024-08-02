@@ -15,29 +15,11 @@ jobs:
     name: Update Dockerfile
     runs-on: ubuntu-latest
 
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      CI_GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Update dockerfile
+        uses: ./.github/actions/update-dockerfile
         with:
-          fetch-depth: 0
-
-      - name: Get branch name
-        shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: get_branch
-
-      - name: Setup env
-        run: cat config.env >> $GITHUB_ENV
-
-      - name: Update Dockerfile
-        run: |
-          git switch ${{ steps.get_branch.outputs.branch }}
-          ./task python:update
-
-      - name: Create PR
-        run: |
-          ./task python:pr
+          service_name: python
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          ci_github_token: ${{ secrets.CI_GITHUB_TOKEN }}
