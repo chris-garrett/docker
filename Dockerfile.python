@@ -26,8 +26,8 @@ RUN set -eux; \
     else \
       ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -L -C - https://github.com/watchexec/watchexec/releases/download/v2.1.1/watchexec-2.1.1-${ARCH}-unknown-linux-gnu.tar.xz; \
-    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.1-${ARCH}-unknown-linux-gnu/watchexec
+    curl -o /tmp/watchexec.tar.xz -L -C - https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.2-${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
