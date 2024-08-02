@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   update:
-    name: Update
+    name: Update Dockerfile
     runs-on: ubuntu-latest
 
     env:

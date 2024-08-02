@@ -1,8 +1,8 @@
 import base64
-import time
 import http.client
 import json
 import os
+import time
 import urllib.parse
 from string import Template
 
@@ -199,6 +199,8 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         return 1
 
     pull_number = json.loads(ret[2])["number"]
+
+    time.sleep(20)
 
     # approve PR
     ret = http_post(
