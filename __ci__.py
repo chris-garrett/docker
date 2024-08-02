@@ -133,6 +133,11 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
 
 
 def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
+    sleep_sec = 10
+    token = f'{os.getenv("GITHUB_TOKEN")}'
+    ci_token = f'{os.getenv("CI_GITHUB_TOKEN")}'
+    repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
+
     # check for local changes
     ret = ctx.exec("git status --porcelain", capture=True)
     if ret.returncode != 0:
@@ -178,13 +183,10 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         ctx.log.error(f"Error pushing branch {ret.stderr}")
         return 1
 
-    token = f'{os.getenv("GITHUB_TOKEN")}'
-    ci_token = f'{os.getenv("CI_GITHUB_TOKEN")}'
-    repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
-
     # create PR
-    time.sleep(20)
+    time.sleep(sleep_sec)
 
+    ctx.log.info(f"Creating PR for {name}")
     ret = http_post(
         f"{repo_url}/pulls",
         {"title": commit_msg, "head": branch, "base": "main"},
@@ -201,8 +203,9 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     pull_number = json.loads(ret[2])["number"]
 
     # approve PR
-    time.sleep(20)
+    time.sleep(sleep_sec)
 
+    ctx.log.info(f"Accepting PR for {name} {pull_number}")
     ret = http_post(
         f"{repo_url}/pulls/{pull_number}/reviews",
         {"body": "LGTM", "event": "APPROVE"},
@@ -217,8 +220,9 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         return 1
 
     # approve PR
-    time.sleep(20)
+    time.sleep(sleep_sec)
 
+    ctx.log.info(f"Merging PR for {name} {pull_number}")
     ret = http_post(
         f"{repo_url}/pulls/{pull_number}/merge",
         {
@@ -232,7 +236,7 @@ def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         },
     )
     if ret[0] != 200:
-        ctx.log.error(f"Error accepting PR {ret[0]} | {ret[1]} | {ret[2]}")
+        ctx.log.error(f"Error merging PR {ret[0]} | {ret[1]} | {ret[2]}")
         return 1
 
     return 0
