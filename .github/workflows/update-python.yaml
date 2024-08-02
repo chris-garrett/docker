@@ -1,4 +1,4 @@
-name: 'Python: Update'
+name: "Python: Update"
 
 on:
   workflow_dispatch:
@@ -30,6 +30,9 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: get_branch
 
+      - name: Setup env
+        run: cat config.env >> $GITHUB_ENV
+
       - name: Update Dockerfile
         run: |
           git switch ${{ steps.get_branch.outputs.branch }}
@@ -38,4 +41,3 @@ jobs:
       - name: Create PR
         run: |
           ./task python:pr
-

@@ -1,4 +1,4 @@
-name: 'Python: Build'
+name: "Python: Build"
 
 on:
   workflow_dispatch:
@@ -44,9 +44,12 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Setup env
+        run: cat config.env >> $GITHUB_ENV
 
       - name: Build Python
         run: ./task python:build
