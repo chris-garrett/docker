@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 concurrency:
   group: python-build-${{ github.ref }}
@@ -24,6 +27,7 @@ jobs:
         with:
           fetch-depth: 0
 
+    steps:
       - name: Log in to the Container registry
         uses: docker/login-action@v3.2.0
         with:
