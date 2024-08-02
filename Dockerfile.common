@@ -1,0 +1,76 @@
+FROM debian:bookworm-slim AS build
+
+ARG TARGETARCH
+
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    # this prevents apt from cleaning up the cache
+    rm -f /etc/apt/apt.conf.d/docker-clean; \
+    set -eux; \
+    apt update; \
+    apt upgrade -y; \
+    apt install -y --no-install-recommends \
+        ca-certificates \
+        libicu72 \
+        tzdata \
+        xz-utils \
+        unzip \
+        curl \
+        ; \
+    mkdir -p /work/app /work/opt/bin;
+
+# install watchexec
+RUN set -eux; \
+    if [ "$$TARGETARCH" = "arm64" ]; then \
+      ARCH="aarch64"; \
+    else \
+      ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/watchexec.tar.xz -L -C - https://github.com/watchexec/watchexec/releases/download/v$WATCHEXEC_VERSION/watchexec-$WATCHEXEC_VERSION-$${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-$WATCHEXEC_VERSION-$${ARCH}-unknown-linux-gnu/watchexec
+
+# install dockerize
+RUN set -eux; \
+    curl -o /tmp/dockerize.tgz -L -C - https://github.com/jwilder/dockerize/releases/download/v$DOCKERIZE_VERSION/dockerize-linux-$${TARGETARCH}-v$DOCKERIZE_VERSION.tar.gz; \
+    tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
+
+$BUILD_TEMPLATE
+
+FROM debian:bookworm-slim AS final
+
+ENV PATH="/work/opt/bin:$$PATH"
+ENV HOST_ENVIRONMENT=container
+
+COPY --from=build /work /work
+
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    # this prevents apt from cleaning up the cache
+    rm -f /etc/apt/apt.conf.d/docker-clean; \
+    set -eux; \
+    apt update; \
+    apt upgrade -y; \
+    apt install -y --no-install-recommends \
+        ca-certificates \
+        libicu72 \
+        tzdata \
+        vim \
+        git \
+        git-lfs \
+        build-essential \
+        curl \
+        iputils-ping \
+        iproute2 \
+        procps \
+    ; \
+    useradd -s /bin/bash -m sprout; \
+    echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
+    mkdir -p /home/sprout/.cache; \
+    chown -R sprout:sprout /work /home/sprout/.cache;  \
+    rm -rf /var/lib/apt/lists/*
+
+USER sprout
+WORKDIR /work/app
+
+$FINAL_TEMPLATE
+
