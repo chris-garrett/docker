@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # run at 4 am for now
-    - cron: "* 4 * * *"
+    - cron: "0 10 * * *"
 
 concurrency:
   group: python-update-${{ github.ref }}
