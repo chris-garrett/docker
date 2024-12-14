@@ -1,6 +1,22 @@
 #!/bin/bash
 
+UV_VERSION=0.5.9
+export LOCAL_DIR=$(pwd)/.local
+export LOCAL_BIN_DIR=${LOCAL_DIR}/bin
 export LOG_LEVEL=DEBUG
 export PYTHONDONTWRITEBYTECODE=1
+export PATH=$LOCAL_BIN_DIR:$PATH
 
-python3 -m __tasklib__ $@
+mkdir -p \
+    $LOCAL_DIR/bin \
+    $LOCAL_DIR/cache/npm \
+    $LOCAL_DIR/cache/pnpm
+
+# install uv if it doesnt exist or there is a version missmatch
+if [ ! -x "$LOCAL_BIN_DIR/uv" ] || [ "$($LOCAL_BIN_DIR/uv --version)" != "uv $UV_VERSION" ]; then
+    echo "Downloading uv $UV_VERSION"
+    curl -o /tmp/uv.tgz -LsSf https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz
+    tar xf /tmp/uv.tgz -C $LOCAL_BIN_DIR/ --strip-components=1
+fi
+
+${LOCAL_BIN_DIR}/uv run -m __tasklib__ $@

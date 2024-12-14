@@ -1,4 +1,4 @@
-import base64
+import re
 import http.client
 import json
 import os
@@ -118,6 +118,68 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
 
         with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "w") as f:
             f.write(final)
+
+        # get image used by FROM as final
+        pattern = r'FROM\s+(\S+)\s+AS'
+
+        # Search for the pattern in the input string
+        match = re.search(pattern, final)
+        if not match:
+            ctx.log.error(f"Error parsing Dockerfile for final image {name}")
+            return 1
+        base_image = match.group(1)
+        ret = ctx.exec("docker pull " + base_image)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error pulling base image {base_image}")
+            return ret.returncode
+        ret = ctx.exec("docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error inspecting base image {base_image}")
+            return ret.returncode
+        digest = ret.stdout.strip("[]\n").split(",")[0].strip("'")
+        print("digest", digest)
+
+    except Exception as e:
+        ctx.log.error(f"Error generating service {name}: {e}")
+        return 1
+    return 0
+
+
+def update_hashes(ctx: TaskContext, name: str,):
+    try:
+        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "r") as f:
+            final = f.read()
+
+        # get image used by FROM as final
+        pattern = r'FROM\s+(\S+)\s+AS'
+
+        # Search for the pattern in the input string
+        match = re.search(pattern, final)
+        if not match:
+            ctx.log.error(f"Error parsing Dockerfile for final image {name}")
+            return 1
+        base_image = match.group(1)
+        ret = ctx.exec("docker pull " + base_image)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error pulling base image {base_image}")
+            return ret.returncode
+        ret = ctx.exec("docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error inspecting base image {base_image}")
+            return ret.returncode
+        digest = ret.stdout.strip("[]\n").split(",")[0].strip("'")
+        print("digest", digest)
+
+        tag = f"{os.getenv("DOCKER_REGISTRY")}/{name}:latest"
+        ret = ctx.exec(f"docker run --rm {tag} dpkg --list", capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error getting package list {base_image}")
+            return ret.returncode
+ 
+        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}.hashes"), "w") as f:
+            f.write(digest)
+            f.write(ret.stdout)
+
     except Exception as e:
         ctx.log.error(f"Error generating service {name}: {e}")
         return 1
@@ -129,10 +191,18 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     if ret != 0:
         return ret
 
+    ret = build_service(ctx, name)
+    if ret != 0:
+        return ret
+    
+    ret = update_hashes(ctx, name)
+    if ret != 0:
+        return ret
+
     return 0
 
 
-def pr_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
+def pr_service(ctx: TaskContext, name: str):
     sleep_sec = 10
     token = f'{os.getenv("GITHUB_TOKEN")}'
     ci_token = f'{os.getenv("CI_GITHUB_TOKEN")}'
@@ -259,12 +329,22 @@ def build_service(ctx: TaskContext, name: str):
         b.with_push(True)
     b.with_file(os.path.join(ctx.project_dir, f"Dockerfile.{name}"))
     b.with_context(ctx.project_dir)
-    return ctx.exec(b.build())
+    return ctx.exec(b.build()).returncode
 
 
 def tag_service(ctx: TaskContext, name: str):
     ver = get_version(ctx, name)
     ctx.log.info(f"Tagging container for {name} with {ver.tag}")
-    ctx.exec(f'git tag -f -a {ver.tag} -m "{ver.tag}"', env=git_env)
+
+    ret = ctx.exec(f'git tag -f -a {ver.tag} -m "{ver.tag}"', env=git_env)
+    if ret.returncode != 0:
+        ctx.log.error(f"Error tagging {ver.tag} {ret.stderr}")
+        return 1
+    
     if os.getenv("CI"):
-        ctx.exec(f"git push --force origin {ver.tag}")
+        ret = ctx.exec(f"git push --force origin {ver.tag}")
+        if ret.returncode != 0:
+            ctx.log.error(f"Error pushing tag {ver.tag} {ret.stderr}")
+            return 1
+        
+    return 0
