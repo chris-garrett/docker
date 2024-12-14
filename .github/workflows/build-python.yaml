@@ -7,12 +7,14 @@ on:
       - main
     paths:
       - Dockerfile.python
+      - Dockerfile.python.hashes
 
   pull_request:
     branches:
       - main
     paths:
       - Dockerfile.python
+      - Dockerfile.python.hashes
 
 concurrency:
   group: python-build-${{ github.ref }}
