@@ -4,27 +4,25 @@ ARG TARGETARCH
 
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
-    # this prevents apt from cleaning up the cache
-    rm -f /etc/apt/apt.conf.d/docker-clean; \
     set -eux; \
     apt update; \
     apt upgrade -y; \
     apt install -y --no-install-recommends \
-        ca-certificates \
-        libicu72 \
-        tzdata \
-        xz-utils \
-        unzip \
-        curl \
-        ; \
+    ca-certificates \
+    libicu72 \
+    tzdata \
+    xz-utils \
+    unzip \
+    curl \
+    ; \
     mkdir -p /work/app /work/opt/bin;
 
 # install watchexec
 RUN set -eux; \
     if [ "$$TARGETARCH" = "arm64" ]; then \
-      ARCH="aarch64"; \
+    ARCH="aarch64"; \
     else \
-      ARCH="x86_64"; \
+    ARCH="x86_64"; \
     fi; \
     curl -o /tmp/watchexec.tar.xz -L -C - https://github.com/watchexec/watchexec/releases/download/v$WATCHEXEC_VERSION/watchexec-$WATCHEXEC_VERSION-$${ARCH}-unknown-linux-gnu.tar.xz; \
     tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-$WATCHEXEC_VERSION-$${ARCH}-unknown-linux-gnu/watchexec
@@ -45,23 +43,21 @@ COPY --from=build /work /work
 
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
-    # this prevents apt from cleaning up the cache
-    rm -f /etc/apt/apt.conf.d/docker-clean; \
     set -eux; \
     apt update; \
     apt upgrade -y; \
     apt install -y --no-install-recommends \
-        ca-certificates \
-        libicu72 \
-        tzdata \
-        vim \
-        git \
-        git-lfs \
-        build-essential \
-        curl \
-        iputils-ping \
-        iproute2 \
-        procps \
+    ca-certificates \
+    libicu72 \
+    tzdata \
+    vim \
+    git \
+    git-lfs \
+    build-essential \
+    curl \
+    iputils-ping \
+    iproute2 \
+    procps \
     ; \
     useradd -s /bin/bash -m sprout; \
     echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
