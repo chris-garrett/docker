@@ -191,7 +191,7 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     if ret != 0:
         return ret
 
-    ret = build_service(ctx, name)
+    ret = build_service(ctx, name, skip_ci=True)
     if ret != 0:
         return ret
     
@@ -313,7 +313,7 @@ def pr_service(ctx: TaskContext, name: str):
     return 0
 
 
-def build_service(ctx: TaskContext, name: str):
+def build_service(ctx: TaskContext, name: str, skip_ci=False):
     ctx.log.info(f"Building container for {name}")
 
     ver = get_version(ctx, name)
@@ -323,7 +323,7 @@ def build_service(ctx: TaskContext, name: str):
     b.with_repo(os.getenv("DOCKER_REGISTRY"))
     for tag in tags:
         b.add_tag(tag)
-    if os.getenv("CI"):
+    if not skip_ci and os.getenv("CI"):
         for p in os.getenv("TARGET_PLATFORMS").split(","):
             b.add_platform(p)
         b.with_push(True)
