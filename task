@@ -1,6 +1,7 @@
 #!/bin/bash
 
-UV_VERSION=0.5.9
+source ./config.env
+
 export LOCAL_DIR=$(pwd)/.local
 export LOCAL_BIN_DIR=${LOCAL_DIR}/bin
 export LOG_LEVEL=DEBUG
@@ -8,15 +9,29 @@ export PYTHONDONTWRITEBYTECODE=1
 export PATH=$LOCAL_BIN_DIR:$PATH
 
 mkdir -p \
-    $LOCAL_DIR/bin \
-    $LOCAL_DIR/cache/npm \
-    $LOCAL_DIR/cache/pnpm
+    ${LOCAL_BIN_DIR}/bin \
+    ${LOCAL_BIN_DIR}/cache/npm \
+    ${LOCAL_BIN_DIR}/cache/pnpm
 
 # install uv if it doesnt exist or there is a version missmatch
-if [ ! -x "$LOCAL_BIN_DIR/uv" ] || [ "$($LOCAL_BIN_DIR/uv --version)" != "uv $UV_VERSION" ]; then
-    echo "Downloading uv $UV_VERSION"
-    curl -o /tmp/uv.tgz -LsSf https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz
-    tar xf /tmp/uv.tgz -C $LOCAL_BIN_DIR/ --strip-components=1
+if [ ! -x "${LOCAL_BIN_DIR}/uv" ] || [ "$($LOCAL_BIN_DIR/uv --version)" != "uv ${UV_VERSION}" ]; then
+    arch=$(uname -m)
+    case "$(uname -s)" in
+        Darwin)
+            ARCHIVE_NAME="uv-aarch64-apple-darwin"
+            ;;
+        Linux)
+            ARCHIVE_NAME="uv-${arch}-unknown-linux-gnu"
+            ;;
+        *)
+            echo "Unsupported operating system"
+            exit 1
+            ;;
+    esac
+    echo "Downloading uv ${UV_VERSION} ${ARCHIVE_NAME}"
+    
+    curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/${ARCHIVE_NAME}.tar.gz"
+    tar xf /tmp/uv.tgz -C ${LOCAL_BIN_DIR}/ --strip-components=1 ${ARCHIVE_NAME}/uv ${ARCHIVE_NAME}/uvx
 fi
 
 ${LOCAL_BIN_DIR}/uv run -m __tasklib__ $@
