@@ -8,7 +8,7 @@ on:
     paths:
       - config.env
       - Dockerfile.python
-      - Dockerfile.python.hashes
+      - Dockerfile.python.sbom
 
   pull_request:
     branches:
@@ -16,7 +16,7 @@ on:
     paths:
       - config.env
       - Dockerfile.python
-      - Dockerfile.python.hashes
+      - Dockerfile.python.sbom
 
 concurrency:
   group: python-build-${{ github.ref }}

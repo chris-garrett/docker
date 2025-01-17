@@ -1,5 +1,6 @@
 # install python via miniconda
 ENV PATH=/work/opt/venv/bin:$$PATH
+ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
 RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     if [ "$$TARGETARCH" = "arm64" ]; then \
@@ -7,9 +8,7 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/miniconda.sh -L https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-$${ARCH}.sh; \
-    sh /tmp/miniconda.sh -b -p /tmp/miniconda; \
-    /tmp/miniconda/bin/conda create -p /work/opt/venv -y python=$PYTHON_VERSION; \
-    /work/opt/venv/bin/python -m pip install -U pip; \
-    curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-${ARCH}-unknown-linux-gnu.tar.gz"; \
-    tar xf /tmp/uv.tgz -C /work/opt/bin --strip-components=1 uv-${ARCH}-unknown-linux-gnu/uv uv-${ARCH}-unknown-linux-gnu/uvx;
+    curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-$${ARCH}-unknown-linux-gnu.tar.gz"; \
+    tar xf /tmp/uv.tgz -C /work/opt/bin --strip-components=1 uv-$${ARCH}-unknown-linux-gnu/uv uv-$${ARCH}-unknown-linux-gnu/uvx; \
+    /work/opt/bin/uv venv /work/opt/venv --relocatable; \
+    find /work/opt -type f -executable -exec file {} \; | grep "ELF" | cut -d: -f1 | xargs strip || true;

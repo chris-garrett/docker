@@ -72,11 +72,11 @@ class DockerBuilder:
         if len(tags) > 0:
             cmd += f" {tags}"
 
-        labels = " ".join([f"-l {l[0]}={l[1]}" for l in self.labels])
+        labels = " ".join([f'--label {l[0]}="{l[1]}"' for l in self.labels])
         if len(labels) > 0:
             cmd += f" {labels}"
 
-        args = " ".join([f"--build-arg {a[0]}={a[1]}" for a in self.args])
+        args = " ".join([f'--build-arg {a[0]}="{a[1]}"' for a in self.args])
         if len(args) > 0:
             cmd += f" {args}"
 
@@ -156,8 +156,6 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         if ret.returncode != 0:
             ctx.log.error(f"Error inspecting base image {base_image}")
             return ret.returncode
-        digest = ret.stdout.strip("[]\n").split(",")[0].strip("'")
-        print("digest", digest)
 
     except Exception as e:
         ctx.log.error(f"Error generating service {name}: {e}")
@@ -165,16 +163,17 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     return 0
 
 
-def update_hashes(
+def update_sbom(
     ctx: TaskContext,
     name: str,
 ):
     try:
+        # 1. get digest from final image
         with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "r") as f:
             final = f.read()
 
         # get image used by FROM as final
-        pattern = r"FROM\s+(\S+)\s+AS"
+        pattern = r"FROM\s+(\S+)\s+AS\s+final"
 
         # Search for the pattern in the input string
         match = re.search(pattern, final)
@@ -193,17 +192,39 @@ def update_hashes(
             ctx.log.error(f"Error inspecting base image {base_image}")
             return ret.returncode
         digest = ret.stdout.strip("[]\n").split(",")[0].strip("'")
-        print("digest", digest)
 
+        # 2. get os package versions from base image
         tag = f"{os.getenv("DOCKER_REGISTRY")}/{name}:latest"
         ret = ctx.exec(f"docker run --rm {tag} dpkg --list", capture=True)
         if ret.returncode != 0:
             ctx.log.error(f"Error getting package list {base_image}")
             return ret.returncode
+        os_packages = ret.stdout
 
-        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}.hashes"), "w") as f:
-            f.write(digest)
-            f.write(ret.stdout)
+        v = get_version(ctx, name)
+
+        # 3. get package versions that we are using (they are labels on this image)
+        ret = ctx.exec(
+            f"docker inspect {os.getenv('DOCKER_REGISTRY')}/{name}:{v.semver_full}",
+            capture=True,
+        )
+        if ret.returncode != 0:
+            ctx.log.error(f"Error getting package list {base_image}")
+            return ret.returncode
+        inspect: dict = json.loads(ret.stdout)
+        raw_labels = inspect[0]["Config"]["Labels"]
+        labels = "\n".join(
+            [f"{k}={v}" for k, v in raw_labels.items() if "_version" in k]
+        )
+
+        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}.sbom"), "w") as f:
+            f.write(f"# SBOM for {name}\n\n")
+            f.write("## base image digest\n\n")
+            f.write(f"{digest}\n\n")
+            f.write("## Package Versions\n\n")
+            f.write(f"{labels}\n\n")
+            f.write("## OS Versions\n\n")
+            f.write(os_packages)
 
     except Exception as e:
         ctx.log.error(f"Error generating service {name}: {e}")
@@ -216,11 +237,13 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     if ret != 0:
         return ret
 
+    # build single arch for speed. we are doing this to get the sbom to determin
+    # if we actually need to build all the things
     ret = build_service(ctx, name, skip_ci=True)
     if ret != 0:
         return ret
 
-    ret = update_hashes(ctx, name)
+    ret = update_sbom(ctx, name)
     if ret != 0:
         return ret
 

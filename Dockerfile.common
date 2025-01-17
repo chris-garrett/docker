@@ -58,8 +58,11 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     iputils-ping \
     iproute2 \
     procps \
+    binutils \
+    ncdu \
     ; \
     useradd -s /bin/bash -m sprout; \
+    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
     echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
     mkdir -p /home/sprout/.cache; \
     chown -R sprout:sprout /work /home/sprout/.cache;  \
@@ -67,6 +70,9 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
 
 USER sprout
 WORKDIR /work/app
+
+LABEL org.opencontainers.image.watchexec_version="$WATCHEXEC_VERSION"
+LABEL org.opencontainers.image.dockerize_version="$DOCKERIZE_VERSION"
 
 $FINAL_TEMPLATE
 
