@@ -1,0 +1,20 @@
+name: Version
+
+inputs:
+  tag_prefix:
+    description: "service/v"
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Print Version
+      shell: bash # Must explicitly specify the shell for each step. https://github.com/orgs/community/discussions/18597
+      run: |
+        python __version__.py --tag-prefix=${{ inputs.tag_prefix }} --format env --env-prefix=NE_VERSION_ minor
+
+    - name: Add to Environment
+      shell: bash # Must explicitly specify the shell for each step. https://github.com/orgs/community/discussions/18597
+      run: |
+        python __version__.py --tag-prefix=${{ inputs.tag_prefix }} --format env --env-prefix=NE_VERSION_ --no-quotes minor >> $GITHUB_ENV

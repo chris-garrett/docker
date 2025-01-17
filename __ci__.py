@@ -26,6 +26,12 @@ class DockerBuilder:
         self.push = False
         self.context_dir = "."
         self.repo = "ghcr.io"
+        self.labels = []
+        self.args = []
+
+    def with_arg(self, name: str, value: str):
+        self.args.append((name, value))
+        return self
 
     def with_file(self, file: str):
         self.dockerfile = file
@@ -51,6 +57,10 @@ class DockerBuilder:
         self.context_dir = context
         return self
 
+    def with_label(self, name: str, value: str):
+        self.labels.append((name, value))
+        return self
+
     def build(self):
         cmd = f"docker buildx build -f {self.dockerfile}"
 
@@ -58,9 +68,17 @@ class DockerBuilder:
         if len(platforms) > 0:
             cmd += f" {platforms}"
 
-        tags = " ".join([f"-t {self.repo}/{t}" for t in self.tags])
+        tags = " ".join([f"-t {t}" for t in self.tags])
         if len(tags) > 0:
             cmd += f" {tags}"
+
+        labels = " ".join([f"-l {l[0]}={l[1]}" for l in self.labels])
+        if len(labels) > 0:
+            cmd += f" {labels}"
+
+        args = " ".join([f"--build-arg {a[0]}={a[1]}" for a in self.args])
+        if len(args) > 0:
+            cmd += f" {args}"
 
         if self.push:
             cmd += " --push"
@@ -120,7 +138,7 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
             f.write(final)
 
         # get image used by FROM as final
-        pattern = r'FROM\s+(\S+)\s+AS'
+        pattern = r"FROM\s+(\S+)\s+AS"
 
         # Search for the pattern in the input string
         match = re.search(pattern, final)
@@ -132,7 +150,9 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         if ret.returncode != 0:
             ctx.log.error(f"Error pulling base image {base_image}")
             return ret.returncode
-        ret = ctx.exec("docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True)
+        ret = ctx.exec(
+            "docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True
+        )
         if ret.returncode != 0:
             ctx.log.error(f"Error inspecting base image {base_image}")
             return ret.returncode
@@ -145,13 +165,16 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     return 0
 
 
-def update_hashes(ctx: TaskContext, name: str,):
+def update_hashes(
+    ctx: TaskContext,
+    name: str,
+):
     try:
         with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "r") as f:
             final = f.read()
 
         # get image used by FROM as final
-        pattern = r'FROM\s+(\S+)\s+AS'
+        pattern = r"FROM\s+(\S+)\s+AS"
 
         # Search for the pattern in the input string
         match = re.search(pattern, final)
@@ -163,7 +186,9 @@ def update_hashes(ctx: TaskContext, name: str,):
         if ret.returncode != 0:
             ctx.log.error(f"Error pulling base image {base_image}")
             return ret.returncode
-        ret = ctx.exec("docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True)
+        ret = ctx.exec(
+            "docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True
+        )
         if ret.returncode != 0:
             ctx.log.error(f"Error inspecting base image {base_image}")
             return ret.returncode
@@ -175,7 +200,7 @@ def update_hashes(ctx: TaskContext, name: str,):
         if ret.returncode != 0:
             ctx.log.error(f"Error getting package list {base_image}")
             return ret.returncode
- 
+
         with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}.hashes"), "w") as f:
             f.write(digest)
             f.write(ret.stdout)
@@ -194,7 +219,7 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     ret = build_service(ctx, name, skip_ci=True)
     if ret != 0:
         return ret
-    
+
     ret = update_hashes(ctx, name)
     if ret != 0:
         return ret
@@ -317,7 +342,10 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False):
     ctx.log.info(f"Building container for {name}")
 
     ver = get_version(ctx, name)
-    tags = [f"{name}:latest", f"{name}:{ver.semver_full}"]
+    tags = [
+        f"{os.getenv("DOCKER_REGISTRY")}/{name}:latest",
+        f"{os.getenv("DOCKER_REGISTRY")}/{name}:{ver.semver_full}",
+    ]
 
     b = DockerBuilder(ctx)
     b.with_repo(os.getenv("DOCKER_REGISTRY"))
@@ -329,6 +357,21 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False):
         b.with_push(True)
     b.with_file(os.path.join(ctx.project_dir, f"Dockerfile.{name}"))
     b.with_context(ctx.project_dir)
+
+    b.with_label(
+        "org.opencontainers.image.source", "https://github.com/chris-garrett/docker"
+    )
+    b.with_label("org.opencontainers.image.vendor", "NestEggs Inc.")
+    b.with_label("org.opencontainers.image.version", ver.semver_full)
+    b.with_label("org.opencontainers.image.created", ver.timestamp)
+    b.with_label("org.opencontainers.image.branch", ver.branch)
+    b.with_label("org.opencontainers.image.revision", ver.hash)
+
+    config_env = load_env(os.path.join(ctx.root_dir, "config.env"))
+    for k, v in config_env.items():
+        if "_VERSION" in k:
+            b.with_arg(k, v)
+
     return ctx.exec(b.build()).returncode
 
 
@@ -340,11 +383,11 @@ def tag_service(ctx: TaskContext, name: str):
     if ret.returncode != 0:
         ctx.log.error(f"Error tagging {ver.tag} {ret.stderr}")
         return 1
-    
+
     if os.getenv("CI"):
         ret = ctx.exec(f"git push --force origin {ver.tag}")
         if ret.returncode != 0:
             ctx.log.error(f"Error pushing tag {ver.tag} {ret.stderr}")
             return 1
-        
+
     return 0
