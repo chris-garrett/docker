@@ -1,3 +1,5 @@
 ENV PATH=/work/opt/venv/bin:$$PATH
 ENV PYTHON_ENVIRONMENT=Development
+
 LABEL org.opencontainers.image.python_version="$PYTHON_VERSION"
+LABEL org.opencontainers.image.uv_version="$UV_VERSION"
