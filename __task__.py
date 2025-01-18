@@ -20,3 +20,9 @@ def configure(builder: TaskBuilder):
     builder.add_task(mod, "node:tag", lambda ctx: tag_service(ctx, "node"))
     builder.add_task(mod, "node:pr", lambda ctx: pr_service(ctx, "node"))
     builder.add_task(mod, "node:sbom", lambda ctx: update_sbom(ctx, "node"))
+
+    builder.add_task(mod, "rust:update", lambda ctx: update_service(ctx, "rust"))
+    builder.add_task(mod, "rust:build", lambda ctx: build_service(ctx, "rust"))
+    builder.add_task(mod, "rust:tag", lambda ctx: tag_service(ctx, "rust"))
+    builder.add_task(mod, "rust:pr", lambda ctx: pr_service(ctx, "rust"))
+    builder.add_task(mod, "rust:sbom", lambda ctx: update_sbom(ctx, "rust"))

@@ -2,6 +2,9 @@ FROM debian:bookworm-slim AS build
 
 ARG TARGETARCH
 
+ENV PATH="/work/opt/bin:$$PATH"
+ENV HOST_ENVIRONMENT=container
+
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
     set -eux; \
@@ -12,10 +15,25 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     libicu72 \
     tzdata \
     xz-utils \
+    vim \
+    git \
+    git-lfs \
+    build-essential \
+    iputils-ping \
+    iproute2 \
+    procps \
+    binutils \
+    ncdu \  
     unzip \
     curl \
+    file \
     ; \
-    mkdir -p /work/app /work/opt/bin;
+    useradd -s /bin/bash -m sprout; \
+    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
+    echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
+    mkdir -p /work/app /work/opt/bin /home/sprout/.cache; \
+    chown -R sprout:sprout /work /home/sprout/.cache;  \
+    rm -rf /var/lib/apt/lists/*
 
 # install watchexec
 RUN set -eux; \
@@ -24,48 +42,22 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -L -C - https://github.com/watchexec/watchexec/releases/download/v$WATCHEXEC_VERSION/watchexec-$WATCHEXEC_VERSION-$${ARCH}-unknown-linux-gnu.tar.xz; \
+    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v$WATCHEXEC_VERSION/watchexec-$WATCHEXEC_VERSION-$${ARCH}-unknown-linux-gnu.tar.xz; \
     tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-$WATCHEXEC_VERSION-$${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -L -C - https://github.com/jwilder/dockerize/releases/download/v$DOCKERIZE_VERSION/dockerize-linux-$${TARGETARCH}-v$DOCKERIZE_VERSION.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v$DOCKERIZE_VERSION/dockerize-linux-$${TARGETARCH}-v$DOCKERIZE_VERSION.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 $BUILD_TEMPLATE
 
-FROM debian:bookworm-slim AS final
 
-ENV PATH="/work/opt/bin:$$PATH"
-ENV HOST_ENVIRONMENT=container
+FROM build AS final
 
-COPY --from=build /work /work
+$FINAL_TEMPLATE
 
-RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
-    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
-    set -eux; \
-    apt update; \
-    apt upgrade -y; \
-    apt install -y --no-install-recommends \
-    ca-certificates \
-    libicu72 \
-    tzdata \
-    vim \
-    git \
-    git-lfs \
-    build-essential \
-    curl \
-    iputils-ping \
-    iproute2 \
-    procps \
-    binutils \
-    ncdu \
-    ; \
-    useradd -s /bin/bash -m sprout; \
-    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
-    echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
-    mkdir -p /home/sprout/.cache; \
-    chown -R sprout:sprout /work /home/sprout/.cache;  \
+RUN set -eux; \    
     rm -rf /var/lib/apt/lists/*
 
 USER sprout
@@ -73,6 +65,3 @@ WORKDIR /work/app
 
 LABEL org.opencontainers.image.watchexec_version="$WATCHEXEC_VERSION"
 LABEL org.opencontainers.image.dockerize_version="$DOCKERIZE_VERSION"
-
-$FINAL_TEMPLATE
-

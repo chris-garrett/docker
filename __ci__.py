@@ -194,7 +194,7 @@ def update_sbom(
         digest = ret.stdout.strip("[]\n").split(",")[0].strip("'")
 
         # 2. get os package versions from base image
-        tag = f"{os.getenv("DOCKER_REGISTRY")}/{name}:latest"
+        tag = f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest"
         ret = ctx.exec(f"docker run --rm {tag} dpkg --list", capture=True)
         if ret.returncode != 0:
             ctx.log.error(f"Error getting package list {base_image}")
@@ -252,8 +252,8 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
 
 def pr_service(ctx: TaskContext, name: str):
     sleep_sec = 10
-    token = f'{os.getenv("GITHUB_TOKEN")}'
-    ci_token = f'{os.getenv("CI_GITHUB_TOKEN")}'
+    token = f"{os.getenv('GITHUB_TOKEN')}"
+    ci_token = f"{os.getenv('CI_GITHUB_TOKEN')}"
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
 
     # check for local changes
@@ -366,8 +366,8 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False):
 
     ver = get_version(ctx, name)
     tags = [
-        f"{os.getenv("DOCKER_REGISTRY")}/{name}:latest",
-        f"{os.getenv("DOCKER_REGISTRY")}/{name}:{ver.semver_full}",
+        f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest",
+        f"{os.getenv('DOCKER_REGISTRY')}/{name}:{ver.semver_full}",
     ]
 
     b = DockerBuilder(ctx)
