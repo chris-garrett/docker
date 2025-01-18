@@ -1,0 +1,26 @@
+# install python via miniconda
+ENV PATH=/work/opt/venv/bin:$$PATH
+ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
+
+# install fnm/node
+RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    if [ "$$TARGETARCH" = "arm64" ]; then \
+    ARCH="arm64"; \
+    else \
+    ARCH="linux"; \
+    fi; \
+    curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v${FNM_VERSION}/fnm-$${ARCH}.zip"; \
+    unzip -d /work/opt/bin /tmp/fnm.zip; \
+    mkdir -p /work/opt/fnm;
+
+# install bun
+RUN set -eux; \
+    if [ "$$TARGETARCH" = "arm64" ]; then \
+    ARCHIVE="bun-linux-aarch64"; \
+    else \
+    ARCHIVE="bun-linux-x64"; \
+    fi; \
+    curl -o /tmp/bun.zip -LsSf "https://github.com/oven-sh/bun/releases/download/bun-v$BUN_VERSION/$${ARCHIVE}.zip"; \
+    unzip -d /tmp /tmp/bun.zip; \
+    mv /tmp/$${ARCHIVE}/bun /work/opt/bin/bun;

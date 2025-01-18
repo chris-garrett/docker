@@ -1,0 +1,36 @@
+name: "Node: Build"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - config.env
+      - Dockerfile.node
+      - Dockerfile.node.sbom
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - config.env
+      - Dockerfile.node
+      - Dockerfile.node.sbom
+
+concurrency:
+  group: node-build-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  update:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Image
+        uses: ./.github/actions/build-image
+        with:
+          service_name: node
+          github_token: ${{ secrets.GITHUB_TOKEN }}
