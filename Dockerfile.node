@@ -35,6 +35,8 @@ RUN set -eux; \
 # install python via miniconda
 ENV PATH=/work/opt/venv/bin:$PATH
 ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
+
+# install fnm/node
 RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     if [ "$TARGETARCH" = "arm64" ]; then \
@@ -45,6 +47,17 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v1.38.1/fnm-${ARCH}.zip"; \
     unzip -d /work/opt/bin /tmp/fnm.zip; \
     mkdir -p /work/opt/fnm;
+
+# install bun
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCHIVE="bun-linux-aarch64"; \
+    else \
+    ARCHIVE="bun-linux-x64"; \
+    fi; \
+    curl -o /tmp/bun.zip -LsSf "https://github.com/oven-sh/bun/releases/download/bun-v1.1.45/${ARCHIVE}.zip"; \
+    unzip -d /tmp /tmp/bun.zip; \
+    mv /tmp/${ARCHIVE}/bun /work/opt/bin/bun;
 
 
 FROM debian:bookworm-slim AS final
@@ -93,9 +106,10 @@ ENV NODE_ENV=development
 RUN set -eux; \
     fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm >> /home/sprout/.bashrc; \
     eval "`fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm`"; \
-    fnm use 20.16.0 --install-if-missing;
+    fnm use 20.16.0 --install-if-missing --corepack-enabled;
 
 LABEL org.opencontainers.image.node_version="20.16.0"
 LABEL org.opencontainers.image.fnm_version="1.38.1"
+LABEL org.opencontainers.image.bun_version="1.1.45"
 
 
