@@ -1,0 +1,72 @@
+name: docker
+
+services:
+  caddy:
+    profiles: ["all", "caddy"]
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      caddy: http://caddy.fbi.com
+      caddy.log: default
+      caddy.log.level: WARN
+    restart: unless-stopped
+
+  # worker:
+  #   profiles: ["all", "worker"]
+  #   image: crea-worker:local
+  #   command: |
+  #     dockerize
+  #       -wait tcp://postgres:5432
+  #       python -m crea.hosts.consumer_host
+  #   environment:
+  #     - LOCAL_PGRST_BASE_URL=${DOCKER_PGRST_BASE_URL}
+  #     - LOCAL_PGRST_JWT_TOKEN=${LOCAL_PGRST_JWT_TOKEN}
+  #     - KORBEN_LAKE_DIR=/work/lake
+  #     - KORBEN_CREA_URL=${KORBEN_CREA_URL}
+  #     - KORBEN_CREA_USERNAME=${KORBEN_CREA_USERNAME}
+  #     - KORBEN_CREA_PASSWORD=${KORBEN_CREA_PASSWORD}
+  #     - KORBEN_O2_EMAIL=${KORBEN_DEFAULT_EMAIL}
+  #     - KORBEN_O2_PASSWORD=${KORBEN_DEFAULT_PASSWORD}
+  #   volumes:
+  #     - ${KORBEN_LAKE_DIR}:/work/lake
+  #   restart: unless-stopped
+
+  postgres:
+    profiles: ["all", "postgres"]
+    image: postgis/postgis:16-3.4-alpine
+    ports:
+      - 7090:5432
+    command:
+      - -c
+      - wal_level=logical
+    environment:
+      - POSTGRES_DB=docker
+      - POSTGRES_PASSWORD=U7FfkmB1ZcgGoan8
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  o2:
+    profiles: ["all", "o2"]
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    environment:
+      ZO_ROOT_USER_EMAIL: docker@fbi.com
+      ZO_ROOT_USER_PASSWORD: U7FfkmB1ZcgGoan8
+    ports:
+      - "7095:5080" # http
+      - "7096:5081" # grpc
+    volumes:
+      - o2_data:/data
+    labels:
+      caddy_0: http://o2.${KORBEN_PUBLIC_DOMAIN}
+      caddy_0.reverse_proxy: "{{upstreams 5080}}"
+    restart: unless-stopped
+
+volumes:
+  caddy_data: {}
+  postgres_data: {}
+  o2_data: {}

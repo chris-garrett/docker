@@ -1,9 +1,14 @@
 from __ci__ import build_service, pr_service, tag_service, update_service, update_sbom
-from __tasklib__ import TaskBuilder, load_dotenv
+from __tasklib__ import TaskBuilder, TaskContext, load_dotenv
 
 
 load_dotenv("config.env", override=True)
 load_dotenv(".env", override=True)
+
+
+def _info(ctx: TaskContext):
+    ctx.log.info(f"root: {ctx.root_dir}")
+    ctx.log.info(f"root: {ctx.project_dir}")
 
 
 def configure(builder: TaskBuilder):
@@ -26,3 +31,5 @@ def configure(builder: TaskBuilder):
     builder.add_task(mod, "rust:tag", lambda ctx: tag_service(ctx, "rust"))
     builder.add_task(mod, "rust:pr", lambda ctx: pr_service(ctx, "rust"))
     builder.add_task(mod, "rust:sbom", lambda ctx: update_sbom(ctx, "rust"))
+
+    builder.add_task(mod, "info", _info)

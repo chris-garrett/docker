@@ -126,15 +126,15 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         templates = {**custom_templates, **base_templates}
 
         for k, v in templates.items():
-            with open(os.path.join(ctx.project_dir, v), "r") as f:
+            with open(os.path.join(ctx.root_dir, v), "r") as f:
                 env[k] = Template(f.read()).substitute(env)
 
-        with open(os.path.join(ctx.project_dir, "Dockerfile.common"), "r") as f:
+        with open(os.path.join(ctx.root_dir, "Dockerfile.common"), "r") as f:
             common_content = f.read()
 
         final = Template(common_content).substitute(env)
 
-        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "w") as f:
+        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "w") as f:
             f.write(final)
 
         # get image used by FROM as final
@@ -169,7 +169,7 @@ def update_sbom(
 ):
     try:
         # 1. get digest from final image
-        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "r") as f:
+        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "r") as f:
             final = f.read()
 
         # get image used by FROM as final
@@ -217,7 +217,7 @@ def update_sbom(
             [f"{k}={v}" for k, v in raw_labels.items() if "_version" in k]
         )
 
-        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}.sbom"), "w") as f:
+        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}.sbom"), "w") as f:
             f.write(f"# SBOM for {name}\n\n")
             f.write("## base image digest\n\n")
             f.write(f"{digest}\n\n")
@@ -378,8 +378,8 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False):
         for p in os.getenv("TARGET_PLATFORMS").split(","):
             b.add_platform(p)
         b.with_push(True)
-    b.with_file(os.path.join(ctx.project_dir, f"Dockerfile.{name}"))
-    b.with_context(ctx.project_dir)
+    b.with_file(os.path.join(ctx.root_dir, f"Dockerfile.{name}"))
+    b.with_context(ctx.root_dir)
 
     b.with_label(
         "org.opencontainers.image.source", "https://github.com/chris-garrett/docker"

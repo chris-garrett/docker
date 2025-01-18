@@ -5,6 +5,7 @@ source ./config.env
 export LOCAL_DIR=$(pwd)/.local
 export LOCAL_BIN_DIR=${LOCAL_DIR}/bin
 export LOG_LEVEL=DEBUG
+export PYTHONPATH=$(pwd)/py:${PYTHONPATH}
 export PYTHONDONTWRITEBYTECODE=1
 export PATH=$LOCAL_BIN_DIR:$PATH
 
@@ -34,4 +35,4 @@ if [ ! -x "${LOCAL_BIN_DIR}/uv" ] || [ "$($LOCAL_BIN_DIR/uv --version)" != "uv $
     tar xf /tmp/uv.tgz -C ${LOCAL_BIN_DIR}/ --strip-components=1 ${ARCHIVE_NAME}/uv ${ARCHIVE_NAME}/uvx
 fi
 
-${LOCAL_BIN_DIR}/uv run -m __tasklib__ $@
+${LOCAL_BIN_DIR}/uv run  -m __tasklib__ $@
