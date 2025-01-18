@@ -1,0 +1,13 @@
+# install python via miniconda
+ENV PATH=/work/opt/venv/bin:$$PATH
+ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
+RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    if [ "$$TARGETARCH" = "arm64" ]; then \
+    ARCH="arm64"; \
+    else \
+    ARCH="linux"; \
+    fi; \
+    curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v${FNM_VERSION}/fnm-$${ARCH}.zip"; \
+    unzip -d /work/opt/bin /tmp/fnm.zip; \
+    mkdir -p /work/opt/fnm;

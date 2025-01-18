@@ -1,0 +1,101 @@
+FROM debian:bookworm-slim AS build
+
+ARG TARGETARCH
+
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    apt update; \
+    apt upgrade -y; \
+    apt install -y --no-install-recommends \
+    ca-certificates \
+    libicu72 \
+    tzdata \
+    xz-utils \
+    unzip \
+    curl \
+    ; \
+    mkdir -p /work/app /work/opt/bin;
+
+# install watchexec
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else \
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/watchexec.tar.xz -L -C - https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.2-${ARCH}-unknown-linux-gnu/watchexec
+
+# install dockerize
+RUN set -eux; \
+    curl -o /tmp/dockerize.tgz -L -C - https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
+    tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
+
+# install python via miniconda
+ENV PATH=/work/opt/venv/bin:$PATH
+ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
+RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="arm64"; \
+    else \
+    ARCH="linux"; \
+    fi; \
+    curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v1.38.1/fnm-${ARCH}.zip"; \
+    unzip -d /work/opt/bin /tmp/fnm.zip; \
+    mkdir -p /work/opt/fnm;
+
+
+FROM debian:bookworm-slim AS final
+
+ENV PATH="/work/opt/bin:$PATH"
+ENV HOST_ENVIRONMENT=container
+
+COPY --from=build /work /work
+
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    apt update; \
+    apt upgrade -y; \
+    apt install -y --no-install-recommends \
+    ca-certificates \
+    libicu72 \
+    tzdata \
+    vim \
+    git \
+    git-lfs \
+    build-essential \
+    curl \
+    iputils-ping \
+    iproute2 \
+    procps \
+    binutils \
+    ncdu \
+    ; \
+    useradd -s /bin/bash -m sprout; \
+    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
+    echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
+    mkdir -p /home/sprout/.cache; \
+    chown -R sprout:sprout /work /home/sprout/.cache;  \
+    rm -rf /var/lib/apt/lists/*
+
+USER sprout
+WORKDIR /work/app
+
+LABEL org.opencontainers.image.watchexec_version="2.1.2"
+LABEL org.opencontainers.image.dockerize_version="0.7.0"
+
+#ENV PATH=/work/opt/venv/bin:$PATH
+ENV NODE_ENV=development
+
+RUN set -eux; \
+    fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm >> /home/sprout/.bashrc; \
+    eval "`fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm`"; \
+    fnm use 20.16.0 --install-if-missing;
+
+LABEL org.opencontainers.image.node_version="20.16.0"
+LABEL org.opencontainers.image.fnm_version="1.38.1"
+
+

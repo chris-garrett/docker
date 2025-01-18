@@ -1,0 +1,10 @@
+#ENV PATH=/work/opt/venv/bin:$$PATH
+ENV NODE_ENV=development
+
+RUN set -eux; \
+    fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm >> /home/sprout/.bashrc; \
+    eval "`fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm`"; \
+    fnm use ${NODE_VERSION} --install-if-missing;
+
+LABEL org.opencontainers.image.node_version="$NODE_VERSION"
+LABEL org.opencontainers.image.fnm_version="$FNM_VERSION"
