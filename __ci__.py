@@ -62,7 +62,7 @@ class DockerBuilder:
         return self
 
     def build(self):
-        cmd = f"docker buildx build -f {self.dockerfile}"
+        cmd = f"docker buildx build --progress plain -f {self.dockerfile}"
 
         platforms = " ".join([f"--platform {p}" for p in self.platforms])
         if len(platforms) > 0:
