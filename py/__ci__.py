@@ -5,6 +5,7 @@ import os
 import time
 import urllib.parse
 from string import Template
+from textwrap import dedent
 
 from __tasklib__ import TaskContext, load_env
 from __version__ import VersionBuilder, VersionIncrement
@@ -414,3 +415,39 @@ def tag_service(ctx: TaskContext, name: str):
             return 1
 
     return 0
+
+
+def update_readme(ctx: TaskContext, name: str):
+    with open("README.md", "r") as f:
+        readme_content = f.read()
+
+    start_title = f"## {name.capitalize()}"
+    start_pos = readme_content.find(start_title)
+    if start_pos == -1:
+        ctx.log.error(f"Error finding section {name}")
+        return 1
+    end_pos = readme_content.find("## ", start_pos + len(start_title))
+    if end_pos == -1:
+        ctx.log.error(f"Error finding section {name}")
+        return 1
+
+    with open(f"Dockerfile.{name}", "r") as f:
+        content = f.read()
+        rx = re.compile(
+            r"org\.opencontainers\.image\.(.*)_version=\"(.*)\"", re.MULTILINE
+        )
+        found = rx.findall(content)
+        print("found", found)
+        if not found:
+            raise Exception(f"No versions found in Dockerfile.{name}")
+
+        # Sort items by name in ascending order.
+        sorted_items = sorted(found, key=lambda item: item[0])
+        vers = "\n".join([f"* {k.capitalize()}: **{v}**" for k, v in sorted_items])
+
+    new_service = dedent(f"""### {name.capitalize()}\n\n{vers}\n\n""")
+
+    new_content = f"""{readme_content[: start_pos - 1]}{new_service}\n{readme_content[end_pos:]}"""
+
+    with open("README.md", "w") as f:
+        f.write(new_content)

@@ -1,10 +1,12 @@
 import os
 from __tasklib__ import TaskContext, TaskBuilder
 
+mod = "compose"
+
 
 def _prefix(ctx: TaskContext):
     compose_file = os.path.join(ctx.project_dir, "docker-compose.yml")
-    return f"docker compose -f {compose_file}"
+    return f"docker compose -f {compose_file} --profile all"
 
 
 def _up(ctx: TaskContext):
@@ -28,9 +30,13 @@ def _restart(ctx: TaskContext):
     _up(ctx)
 
 
+def _log_service(ctx: TaskContext, service):
+    ctx.exec(f"{_prefix(ctx)} logs {service} -f --tail 100")
+
+
 def configure(builder: TaskBuilder):
-    module_name = "datalake"
-    builder.add_task(module_name, "up", _up)
-    builder.add_task(module_name, "down", _down)
-    builder.add_task(module_name, "log", _logs)
-    builder.add_task(module_name, "restart", _restart)
+    builder.add_task(mod, "ex:up", _up)
+    builder.add_task(mod, "ex:down", _down)
+    builder.add_task(mod, "ex:restart", _restart)
+    builder.add_task(mod, "ex:log", _logs)
+    builder.add_task(mod, "ex:log:caddy", lambda ctx: _log_service(ctx, "caddy"))

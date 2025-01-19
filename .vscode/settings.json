@@ -1,5 +1,7 @@
 {
   "editor.formatOnSave": true,
+  "python.defaultInterpreterPath": "${workspaceFolder}/py/.venv/bin/python",
+  "python.pythonPath": "${workspaceFolder}/py",
   "terminal.integrated.env.windows": {
     "PYTHONPATH": "${workspaceFolder}/py;"
   },
@@ -8,9 +10,12 @@
   },
   "terminal.integrated.env": {
     "PYTHONPATH": "${workspaceFolder}/py;"
-  },  
+  },
   "terminal.integrated.env.osx": {
     "PYTHONPATH": "${workspaceFolder}/py;"
-  },  
-  "python.defaultInterpreterPath": "${workspaceFolder}/py/.venv/bin/python"
+  },
+  "files.associations": {
+    "Dockerfile.*.build": "dockerfile",
+    "Dockerfile.*.sbom": "markdown"
+  },
 }
