@@ -3,6 +3,7 @@
 source ./config.env
 
 export LOCAL_DIR=$(pwd)/.local
+export LOCAL_CACHE_DIR=${LOCAL_DIR}/cache
 export LOCAL_BIN_DIR=${LOCAL_DIR}/bin
 export LOG_LEVEL=DEBUG
 export PYTHONPATH=$(pwd)/py:${PYTHONPATH}
@@ -11,8 +12,9 @@ export PATH=$LOCAL_BIN_DIR:$PATH
 
 mkdir -p \
     ${LOCAL_BIN_DIR}/bin \
-    ${LOCAL_BIN_DIR}/cache/npm \
-    ${LOCAL_BIN_DIR}/cache/pnpm
+    ${LOCAL_CACHE_DIR}/npm \
+    ${LOCAL_CACHE_DIR}/pnpm \
+    ${LOCAL_CACHE_DIR}/venv
 
 # install uv if it doesnt exist or there is a version missmatch
 if [ ! -x "${LOCAL_BIN_DIR}/uv" ] || [ "$($LOCAL_BIN_DIR/uv --version)" != "uv ${UV_VERSION}" ]; then
