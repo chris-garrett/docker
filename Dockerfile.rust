@@ -1,0 +1,89 @@
+FROM debian:bookworm-slim AS build
+
+ARG TARGETARCH
+
+ENV PATH="/work/opt/bin:$PATH"
+ENV HOST_ENVIRONMENT=container
+
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    apt update; \
+    apt upgrade -y; \
+    apt install -y --no-install-recommends \
+    ca-certificates \
+    libicu72 \
+    tzdata \
+    xz-utils \
+    vim \
+    git \
+    git-lfs \
+    build-essential \
+    iputils-ping \
+    iproute2 \
+    procps \
+    binutils \
+    ncdu \  
+    unzip \
+    curl \
+    file \
+    ; \
+    useradd -s /bin/bash -m sprout; \
+    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
+    echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
+    mkdir -p /work/app /work/opt/bin /home/sprout/.cache; \
+    chown -R sprout:sprout /work /home/sprout/.cache;  \
+    rm -rf /var/lib/apt/lists/*
+
+# install watchexec
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else \
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.2-${ARCH}-unknown-linux-gnu/watchexec
+
+# install dockerize
+RUN set -eux; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
+    tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
+
+# install python via miniconda
+ENV PATH=/work/opt/venv/bin:$PATH
+ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
+ENV RUSTUP_HOME=/work/opt/rustup
+ENV CARGO_HOME=/work/opt/cargo
+
+# install fnm/node
+RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else \
+    ARCH="x86_64"; \
+    fi; \    
+    curl -o /tmp/rustup.sh -sSf https://sh.rustup.rs; \
+    sh /tmp/rustup.sh -y; \
+    rm -fr /work/opt/rustup/toolchains/stable-${ARCH}-unknown-linux-gnu/share/doc;
+
+
+
+
+FROM build AS final
+
+ENV RUSTUP_HOME=/work/opt/rustup
+ENV CARGO_HOME=/work/opt/cargo
+
+LABEL org.opencontainers.image.rust_version="1.84.0"
+
+
+RUN set -eux; \    
+    rm -rf /var/lib/apt/lists/*
+
+USER sprout
+WORKDIR /work/app
+
+LABEL org.opencontainers.image.watchexec_version="2.1.2"
+LABEL org.opencontainers.image.dockerize_version="0.7.0"

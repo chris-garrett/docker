@@ -5,6 +5,7 @@ import os
 import time
 import urllib.parse
 from string import Template
+from textwrap import dedent
 
 from __tasklib__ import TaskContext, load_env
 from __version__ import VersionBuilder, VersionIncrement
@@ -126,15 +127,15 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
         templates = {**custom_templates, **base_templates}
 
         for k, v in templates.items():
-            with open(os.path.join(ctx.project_dir, v), "r") as f:
+            with open(os.path.join(ctx.root_dir, v), "r") as f:
                 env[k] = Template(f.read()).substitute(env)
 
-        with open(os.path.join(ctx.project_dir, "Dockerfile.common"), "r") as f:
+        with open(os.path.join(ctx.root_dir, "Dockerfile.common"), "r") as f:
             common_content = f.read()
 
         final = Template(common_content).substitute(env)
 
-        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "w") as f:
+        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "w") as f:
             f.write(final)
 
         # get image used by FROM as final
@@ -169,7 +170,7 @@ def update_sbom(
 ):
     try:
         # 1. get digest from final image
-        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}"), "r") as f:
+        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "r") as f:
             final = f.read()
 
         # get image used by FROM as final
@@ -194,7 +195,7 @@ def update_sbom(
         digest = ret.stdout.strip("[]\n").split(",")[0].strip("'")
 
         # 2. get os package versions from base image
-        tag = f"{os.getenv("DOCKER_REGISTRY")}/{name}:latest"
+        tag = f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest"
         ret = ctx.exec(f"docker run --rm {tag} dpkg --list", capture=True)
         if ret.returncode != 0:
             ctx.log.error(f"Error getting package list {base_image}")
@@ -217,7 +218,7 @@ def update_sbom(
             [f"{k}={v}" for k, v in raw_labels.items() if "_version" in k]
         )
 
-        with open(os.path.join(ctx.project_dir, f"Dockerfile.{name}.sbom"), "w") as f:
+        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}.sbom"), "w") as f:
             f.write(f"# SBOM for {name}\n\n")
             f.write("## base image digest\n\n")
             f.write(f"{digest}\n\n")
@@ -252,8 +253,8 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
 
 def pr_service(ctx: TaskContext, name: str):
     sleep_sec = 10
-    token = f'{os.getenv("GITHUB_TOKEN")}'
-    ci_token = f'{os.getenv("CI_GITHUB_TOKEN")}'
+    token = f"{os.getenv('GITHUB_TOKEN')}"
+    ci_token = f"{os.getenv('CI_GITHUB_TOKEN')}"
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
 
     # check for local changes
@@ -366,8 +367,8 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False):
 
     ver = get_version(ctx, name)
     tags = [
-        f"{os.getenv("DOCKER_REGISTRY")}/{name}:latest",
-        f"{os.getenv("DOCKER_REGISTRY")}/{name}:{ver.semver_full}",
+        f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest",
+        f"{os.getenv('DOCKER_REGISTRY')}/{name}:{ver.semver_full}",
     ]
 
     b = DockerBuilder(ctx)
@@ -378,8 +379,8 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False):
         for p in os.getenv("TARGET_PLATFORMS").split(","):
             b.add_platform(p)
         b.with_push(True)
-    b.with_file(os.path.join(ctx.project_dir, f"Dockerfile.{name}"))
-    b.with_context(ctx.project_dir)
+    b.with_file(os.path.join(ctx.root_dir, f"Dockerfile.{name}"))
+    b.with_context(ctx.root_dir)
 
     b.with_label(
         "org.opencontainers.image.source", "https://github.com/chris-garrett/docker"
@@ -414,3 +415,39 @@ def tag_service(ctx: TaskContext, name: str):
             return 1
 
     return 0
+
+
+def update_readme(ctx: TaskContext, name: str):
+    with open("README.md", "r") as f:
+        readme_content = f.read()
+
+    start_title = f"## {name.capitalize()}"
+    start_pos = readme_content.find(start_title)
+    if start_pos == -1:
+        ctx.log.error(f"Error finding section {name}")
+        return 1
+    end_pos = readme_content.find("## ", start_pos + len(start_title))
+    if end_pos == -1:
+        ctx.log.error(f"Error finding section {name}")
+        return 1
+
+    with open(f"Dockerfile.{name}", "r") as f:
+        content = f.read()
+        rx = re.compile(
+            r"org\.opencontainers\.image\.(.*)_version=\"(.*)\"", re.MULTILINE
+        )
+        found = rx.findall(content)
+        print("found", found)
+        if not found:
+            raise Exception(f"No versions found in Dockerfile.{name}")
+
+        # Sort items by name in ascending order.
+        sorted_items = sorted(found, key=lambda item: item[0])
+        vers = "\n".join([f"* {k.capitalize()}: **{v}**" for k, v in sorted_items])
+
+    new_service = dedent(f"""### {name.capitalize()}\n\n{vers}\n\n""")
+
+    new_content = f"""{readme_content[: start_pos - 1]}{new_service}\n{readme_content[end_pos:]}"""
+
+    with open("README.md", "w") as f:
+        f.write(new_content)

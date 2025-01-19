@@ -87,8 +87,7 @@ import typing
 from dataclasses import dataclass, field
 from logging import Logger
 from subprocess import CompletedProcess
-from typing import (Any, Callable, Dict, List, NamedTuple, Protocol,
-                    runtime_checkable)
+from typing import Any, Callable, Dict, List, NamedTuple, Protocol, runtime_checkable
 
 
 def load_env(filename=".env", expand_vars=True):
@@ -383,7 +382,7 @@ def _build_task_context(task: TaskDefinition) -> TaskContext:
     Builds a context object for a task.
     """
     return TaskContext(
-        root_dir=os.path.abspath(os.path.dirname(__file__)),
+        root_dir=os.path.abspath(os.curdir),
         project_dir=task.dir,
         log=logging.getLogger(task.module),
         system=_build_system_context(),
@@ -469,7 +468,6 @@ def _parse_task_args(task_args: str) -> Dict[str, Any]:
 
 
 def _process_tasks():
-
     # need to boostrap this arg so that we can enable debug logging at
     # configure time
     raw_args = sys.argv[1:]
