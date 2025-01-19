@@ -30,6 +30,10 @@ def _restart(ctx: TaskContext):
     _up(ctx)
 
 
+def _pull(ctx: TaskContext):
+    ctx.exec(f"{_prefix(ctx)} pull")
+
+
 def _log_service(ctx: TaskContext, service):
     ctx.exec(f"{_prefix(ctx)} logs {service} -f --tail 100")
 
@@ -39,4 +43,5 @@ def configure(builder: TaskBuilder):
     builder.add_task(mod, "ex:down", _down)
     builder.add_task(mod, "ex:restart", _restart)
     builder.add_task(mod, "ex:log", _logs)
+    builder.add_task(mod, "ex:pull", _pull)
     builder.add_task(mod, "ex:log:caddy", lambda ctx: _log_service(ctx, "caddy"))

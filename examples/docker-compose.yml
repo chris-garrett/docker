@@ -11,12 +11,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       caddy: http://caddy.fbi.com
-      caddy.log: |
-        {
-          level WARN
-        }
-      # caddy.log: default
-      # caddy.log.level: WARN
+      caddy.log: default
+      caddy.log.level: INFO
     restart: unless-stopped
 
   py:
@@ -26,13 +22,23 @@ services:
       dockerize
         -wait tcp://postgres:5432
         sh -c '
-          # uv init --app --name hello .
-          uv add fastapi --extra standard
+          # uv init --app --name pyapp .
+          # uv add fastapi --extra standard
+          uv run fastapi dev --host 0.0.0.0
         '
+    ports:
+      - 7030:8000
     environment:
+      - UV_LINK_MODE=copy
       - O2_TOKEN=ZG9ja2VyQGZiaS5jb206VTdGZmttQjFaY2dHb2FuOA==
     volumes:
       - ./py:/work/app
+      # not working with uv.
+      # - ../.local/cache/venv:/work/app/.venv
+
+    labels:
+      caddy_0: http://py.fbi.com
+      caddy_0.reverse_proxy: "{{upstreams 8000}}"
     restart: unless-stopped
 
   postgres:
@@ -50,24 +56,25 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  o2:
-    profiles: ["all", "o2"]
-    image: public.ecr.aws/zinclabs/openobserve:latest
-    environment: # https://openobserve.ai/docs/environment-variables/
-      ZO_ROOT_USER_EMAIL: docker@fbi.com
-      ZO_ROOT_USER_PASSWORD: U7FfkmB1ZcgGoan8
-      RUST_LOG: warn
-    ports:
-      - "7095:5080" # http
-      - "7096:5081" # grpc
-    volumes:
-      - o2_data:/data
-    labels:
-      caddy_0: http://o2.fbi.com
-      caddy_0.reverse_proxy: "{{upstreams 5080}}"
-    restart: unless-stopped
+  # o2:
+  #   profiles: ["all", "o2"]
+  #   image: public.ecr.aws/zinclabs/openobserve:latest
+  #   environment: # https://openobserve.ai/docs/environment-variables/
+  #     ZO_ROOT_USER_EMAIL: docker@fbi.com
+  #     ZO_ROOT_USER_PASSWORD: U7FfkmB1ZcgGoan8
+  #     RUST_LOG: warn
+  #   ports:
+  #     - "7095:5080" # http
+  #     - "7096:5081" # grpc
+  #   volumes:
+  #     - o2_data:/data
+  #   labels:
+  #     caddy_0: http://o2.fbi.com
+  #     caddy_0.reverse_proxy: "{{upstreams 5080}}"
+  #   restart: unless-stopped
 
 volumes:
   caddy_data: {}
   postgres_data: {}
   o2_data: {}
+  py_data: {}
