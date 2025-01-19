@@ -48,3 +48,11 @@ There are improvements that can be made on image size.
 ```docker-compose
 
 ```
+## References
+
+* https://github.com/linuxserver/docker-baseimage-debian
+* https://github.com/just-containers/s6-overlay
+* https://docs.linuxserver.io/general/running-our-containers/#base-images
+* https://github.com/jlesage/docker-baseimage
+* https://github.com/sudo-bmitch/docker-base
+
