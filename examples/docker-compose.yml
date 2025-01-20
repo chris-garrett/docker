@@ -31,6 +31,8 @@ services:
     environment:
       - UV_LINK_MODE=copy
       - O2_TOKEN=ZG9ja2VyQGZiaS5jb206VTdGZmttQjFaY2dHb2FuOA==
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
     volumes:
       - ./py:/work/app
       # not working with uv.
@@ -56,22 +58,22 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  # o2:
-  #   profiles: ["all", "o2"]
-  #   image: public.ecr.aws/zinclabs/openobserve:latest
-  #   environment: # https://openobserve.ai/docs/environment-variables/
-  #     ZO_ROOT_USER_EMAIL: docker@fbi.com
-  #     ZO_ROOT_USER_PASSWORD: U7FfkmB1ZcgGoan8
-  #     RUST_LOG: warn
-  #   ports:
-  #     - "7095:5080" # http
-  #     - "7096:5081" # grpc
-  #   volumes:
-  #     - o2_data:/data
-  #   labels:
-  #     caddy_0: http://o2.fbi.com
-  #     caddy_0.reverse_proxy: "{{upstreams 5080}}"
-  #   restart: unless-stopped
+  o2:
+    profiles: ["all", "o2"]
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    environment: # https://openobserve.ai/docs/environment-variables/
+      ZO_ROOT_USER_EMAIL: docker@fbi.com
+      ZO_ROOT_USER_PASSWORD: U7FfkmB1ZcgGoan8
+      RUST_LOG: warn
+    ports:
+      - "7095:5080" # http
+      - "7096:5081" # grpc
+    volumes:
+      - o2_data:/data
+    labels:
+      caddy_0: http://o2.fbi.com
+      caddy_0.reverse_proxy: "{{upstreams 5080}}"
+    restart: unless-stopped
 
 volumes:
   caddy_data: {}
