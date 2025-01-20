@@ -1,6 +1,9 @@
-FROM debian:bookworm-slim AS build
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm AS build
 
 ARG TARGETARCH
+
+ENV PATH="/work/opt/bin:$PATH"
+ENV HOST_ENVIRONMENT=container
 
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
@@ -12,10 +15,23 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     libicu72 \
     tzdata \
     xz-utils \
+    vim \
+    git \
+    git-lfs \
+    build-essential \
+    iputils-ping \
+    iproute2 \
+    procps \
+    binutils \
+    ncdu \  
     unzip \
     curl \
+    file \
     ; \
-    mkdir -p /work/app /work/opt/bin;
+    useradd -s /bin/bash -m sprout; \
+    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
+    mkdir -p /work/app /work/opt/bin; \
+    rm -rf /var/lib/apt/lists/*;
 
 # install watchexec
 RUN set -eux; \
@@ -24,12 +40,12 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -L -C - https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
+    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
     tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.2-${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -L -C - https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 # install python via miniconda
@@ -60,45 +76,23 @@ RUN set -eux; \
     mv /tmp/${ARCHIVE}/bun /work/opt/bin/bun;
 
 
-FROM debian:bookworm-slim AS final
 
-ENV PATH="/work/opt/bin:$PATH"
-ENV HOST_ENVIRONMENT=container
+FROM build AS final
 
-COPY --from=build /work /work
+# don't bother being gracful in dev images. 
+# can be overriden in final image if req. 
+ENV S6_KILL_GRACETIME=0
+# linux defaults. override in compose. 
+ENV PUID=1000
+ENV PGID=1000
 
-RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
-    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
-    set -eux; \
-    apt update; \
-    apt upgrade -y; \
-    apt install -y --no-install-recommends \
-    ca-certificates \
-    libicu72 \
-    tzdata \
-    vim \
-    git \
-    git-lfs \
-    build-essential \
-    curl \
-    iputils-ping \
-    iproute2 \
-    procps \
-    binutils \
-    ncdu \
-    ; \
-    useradd -s /bin/bash -m sprout; \
-    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
-    echo "alias l='ls -laFHh'" >> /home/sprout/.bash_aliases; \
-    mkdir -p /home/sprout/.cache; \
-    chown -R sprout:sprout /work /home/sprout/.cache;  \
-    rm -rf /var/lib/apt/lists/*
+COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
+▗▄▄▄       ▗▄▖      ▗▄▄▖    ▗▖ ▗▖    ▗▄▄▄▖    ▗▄▄▖ 
+▐▌  █     ▐▌ ▐▌    ▐▌       ▐▌▗▞▘    ▐▌       ▐▌ ▐▌
+▐▌  █     ▐▌ ▐▌    ▐▌       ▐▛▚▖     ▐▛▀▀▘    ▐▛▀▚▖
+▐▙▄▄▀     ▝▚▄▞▘    ▝▚▄▄▖    ▐▌ ▐▌    ▐▙▄▄▖    ▐▌ ▐▌
+EOF
 
-USER sprout
-WORKDIR /work/app
-
-LABEL org.opencontainers.image.watchexec_version="2.1.2"
-LABEL org.opencontainers.image.dockerize_version="0.7.0"
 
 #ENV PATH=/work/opt/venv/bin:$PATH
 ENV NODE_ENV=development
@@ -113,3 +107,10 @@ LABEL org.opencontainers.image.fnm_version="1.38.1"
 LABEL org.opencontainers.image.bun_version="1.1.45"
 
 
+RUN set -eux; \    
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work/app
+
+LABEL org.opencontainers.image.watchexec_version="2.1.2"
+LABEL org.opencontainers.image.dockerize_version="0.7.0"
