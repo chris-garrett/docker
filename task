@@ -16,7 +16,7 @@ mkdir -p \
     ${LOCAL_CACHE_DIR}/pnpm \
     ${LOCAL_CACHE_DIR}/venv
 
-UV_BIN_VERSION=`${LOCAL_BIN_DIR}/uv --version | awk '{ print $2 }'`
+UV_BIN_VERSION=`${LOCAL_BIN_DIR}/uv --version 2> /dev/null | awk '{ print $2 }'`
 
 # install uv if it doesnt exist or there is a version missmatch
 if [ "${UV_BIN_VERSION}" != "${UV_VERSION}" ]; then
