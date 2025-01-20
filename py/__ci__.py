@@ -248,6 +248,10 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     if ret != 0:
         return ret
 
+    ret = update_readme(ctx, name)
+    if ret != 0:
+        return ret
+
     return 0
 
 
@@ -418,6 +422,8 @@ def tag_service(ctx: TaskContext, name: str):
 
 
 def update_readme(ctx: TaskContext, name: str):
+    ver = get_version(ctx, name)
+
     with open("README.md", "r") as f:
         readme_content = f.read()
 
@@ -439,15 +445,20 @@ def update_readme(ctx: TaskContext, name: str):
         found = rx.findall(content)
         print("found", found)
         if not found:
-            raise Exception(f"No versions found in Dockerfile.{name}")
+            ctx.log.error(f"No versions found in Dockerfile.{name}")
+            return 1
 
         # Sort items by name in ascending order.
         sorted_items = sorted(found, key=lambda item: item[0])
         vers = "\n".join([f"* {k.capitalize()}: **{v}**" for k, v in sorted_items])
 
-    new_service = dedent(f"""### {name.capitalize()}\n\n{vers}\n\n""")
+    new_service = dedent(
+        f"""### {name.capitalize()} {ver.semver}\n\n```docker pull ghcr.io/chris-garrett/{name}:{ver.semver}```\n\n{vers}\n\n"""
+    )
 
     new_content = f"""{readme_content[: start_pos - 1]}{new_service}\n{readme_content[end_pos:]}"""
 
     with open("README.md", "w") as f:
         f.write(new_content)
+
+    return 0
