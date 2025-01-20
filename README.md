@@ -18,29 +18,53 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Python: **3.12**
 - Uv: **0.5.21**
 - Watchexec: **2.1.2**
+
 ### Rust 25.2.0
 
-```docker pull ghcr.io/chris-garrett/rust:25.2.0```
+`docker pull ghcr.io/chris-garrett/rust:25.2.0`
 
-* Dockerize: **0.7.0**
-* Rust: **1.84.0**
-* Watchexec: **2.1.2**
-
+- Dockerize: **0.7.0**
+- Rust: **1.84.0**
+- Watchexec: **2.1.2**
 
 ## Node 25.3.0
 
-```docker pull ghcr.io/chris-garrett/node:25.3.0```
+`docker pull ghcr.io/chris-garrett/node:25.3.0`
 
-* Bun: **1.1.45**
-* Dockerize: **0.7.0**
-* Fnm: **1.38.1**
-* Node: **20.16.0**
-* Watchexec: **2.1.2**
-
+- Bun: **1.1.45**
+- Dockerize: **0.7.0**
+- Fnm: **1.38.1**
+- Node: **20.16.0**
+- Watchexec: **2.1.2**
 
 ## Examples
 
 See `examples` folder
+
+Bring up stack
+
+```
+./task ex:restart ex:log
+```
+
+Bring it down
+
+```
+./task ex:dow
+```
+
+#### Images
+
+- [Python @ py.fbi.com](py.fbi.com)
+- [Node @ ts.fbi.com](ts.fbi.com)
+- [Rust @ rs.fbi.com](rs.fbi.com)
+
+#### Services
+
+- [Caddy @ caddy.fbi.com](caddy.fbi.com)
+- [OpenObserve @ o2.fbi.com](o2.fbi.com)
+  - username: docker@fbi.com
+  - password: U7FfkmB1ZcgGoan8
 
 ## Todo
 
