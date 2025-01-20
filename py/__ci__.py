@@ -174,7 +174,7 @@ def update_sbom(
             final = f.read()
 
         # get image used by FROM as final
-        pattern = r"FROM\s+(\S+)\s+AS\s+final"
+        pattern = r"FROM\s+(\S+)\s+AS\s+build"
 
         # Search for the pattern in the input string
         match = re.search(pattern, final)
