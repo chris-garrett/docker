@@ -70,26 +70,42 @@ FROM build AS final
 # don't bother being gracful in dev images. 
 # can be overriden in final image if req. 
 ENV S6_KILL_GRACETIME=0
+ENV S6_KEEP_ENV=1
 # linux defaults. override in compose. 
 ENV PUID=1000
 ENV PGID=1000
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-▗▄▄▄       ▗▄▖      ▗▄▄▖    ▗▖ ▗▖    ▗▄▄▄▖    ▗▄▄▖ 
-▐▌  █     ▐▌ ▐▌    ▐▌       ▐▌▗▞▘    ▐▌       ▐▌ ▐▌
-▐▌  █     ▐▌ ▐▌    ▐▌       ▐▛▚▖     ▐▛▀▀▘    ▐▛▀▚▖
-▐▙▄▄▀     ▝▚▄▞▘    ▝▚▄▄▖    ▐▌ ▐▌    ▐▙▄▄▖    ▐▌ ▐▌
+:::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
+:+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
++:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
++#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
++#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
+#+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
+#########   ########   ########  ###    ### ########## ###    ### 
 EOF
-
 
 ENV PATH=/work/opt/venv/bin:$PATH
 ENV PYTHON_ENVIRONMENT=Development
+ENV VIRTUAL_ENV="/work/opt/venv"
+ENV VIRTUAL_ENV_PROMPT="(venv) "
+ENV PS1="(venv) \${debian_chroot:+(\$debian_chroot)}\\u@\\h:\\w\\\$ "
 
 LABEL org.opencontainers.image.python_version="3.12"
 LABEL org.opencontainers.image.uv_version="0.5.21"
 
+COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
+    :::::::::  :::   ::: ::::::::::: :::    :::  ::::::::  ::::    ::: 
+    :+:    :+: :+:   :+:     :+:     :+:    :+: :+:    :+: :+:+:   :+: 
+    +:+    +:+  +:+ +:+      +:+     +:+    +:+ +:+    +:+ :+:+:+  +:+ 
+    +#++:++#+    +#++:       +#+     +#++:++#++ +#+    +:+ +#+ +:+ +#+ 
+    +#+           +#+        +#+     +#+    +#+ +#+    +#+ +#+  +#+#+# 
+    #+#           #+#        #+#     #+#    #+# #+#    #+# #+#   #+#+# 
+    ###           ###        ###     ###    ###  ########  ###    #### 
+EOF
 
-RUN set -eux; \    
+
+RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work/app

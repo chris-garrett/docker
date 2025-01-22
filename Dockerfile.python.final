@@ -1,5 +1,18 @@
 ENV PATH=/work/opt/venv/bin:$$PATH
 ENV PYTHON_ENVIRONMENT=Development
+ENV VIRTUAL_ENV="/work/opt/venv"
+ENV VIRTUAL_ENV_PROMPT="(venv) "
+ENV PS1="(venv) \$${debian_chroot:+(\$$debian_chroot)}\\u@\\h:\\w\\\$$ "
 
 LABEL org.opencontainers.image.python_version="$PYTHON_VERSION"
 LABEL org.opencontainers.image.uv_version="$UV_VERSION"
+
+COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
+    :::::::::  :::   ::: ::::::::::: :::    :::  ::::::::  ::::    ::: 
+    :+:    :+: :+:   :+:     :+:     :+:    :+: :+:    :+: :+:+:   :+: 
+    +:+    +:+  +:+ +:+      +:+     +:+    +:+ +:+    +:+ :+:+:+  +:+ 
+    +#++:++#+    +#++:       +#+     +#++:++#++ +#+    +:+ +#+ +:+ +#+ 
+    +#+           +#+        +#+     +#+    +#+ +#+    +#+ +#+  +#+#+# 
+    #+#           #+#        #+#     #+#    #+# #+#    #+# #+#   #+#+# 
+    ###           ###        ###     ###    ###  ########  ###    #### 
+EOF
