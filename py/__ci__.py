@@ -443,7 +443,6 @@ def update_readme(ctx: TaskContext, name: str):
             r"org\.opencontainers\.image\.(.*)_version=\"(.*)\"", re.MULTILINE
         )
         found = rx.findall(content)
-        print("found", found)
         if not found:
             ctx.log.error(f"No versions found in Dockerfile.{name}")
             return 1

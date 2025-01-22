@@ -74,25 +74,37 @@ FROM build AS final
 # don't bother being gracful in dev images. 
 # can be overriden in final image if req. 
 ENV S6_KILL_GRACETIME=0
+ENV S6_KEEP_ENV=1
 # linux defaults. override in compose. 
 ENV PUID=1000
 ENV PGID=1000
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-▗▄▄▄       ▗▄▖      ▗▄▄▖    ▗▖ ▗▖    ▗▄▄▄▖    ▗▄▄▖ 
-▐▌  █     ▐▌ ▐▌    ▐▌       ▐▌▗▞▘    ▐▌       ▐▌ ▐▌
-▐▌  █     ▐▌ ▐▌    ▐▌       ▐▛▚▖     ▐▛▀▀▘    ▐▛▀▚▖
-▐▙▄▄▀     ▝▚▄▞▘    ▝▚▄▄▖    ▐▌ ▐▌    ▐▙▄▄▖    ▐▌ ▐▌
+:::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
+:+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
++:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
++#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
++#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
+#+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
+#########   ########   ########  ###    ### ########## ###    ### 
 EOF
-
 
 ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 
 LABEL org.opencontainers.image.rust_version="1.84.0"
 
+COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
+    :::::::::  :::    :::  :::::::: ::::::::::: 
+    :+:    :+: :+:    :+: :+:    :+:    :+:     
+    +:+    +:+ +:+    +:+ +:+           +:+     
+    +#++:++#:  +#+    +:+ +#++:++#++    +#+     
+    +#+    +#+ +#+    +#+        +#+    +#+     
+    #+#    #+# #+#    #+# #+#    #+#    #+#     
+    ###    ###  ########   ########     ###   
+EOF
 
-RUN set -eux; \    
+RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work/app

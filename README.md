@@ -10,32 +10,34 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 ## Versions
 
-### Python 25.5.0
+### Python 25.6.0
 
-`docker pull ghcr.io/chris-garrett/python:25.5.0`
+```docker pull ghcr.io/chris-garrett/python:25.6.0```
 
-- Dockerize: **0.7.0**
-- Python: **3.12**
-- Uv: **0.5.21**
-- Watchexec: **2.1.2**
+* Dockerize: **0.7.0**
+* Python: **3.12**
+* Uv: **0.5.21**
+* Watchexec: **2.1.2**
 
-### Rust 25.2.0
+### Rust 25.3.0
 
-`docker pull ghcr.io/chris-garrett/rust:25.2.0`
+```docker pull ghcr.io/chris-garrett/rust:25.3.0```
 
-- Dockerize: **0.7.0**
-- Rust: **1.84.0**
-- Watchexec: **2.1.2**
+* Dockerize: **0.7.0**
+* Rust: **1.84.0**
+* Watchexec: **2.1.2**
 
-## Node 25.3.0
 
-`docker pull ghcr.io/chris-garrett/node:25.3.0`
+## Node 25.4.0
 
-- Bun: **1.1.45**
-- Dockerize: **0.7.0**
-- Fnm: **1.38.1**
-- Node: **20.16.0**
-- Watchexec: **2.1.2**
+```docker pull ghcr.io/chris-garrett/node:25.4.0```
+
+* Bun: **1.1.45**
+* Dockerize: **0.7.0**
+* Fnm: **1.38.1**
+* Node: **20.16.0**
+* Watchexec: **2.1.2**
+
 
 ## Examples
 
@@ -81,3 +83,4 @@ There are improvements that can be made on image size.
 - https://docs.linuxserver.io/general/running-our-containers/#base-images
 - https://github.com/jlesage/docker-baseimage
 - https://github.com/sudo-bmitch/docker-base
+- https://patorjk.com/software/taag/#p=display&h=1&v=1&f=Alligator2&t=PYTHON%0ARUST%0ANODE%0A.NET
