@@ -50,10 +50,16 @@ Bring up stack
 ./task ex:restart ex:log
 ```
 
+Visit the api endpoints: 
+* http://py.fbi.com - Python FastApi example
+* http://rust.fbi.com - Rust Api example (TODO)
+* http://node.fbi.com - Node Frontend example (TODO)
+* http://cs.fbi.com - .Net Api example (TODO)
+
 Bring it down
 
 ```
-./task ex:dow
+./task ex:down
 ```
 
 #### Images
