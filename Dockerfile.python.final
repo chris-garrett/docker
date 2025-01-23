@@ -2,6 +2,9 @@ ENV PATH=/work/opt/venv/bin:$$PATH
 ENV PYTHON_ENVIRONMENT=Development
 ENV VIRTUAL_ENV="/work/opt/venv"
 ENV VIRTUAL_ENV_PROMPT="(venv) "
+ENV UV_LINK_MODE=copy
+ENV UV_PROJECT_ENVIRONMENT=/work/opt/venv
+
 ENV PS1="(venv) \$${debian_chroot:+(\$$debian_chroot)}\\u@\\h:\\w\\\$$ "
 
 LABEL org.opencontainers.image.python_version="$PYTHON_VERSION"
