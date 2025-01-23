@@ -20,42 +20,28 @@ services:
     image: ghcr.io/chris-garrett/python:latest
     command: |
       dockerize
-        -wait tcp://postgres:5432
+        -wait tcp://o2:5080
         sh -c '
+          # used these initial cmds to bootstrap the app. 
           # uv init --app --name pyapp .
           # uv add fastapi --extra standard
+
+          uv sync 
           uv run fastapi dev --host 0.0.0.0
         '
     ports:
-      - 7030:8000
+      - 8030:8000
     environment:
-      - UV_LINK_MODE=copy
       - O2_TOKEN=ZG9ja2VyQGZiaS5jb206VTdGZmttQjFaY2dHb2FuOA==
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
     volumes:
       - ./py:/work/app
-      # not working with uv.
-      # - ../.local/cache/venv:/work/app/.venv
-
+      # package cache
+      - uv_data:/root/.cache/uv
     labels:
-      caddy_0: http://py.fbi.com
-      caddy_0.reverse_proxy: "{{upstreams 8000}}"
-    restart: unless-stopped
-
-  postgres:
-    profiles: ["all", "postgres"]
-    image: postgis/postgis:16-3.4-alpine
-    ports:
-      - 7090:5432
-    command:
-      - -c
-      - wal_level=logical
-    environment:
-      - POSTGRES_DB=docker
-      - POSTGRES_PASSWORD=U7FfkmB1ZcgGoan8
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      caddy: http://py.fbi.com
+      caddy.reverse_proxy: "{{upstreams 8000}}"
     restart: unless-stopped
 
   o2:
@@ -66,8 +52,8 @@ services:
       ZO_ROOT_USER_PASSWORD: U7FfkmB1ZcgGoan8
       RUST_LOG: warn
     ports:
-      - "7095:5080" # http
-      - "7096:5081" # grpc
+      - "8095:5080" # http
+      - "8096:5081" # grpc
     volumes:
       - o2_data:/data
     labels:
@@ -77,6 +63,5 @@ services:
 
 volumes:
   caddy_data: {}
-  postgres_data: {}
   o2_data: {}
-  py_data: {}
+  uv_data: {}
