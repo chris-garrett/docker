@@ -2,6 +2,9 @@
 # https://github.com/chris-garrett/python-task #
 ################################################
 #
+# Dec 14 2024
+# * fix: strip quotes from values in .env files
+#
 # Jul 30 2024
 # * fix: regression in expanding variables
 # * feat: added -q / --quiet option to disable logging. useful for capturing output.
@@ -120,7 +123,13 @@ def load_env(filename=".env", expand_vars=True):
 
             # dont set null values
             if v is not None:
-                env[k] = v.strip()
+                v = v.strip()
+                # Strip quotes if they exist at both ends
+                if (v.startswith('"') and v.endswith('"')) or (
+                    v.startswith("'") and v.endswith("'")
+                ):
+                    v = v[1:-1]
+                env[k] = v
 
     if expand_vars:
         # expand any env vars
