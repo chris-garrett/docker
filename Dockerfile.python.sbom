@@ -82,7 +82,7 @@ ii  gcc                       4:12.2.0-3                     amd64        GNU C 
 ii  gcc-12                    12.2.0-14                      amd64        GNU C compiler
 ii  gcc-12-base:amd64         12.2.0-14                      amd64        GCC, the GNU Compiler Collection (base package)
 ii  git                       1:2.39.5-0+deb12u1             amd64        fast, scalable, distributed revision control system
-ii  git-lfs                   3.3.0-1+b5                     amd64        Git Large File Support
+ii  git-lfs                   3.3.0-1+deb12u1                amd64        Git Large File Support
 ii  git-man                   1:2.39.5-0+deb12u1             all          fast, scalable, distributed revision control system (manual pages)
 ii  gnupg                     2.2.40-1.1                     all          GNU privacy guard - a free PGP replacement
 ii  gnupg-l10n                2.2.40-1.1                     all          GNU privacy guard - localization files
