@@ -48,6 +48,16 @@ RUN set -eux; \
     curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
+# add static curl
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else\
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.11.1/curl-linux-${ARCH}-glibc-8.11.1.tar.xz; \
+    tar -C /work/opt/bin -xf /tmp/curl.tgz
+
 # install python via miniconda
 ENV PATH=/work/opt/venv/bin:$PATH
 ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
@@ -71,7 +81,7 @@ RUN set -eux; \
     else \
     ARCHIVE="bun-linux-x64"; \
     fi; \
-    curl -o /tmp/bun.zip -LsSf "https://github.com/oven-sh/bun/releases/download/bun-v1.1.45/${ARCHIVE}.zip"; \
+    curl -o /tmp/bun.zip -LsSf "https://github.com/oven-sh/bun/releases/download/bun-v1.2.0/${ARCHIVE}.zip"; \
     unzip -d /tmp /tmp/bun.zip; \
     mv /tmp/${ARCHIVE}/bun /work/opt/bin/bun;
 
@@ -88,13 +98,13 @@ ENV PUID=1000
 ENV PGID=1000
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-:::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
-:+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
-+:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
-+#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
-+#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
-#+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
-#########   ########   ########  ###    ### ########## ###    ### 
+    :::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
+    :+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
+    +:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
+    +#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
+    +#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
+    #+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
+    #########   ########   ########  ###    ### ########## ###    ### 
 EOF
 
 #ENV PATH=/work/opt/venv/bin:$PATH
@@ -107,7 +117,7 @@ RUN set -eux; \
 
 LABEL org.opencontainers.image.node_version="20.16.0"
 LABEL org.opencontainers.image.fnm_version="1.38.1"
-LABEL org.opencontainers.image.bun_version="1.1.45"
+LABEL org.opencontainers.image.bun_version="1.2.0"
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
     ::::    :::  ::::::::  :::::::::  :::::::::: 

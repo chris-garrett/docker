@@ -48,6 +48,16 @@ RUN set -eux; \
     curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v$DOCKERIZE_VERSION/dockerize-linux-$${TARGETARCH}-v$DOCKERIZE_VERSION.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
+# add static curl
+RUN set -eux; \
+    if [ "$$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else\
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/${CURL_VERSION}/curl-linux-$${ARCH}-glibc-${CURL_VERSION}.tar.xz; \
+    tar -C /work/opt/bin -xf /tmp/curl.tgz
+
 $BUILD_TEMPLATE
 
 
@@ -62,13 +72,13 @@ ENV PUID=1000
 ENV PGID=1000
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-:::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
-:+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
-+:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
-+#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
-+#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
-#+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
-#########   ########   ########  ###    ### ########## ###    ### 
+    :::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
+    :+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
+    +:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
+    +#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
+    +#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
+    #+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
+    #########   ########   ########  ###    ### ########## ###    ### 
 EOF
 
 $FINAL_TEMPLATE

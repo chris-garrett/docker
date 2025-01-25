@@ -27,11 +27,12 @@ Kitchen sink developer images. These are intended for use with docker compose.
 * Rust: **1.84.0**
 * Watchexec: **2.1.2**
 
-### Node 25.5.0
+
+## Node 25.5.0
 
 ```docker pull ghcr.io/chris-garrett/node:25.5.0```
 
-* Bun: **1.1.45**
+* Bun: **1.2.0**
 * Dockerize: **0.7.0**
 * Fnm: **1.38.1**
 * Node: **20.16.0**
@@ -48,11 +49,12 @@ Bring up stack
 ./task ex:restart ex:log
 ```
 
-Visit the api endpoints: 
-* http://py.fbi.com - Python FastApi example
-* http://rust.fbi.com - Rust Api example (TODO)
-* http://node.fbi.com - Node Frontend example (TODO)
-* http://cs.fbi.com - .Net Api example (TODO)
+Visit the api endpoints:
+
+- http://py.fbi.com - Python FastApi example
+- http://rust.fbi.com - Rust Api example (TODO)
+- http://node.fbi.com - Node Frontend example (TODO)
+- http://cs.fbi.com - .Net Api example (TODO)
 
 Bring it down
 
@@ -88,4 +90,6 @@ There are improvements that can be made on image size.
 - https://docs.linuxserver.io/general/running-our-containers/#base-images
 - https://github.com/jlesage/docker-baseimage
 - https://github.com/sudo-bmitch/docker-base
-- https://patorjk.com/software/taag/#p=display&h=1&v=1&f=Alligator2&t=PYTHON%0ARUST%0ANODE%0A.NET
+- https://patorjk.com/software/taag
+  - Note: LinuxServer.io requests that you replace their brand banner.
+  - I used Font: Alligator2
