@@ -48,6 +48,16 @@ RUN set -eux; \
     curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
+# add static curl
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else\
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.11.1/curl-linux-${ARCH}-glibc-8.11.1.tar.xz; \
+    tar -C /work/opt/bin -xf /tmp/curl.tgz
+
 # install python via miniconda
 ENV PATH=/work/opt/venv/bin:$PATH
 ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
@@ -80,13 +90,13 @@ ENV PUID=1000
 ENV PGID=1000
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-:::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
-:+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
-+:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
-+#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
-+#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
-#+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
-#########   ########   ########  ###    ### ########## ###    ### 
+    :::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
+    :+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
+    +:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
+    +#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
+    +#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
+    #+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
+    #########   ########   ########  ###    ### ########## ###    ### 
 EOF
 
 ENV RUSTUP_HOME=/work/opt/rustup
