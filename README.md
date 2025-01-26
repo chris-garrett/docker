@@ -12,32 +12,30 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 ### Python 25.8.0
 
-```docker pull ghcr.io/chris-garrett/python:25.8.0```
+`docker pull ghcr.io/chris-garrett/python:25.8.0`
 
-* Dockerize: **0.7.0**
-* Python: **3.12**
-* Uv: **0.5.21**
-* Watchexec: **2.1.2**
+- Dockerize: **0.7.0**
+- Python: **3.12**
+- Uv: **0.5.21**
+- Watchexec: **2.1.2**
 
 ### Rust 25.4.0
 
-```docker pull ghcr.io/chris-garrett/rust:25.4.0```
+`docker pull ghcr.io/chris-garrett/rust:25.4.0`
 
-* Dockerize: **0.7.0**
-* Rust: **1.84.0**
-* Watchexec: **2.1.2**
+- Dockerize: **0.7.0**
+- Rust: **1.84.0**
+- Watchexec: **2.1.2**
 
+### Node 25.5.0
 
-## Node 25.5.0
+`docker pull ghcr.io/chris-garrett/node:25.5.0`
 
-```docker pull ghcr.io/chris-garrett/node:25.5.0```
-
-* Bun: **1.2.0**
-* Dockerize: **0.7.0**
-* Fnm: **1.38.1**
-* Node: **20.16.0**
-* Watchexec: **2.1.2**
-
+- Bun: **1.2.0**
+- Dockerize: **0.7.0**
+- Fnm: **1.38.1**
+- Node: **20.16.0**
+- Watchexec: **2.1.2**
 
 ## Examples
 

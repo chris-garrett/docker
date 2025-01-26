@@ -4,6 +4,7 @@ ENV VIRTUAL_ENV="/work/opt/venv"
 ENV VIRTUAL_ENV_PROMPT="(venv) "
 ENV UV_LINK_MODE=copy
 ENV UV_PROJECT_ENVIRONMENT=/work/opt/venv
+ENV PYTHONDONTWRITEBYTECODE=1
 
 ENV PS1="(venv) \$${debian_chroot:+(\$$debian_chroot)}\\u@\\h:\\w\\\$$ "
 
