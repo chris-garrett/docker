@@ -2,11 +2,11 @@
 
 ## base image digest
 
-ghcr.io/linuxserver/baseimage-debian@sha256:f191d49db60916800aff21621d6473d86bcee7b81f159f1086ebe9b5380331fb
+ghcr.io/linuxserver/baseimage-debian@sha256:5a1dae0e87095c88adbdc7f3cc018e2119f474f35e46a2bb6d3635750fb6add5
 
 ## Package Versions
 
-build_version=Linuxserver.io version:- 85a6aea0-ls49 Build-date:- 2025-01-31T07:58:12+00:00
+build_version=Linuxserver.io version:- d019689f-ls50 Build-date:- 2025-02-14T07:59:28+00:00
 org.opencontainers.image.dockerize_version=0.7.0
 org.opencontainers.image.rust_version=1.84.0
 org.opencontainers.image.watchexec_version=2.1.2
