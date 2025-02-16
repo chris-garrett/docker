@@ -3,7 +3,14 @@ ENV PATH=/work/opt/venv/bin:$$PATH
 ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
 
 # install fnm/node
-RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
+RUN cat <<EOF > /tmp/fnm-init.sh
+#!/bin/bash
+source ~/.fnmrc
+/work/opt/bin/fnm use ${NODE_VERSION} --install-if-missing
+npm install -g corepack@latest
+corepack enable
+EOF
+RUN --mount=target=/root/.cache/node,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     if [ "$$TARGETARCH" = "arm64" ]; then \
     ARCH="arm64"; \
@@ -12,9 +19,10 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     fi; \
     curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v${FNM_VERSION}/fnm-$${ARCH}.zip"; \
     unzip -d /work/opt/bin /tmp/fnm.zip; \
-    /work/opt/bin/fnm env >> /root/.bashrc; \
-    eval $$(/work/opt/bin/fnm env); \
-    /work/opt/bin/fnm use ${NODE_VERSION} --install-if-missing;
+    /work/opt/bin/fnm env >> /root/.fnmrc; \
+    echo "source ~/.fnmrc" >> /root/.bashrc; \
+    cat /tmp/fnm-init.sh; \
+    /bin/bash /tmp/fnm-init.sh;
 
 
 # install bun
