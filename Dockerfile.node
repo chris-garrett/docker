@@ -72,7 +72,6 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     fi; \
     curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v1.38.1/fnm-${ARCH}.zip"; \
     unzip -d /work/opt/bin /tmp/fnm.zip; \
-    mkdir -p /work/opt/fnm; \
     /work/opt/bin/fnm env >> /root/.bashrc; \
     eval $(/work/opt/bin/fnm env); \
     /work/opt/bin/fnm use 20.18.3 --install-if-missing;
@@ -88,6 +87,17 @@ RUN set -eux; \
     curl -o /tmp/bun.zip -LsSf "https://github.com/oven-sh/bun/releases/download/bun-v1.2.0/${ARCHIVE}.zip"; \
     unzip -d /tmp /tmp/bun.zip; \
     mv /tmp/${ARCHIVE}/bun /work/opt/bin/bun;
+
+
+# install deno
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else \
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/deno.zip -LsSf "https://github.com/denoland/deno/releases/download/v2.1.10/deno-${ARCH}-unknown-linux-gnu.zip"; \
+    unzip -d /work/opt/bin /tmp/deno.zip;
 
 
 
