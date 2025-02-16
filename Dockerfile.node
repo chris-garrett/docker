@@ -72,7 +72,11 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     fi; \
     curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v1.38.1/fnm-${ARCH}.zip"; \
     unzip -d /work/opt/bin /tmp/fnm.zip; \
-    mkdir -p /work/opt/fnm;
+    mkdir -p /work/opt/fnm; \
+    /work/opt/bin/fnm env >> /root/.bashrc; \
+    eval $(/work/opt/bin/fnm env); \
+    /work/opt/bin/fnm use 20.18.3 --install-if-missing;
+
 
 # install bun
 RUN set -eux; \
@@ -113,9 +117,9 @@ ENV NODE_ENV=development
 RUN set -eux; \
     fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm >> /home/sprout/.bashrc; \
     eval "`fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm`"; \
-    fnm use 20.16.0 --install-if-missing --corepack-enabled;
+    fnm use 20.18.3 --install-if-missing --corepack-enabled;
 
-LABEL org.opencontainers.image.node_version="20.16.0"
+LABEL org.opencontainers.image.node_version="20.18.3"
 LABEL org.opencontainers.image.fnm_version="1.38.1"
 LABEL org.opencontainers.image.bun_version="1.2.0"
 

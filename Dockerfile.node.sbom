@@ -10,7 +10,7 @@ build_version=Linuxserver.io version:- d019689f-ls50 Build-date:- 2025-02-14T07:
 org.opencontainers.image.bun_version=1.2.0
 org.opencontainers.image.dockerize_version=0.7.0
 org.opencontainers.image.fnm_version=1.38.1
-org.opencontainers.image.node_version=20.16.0
+org.opencontainers.image.node_version=20.18.3
 org.opencontainers.image.watchexec_version=2.1.2
 
 ## OS Versions

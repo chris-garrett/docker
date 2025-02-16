@@ -12,7 +12,11 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     fi; \
     curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v${FNM_VERSION}/fnm-$${ARCH}.zip"; \
     unzip -d /work/opt/bin /tmp/fnm.zip; \
-    mkdir -p /work/opt/fnm;
+    mkdir -p /work/opt/fnm; \
+    /work/opt/bin/fnm env >> /root/.bashrc; \
+    eval $$(/work/opt/bin/fnm env); \
+    /work/opt/bin/fnm use ${NODE_VERSION} --install-if-missing;
+
 
 # install bun
 RUN set -eux; \

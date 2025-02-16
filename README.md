@@ -34,7 +34,7 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Bun: **1.2.0**
 - Dockerize: **0.7.0**
 - Fnm: **1.38.1**
-- Node: **20.16.0**
+- Node: **20.18.3**
 - Watchexec: **2.1.2**
 
 ## Examples
