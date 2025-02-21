@@ -37,9 +37,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Node: **20.18.3**
 - Watchexec: **2.1.2**
 
-### Postgres 25.1.0
+### Postgres 25.2.0
 
-`docker pull ghcr.io/chris-garrett/postgres:25.1.0`
+`docker pull ghcr.io/chris-garrett/postgres:25.2.0`
 
 - Pgvector: **0.8.0**
 - Postgis: **16-3.5-alpine**
