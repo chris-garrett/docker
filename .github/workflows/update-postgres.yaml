@@ -1,0 +1,25 @@
+name: "Postgres: Update"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # run at 4 am for now
+    - cron: "0 10 * * *"
+
+concurrency:
+  group: postgres-update-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  update:
+    name: Update Dockerfile
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update dockerfile
+        uses: ./.github/actions/update-dockerfile
+        with:
+          service_name: postgres
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          ci_github_token: ${{ secrets.CI_GITHUB_TOKEN }}
