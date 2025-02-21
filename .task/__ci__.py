@@ -114,7 +114,9 @@ def get_version(ctx: TaskContext, service_name: str):
     )
 
 
-def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
+def generate_service_deprecated(
+    ctx: TaskContext, name: str, custom_templates: dict = {}
+):
     try:
         env = {
             **load_env(os.path.join(ctx.root_dir, "config.env")),
@@ -134,6 +136,61 @@ def generate_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
             common_content = f.read()
 
         final = Template(common_content).substitute(env)
+
+        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "w") as f:
+            f.write(final)
+
+        # get image used by FROM as final
+        pattern = r"FROM\s+(\S+)\s+AS"
+
+        # Search for the pattern in the input string
+        match = re.search(pattern, final)
+        if not match:
+            ctx.log.error(f"Error parsing Dockerfile for final image {name}")
+            return 1
+        base_image = match.group(1)
+        ret = ctx.exec("docker pull " + base_image)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error pulling base image {base_image}")
+            return ret.returncode
+        ret = ctx.exec(
+            "docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True
+        )
+        if ret.returncode != 0:
+            ctx.log.error(f"Error inspecting base image {base_image}")
+            return ret.returncode
+
+    except Exception as e:
+        ctx.log.error(f"Error generating service {name}: {e}")
+        return 1
+    return 0
+
+
+def generate_service(
+    ctx: TaskContext,
+    name: str,
+    templates: dict = None,
+):
+    try:
+        env = {
+            **load_env(os.path.join(ctx.root_dir, "config.env")),
+        }
+
+        templates = templates or {
+            "FINAL_TEMPLATE": f"Dockerfile.{name}.templ",
+        }
+        if "FINAL_TEMPLATE" not in templates:
+            raise ValueError("FINAL_TEMPLATE is required")
+
+        rest_templates = {k: v for k, v in templates.items() if k != "FINAL_TEMPLATE"}
+        for k, v in rest_templates.items():
+            with open(os.path.join(ctx.root_dir, v), "r") as f:
+                env[k] = Template(f.read()).substitute(env)
+
+        with open(os.path.join(ctx.root_dir, templates["FINAL_TEMPLATE"]), "r") as f:
+            final_template = f.read()
+
+        final = Template(final_template).substitute(env)
 
         with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "w") as f:
             f.write(final)
@@ -198,8 +255,11 @@ def update_sbom(
         tag = f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest"
         ret = ctx.exec(f"docker run --rm {tag} dpkg --list", capture=True)
         if ret.returncode != 0:
-            ctx.log.error(f"Error getting package list {base_image}")
-            return ret.returncode
+            # try alpine next
+            ret = ctx.exec(f"docker run --rm {tag} apk list -I", capture=True)
+            if ret.returncode != 0:
+                ctx.log.error(f"Error getting package list {base_image}")
+                return ret.returncode
         os_packages = ret.stdout
 
         v = get_version(ctx, name)
@@ -230,6 +290,28 @@ def update_sbom(
     except Exception as e:
         ctx.log.error(f"Error generating service {name}: {e}")
         return 1
+    return 0
+
+
+def update_service_deprecated(ctx: TaskContext, name: str, custom_templates: dict = {}):
+    ret = generate_service_deprecated(ctx, name, custom_templates)
+    if ret != 0:
+        return ret
+
+    # build single arch for speed. we are doing this to get the sbom to determin
+    # if we actually need to build all the things
+    ret = build_service(ctx, name, skip_ci=True)
+    if ret != 0:
+        return ret
+
+    ret = update_sbom(ctx, name)
+    if ret != 0:
+        return ret
+
+    ret = update_readme(ctx, name)
+    if ret != 0:
+        return ret
+
     return 0
 
 
@@ -427,8 +509,11 @@ def update_readme(ctx: TaskContext, name: str):
     with open("README.md", "r") as f:
         readme_content = f.read()
 
+    print("README", readme_content)
+
     start_title = f"### {name.capitalize()}"
     start_pos = readme_content.find(start_title)
+    print(f"search for title {start_title} at {start_pos}")
     if start_pos == -1:
         ctx.log.error(f"Error finding section {name}")
         return 1

@@ -351,7 +351,16 @@ def _find_task_files() -> List[str]:
     """
     Finds files that match naming convention
     """
-    return [f for f in glob.glob("**/__task__.py", recursive=True) if os.path.isfile(f)]
+    return [
+        f
+        for f in glob.glob("**/__task__.py", recursive=True, include_hidden=True)
+        if os.path.isfile(f)
+        and (
+            not f.startswith(".github")
+            or not f.startswith(".git")
+            or not f.startswith(".local")
+        )
+    ]
 
 
 def _build_system_distro(content: str) -> str:
@@ -489,6 +498,8 @@ def _process_tasks():
     logger.info("Processing tasks")
 
     task_files = _find_task_files()
+    for f in task_files:
+        logger.info(f"Found task file: {f}")
     task_defs = _load_task_definitions(task_files)
     # { 'task_name': TaskDefinition }
     tasks: typing.Dict[str, TaskDefinition] = {}
