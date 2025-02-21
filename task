@@ -6,7 +6,7 @@ export LOCAL_DIR=$(pwd)/.local
 export LOCAL_CACHE_DIR=${LOCAL_DIR}/cache
 export LOCAL_BIN_DIR=${LOCAL_DIR}/bin
 export LOG_LEVEL=DEBUG
-export PYTHONPATH=$(pwd)/py:${PYTHONPATH}
+export PYTHONPATH=$(pwd)/.task:${PYTHONPATH}
 export PYTHONDONTWRITEBYTECODE=1
 export PATH=$LOCAL_BIN_DIR:$PATH
 
