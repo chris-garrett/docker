@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:cea457a4e5aa634d689c939fc4700a2fcd80a727595fdd57dd257b20e696e44b
+postgis/postgis@sha256:710fe58a2dd66b23a32a30e231cd859e11dd9055cd103026c18b9b1b69a35692
 
 ## Package Versions
 
@@ -11,8 +11,8 @@ org.opencontainers.image.postgis_version=16-3.5-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20250221.071615 noarch {.postgis-rundeps} () [installed]
-.postgresql-rundeps-20250214.192558 noarch {.postgresql-rundeps} () [installed]
+.postgis-rundeps-20250224.070912 noarch {.postgis-rundeps} () [installed]
+.postgresql-rundeps-20250222.003254 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.6.8-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
 alpine-baselayout-data-3.6.8-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
