@@ -2,11 +2,11 @@
 
 ## base image digest
 
-ghcr.io/linuxserver/baseimage-debian@sha256:d41840dc4b9ba97bf0f1a300e2947fb07bde87000e1c159e4985ee3cda7feb53
+ghcr.io/linuxserver/baseimage-debian@sha256:a8bd9d9c4129d4e25512e3b19a4250e059b7e9c28bc3f0724c4414c4987863d2
 
 ## Package Versions
 
-build_version=Linuxserver.io version:- 5c9f4c25-ls51 Build-date:- 2025-02-21T07:57:30+00:00
+build_version=Linuxserver.io version:- 4008836f-ls52 Build-date:- 2025-02-28T07:58:33+00:00
 org.opencontainers.image.dockerize_version=0.7.0
 org.opencontainers.image.python_version=3.12
 org.opencontainers.image.uv_version=0.5.21
