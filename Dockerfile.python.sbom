@@ -44,7 +44,7 @@ Desired=Unknown/Install/Remove/Purge/Hold
 ii  adduser                   3.134                          all          add and remove users and groups
 ii  apt                       2.6.1                          amd64        commandline package manager
 ii  apt-utils                 2.6.1                          amd64        package management related utility programs
-ii  base-files                12.4+deb12u9                   amd64        Debian base system miscellaneous files
+ii  base-files                12.4+deb12u10                  amd64        Debian base system miscellaneous files
 ii  base-passwd               3.6.1                          amd64        Debian base system master password and group files
 ii  bash                      5.2.15-2+b7                    amd64        GNU Bourne Again SHell
 ii  binutils                  2.40-2                         amd64        GNU assembler, linker and binary utilities
@@ -61,7 +61,7 @@ ii  cpp                       4:12.2.0-3                     amd64        GNU C 
 ii  cpp-12                    12.2.0-14                      amd64        GNU C preprocessor
 ii  cron                      3.0pl1-162                     amd64        process scheduling daemon
 ii  cron-daemon-common        3.0pl1-162                     all          process scheduling daemon's configuration files
-ii  curl                      7.88.1-10+deb12u8              amd64        command line tool for transferring data with URL syntax
+ii  curl                      7.88.1-10+deb12u12             amd64        command line tool for transferring data with URL syntax
 ii  dash                      0.5.12-2                       amd64        POSIX-compliant shell
 ii  debconf                   1.5.82                         all          Debian configuration management system
 ii  debian-archive-keyring    2023.3+deb12u1                 all          GnuPG archive keys of the Debian archive
@@ -116,11 +116,11 @@ ii  libbpf1:amd64             1:1.1.0-1                      amd64        eBPF h
 ii  libbrotli1:amd64          1.0.9-2+b6                     amd64        library implementing brotli encoder and decoder (shared libraries)
 ii  libbsd0:amd64             0.11.7-2                       amd64        utility functions from BSD systems - shared library
 ii  libbz2-1.0:amd64          1.0.8-5+b1                     amd64        high-quality block-sorting file compressor library - runtime
-ii  libc-bin                  2.36-9+deb12u9                 amd64        GNU C Library: Binaries
-ii  libc-dev-bin              2.36-9+deb12u9                 amd64        GNU C Library: Development binaries
-ii  libc-l10n                 2.36-9+deb12u9                 all          GNU C Library: localization files
-ii  libc6:amd64               2.36-9+deb12u9                 amd64        GNU C Library: Shared libraries
-ii  libc6-dev:amd64           2.36-9+deb12u9                 amd64        GNU C Library: Development Libraries and Header Files
+ii  libc-bin                  2.36-9+deb12u10                amd64        GNU C Library: Binaries
+ii  libc-dev-bin              2.36-9+deb12u10                amd64        GNU C Library: Development binaries
+ii  libc-l10n                 2.36-9+deb12u10                all          GNU C Library: localization files
+ii  libc6:amd64               2.36-9+deb12u10                amd64        GNU C Library: Shared libraries
+ii  libc6-dev:amd64           2.36-9+deb12u10                amd64        GNU C Library: Development Libraries and Header Files
 ii  libcap-ng0:amd64          0.8.3-1+b3                     amd64        alternate POSIX capabilities library
 ii  libcap2:amd64             1:2.66-4                       amd64        POSIX 1003.1e capabilities (library)
 ii  libcap2-bin               1:2.66-4                       amd64        POSIX 1003.1e capabilities (utilities)
@@ -130,8 +130,8 @@ ii  libcrypt-dev:amd64        1:4.4.33-2                     amd64        libcry
 ii  libcrypt1:amd64           1:4.4.33-2                     amd64        libcrypt shared library
 ii  libctf-nobfd0:amd64       2.40-2                         amd64        Compact C Type Format library (runtime, no BFD dependency)
 ii  libctf0:amd64             2.40-2                         amd64        Compact C Type Format library (runtime, BFD dependency)
-ii  libcurl3-gnutls:amd64     7.88.1-10+deb12u8              amd64        easy-to-use client-side URL transfer library (GnuTLS flavour)
-ii  libcurl4:amd64            7.88.1-10+deb12u8              amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
+ii  libcurl3-gnutls:amd64     7.88.1-10+deb12u12             amd64        easy-to-use client-side URL transfer library (GnuTLS flavour)
+ii  libcurl4:amd64            7.88.1-10+deb12u12             amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
 ii  libdb5.3:amd64            5.3.28+dfsg2-1                 amd64        Berkeley v5.3 Database Libraries [runtime]
 ii  libdebconfclient0:amd64   0.270                          amd64        Debian Configuration Management System (C-implementation library)
 ii  libdpkg-perl              1.21.22                        all          Dpkg perl modules
@@ -216,7 +216,7 @@ ii  libssh2-1:amd64           1.10.0-3+b1                    amd64        SSH2 c
 ii  libssl3:amd64             3.0.15-1~deb12u1               amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-12-dev:amd64    12.2.0-14                      amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64          12.2.0-14                      amd64        GNU Standard C++ Library v3
-ii  libsystemd0:amd64         252.33-1~deb12u1               amd64        systemd utility library
+ii  libsystemd0:amd64         252.36-1~deb12u1               amd64        systemd utility library
 ii  libtasn1-6:amd64          4.19.0-2+deb12u1               amd64        Manage ASN.1 structures (runtime)
 ii  libtinfo6:amd64           6.4-4                          amd64        shared low-level terminfo library for terminal handling
 ii  libtirpc-common           1.3.3+ds-1                     all          transport-independent RPC library - common files
@@ -224,15 +224,15 @@ ii  libtirpc-dev:amd64        1.3.3+ds-1                     amd64        transp
 ii  libtirpc3:amd64           1.3.3+ds-1                     amd64        transport-independent RPC library
 ii  libtsan2:amd64            12.2.0-14                      amd64        ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
 ii  libubsan1:amd64           12.2.0-14                      amd64        UBSan -- undefined behaviour sanitizer (runtime)
-ii  libudev1:amd64            252.33-1~deb12u1               amd64        libudev shared library
+ii  libudev1:amd64            252.36-1~deb12u1               amd64        libudev shared library
 ii  libunbound8:amd64         1.17.1-2+deb12u2               amd64        library implementing DNS resolution and validation
 ii  libunistring2:amd64       1.0-2                          amd64        Unicode string library for C
 ii  libuuid1:amd64            2.38.1-5+deb12u3               amd64        Universally Unique ID library
 ii  libxtables12:amd64        1.8.9-2                        amd64        netfilter xtables library
 ii  libxxhash0:amd64          0.8.1-1                        amd64        shared library for xxhash
 ii  libzstd1:amd64            1.5.4+dfsg2-5                  amd64        fast lossless compression algorithm
-ii  linux-libc-dev:amd64      6.1.128-1                      amd64        Linux support headers for userspace development
-ii  locales                   2.36-9+deb12u9                 all          GNU C Library: National Language (locale) data [support]
+ii  linux-libc-dev:amd64      6.1.129-1                      amd64        Linux support headers for userspace development
+ii  locales                   2.36-9+deb12u10                all          GNU C Library: National Language (locale) data [support]
 ii  login                     1:4.13+dfsg1-1+b1              amd64        system login tools
 ii  logsave                   1.47.0-2                       amd64        save the output of a command in a log file
 ii  make                      4.3-4.1                        amd64        utility for directing compilation
@@ -259,13 +259,13 @@ ii  sed                       4.9-1                          amd64        GNU st
 ii  sensible-utils            0.0.17+nmu1                    all          Utilities for sensible alternative selection
 ii  sysvinit-utils            3.06-4                         amd64        System-V-like utilities
 ii  tar                       1.34+dfsg-1.2+deb12u1          amd64        GNU version of the tar archiving utility
-ii  tzdata                    2024b-0+deb12u1                all          time zone and daylight-saving time data
+ii  tzdata                    2025a-0+deb12u1                all          time zone and daylight-saving time data
 ii  unzip                     6.0-28                         amd64        De-archiver for .zip files
 ii  usr-is-merged             37~deb12u1                     all          Transitional package to assert a merged-/usr system
 ii  util-linux                2.38.1-5+deb12u3               amd64        miscellaneous system utilities
 ii  util-linux-extra          2.38.1-5+deb12u3               amd64        interactive login tools
-ii  vim                       2:9.0.1378-2                   amd64        Vi IMproved - enhanced vi editor
-ii  vim-common                2:9.0.1378-2                   all          Vi IMproved - Common files
-ii  vim-runtime               2:9.0.1378-2                   all          Vi IMproved - Runtime files
+ii  vim                       2:9.0.1378-2+deb12u2           amd64        Vi IMproved - enhanced vi editor
+ii  vim-common                2:9.0.1378-2+deb12u2           all          Vi IMproved - Common files
+ii  vim-runtime               2:9.0.1378-2+deb12u2           all          Vi IMproved - Runtime files
 ii  xz-utils                  5.4.1-0.2                      amd64        XZ-format compression utilities
 ii  zlib1g:amd64              1:1.2.13.dfsg-1                amd64        compression library - runtime
