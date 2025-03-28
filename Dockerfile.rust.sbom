@@ -2,11 +2,11 @@
 
 ## base image digest
 
-ghcr.io/linuxserver/baseimage-debian@sha256:42e506701ab380ea6a543b71dcbf8a3398335b2bfc3ccaf4ac1b020d66dfeb4c
+ghcr.io/linuxserver/baseimage-debian@sha256:7ef8d9b895013077c1d6ee661d1ec8aa9d1bc141e77630eb3efbac989f17a407
 
 ## Package Versions
 
-build_version=Linuxserver.io version:- f1a32f0b-ls53 Build-date:- 2025-03-21T07:57:44+00:00
+build_version=Linuxserver.io version:- ef7f871b-ls54 Build-date:- 2025-03-28T07:57:22+00:00
 org.opencontainers.image.dockerize_version=0.7.0
 org.opencontainers.image.rust_version=1.84.0
 org.opencontainers.image.watchexec_version=2.1.2
@@ -258,7 +258,7 @@ ii  sed                       4.9-1                          amd64        GNU st
 ii  sensible-utils            0.0.17+nmu1                    all          Utilities for sensible alternative selection
 ii  sysvinit-utils            3.06-4                         amd64        System-V-like utilities
 ii  tar                       1.34+dfsg-1.2+deb12u1          amd64        GNU version of the tar archiving utility
-ii  tzdata                    2025a-0+deb12u1                all          time zone and daylight-saving time data
+ii  tzdata                    2025b-0+deb12u1                all          time zone and daylight-saving time data
 ii  unzip                     6.0-28                         amd64        De-archiver for .zip files
 ii  usr-is-merged             37~deb12u1                     all          Transitional package to assert a merged-/usr system
 ii  util-linux                2.38.1-5+deb12u3               amd64        miscellaneous system utilities
