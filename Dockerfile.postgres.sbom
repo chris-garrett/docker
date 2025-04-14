@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:1554449a0f6270fb332b38ab2c02350e16ac74c7ab425abb0103c42af1105798
+postgis/postgis@sha256:5a7093d272e395957e95a79a2e8514505451a3f1e8eaaf328126852201f4beed
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=16-3.5-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20250407.053414 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20250414.053451 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20250228.232938 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.6.8-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -28,7 +28,7 @@ brotli-libs-1.1.0-r2 x86_64 {brotli} (MIT) [installed]
 brunsli-libs-0.1-r1 x86_64 {brunsli} (MIT) [installed]
 busybox-1.37.0-r12 x86_64 {busybox} (GPL-2.0-only) [installed]
 busybox-binsh-1.37.0-r12 x86_64 {busybox} (GPL-2.0-only) [installed]
-c-ares-1.34.3-r0 x86_64 {c-ares} (MIT) [installed]
+c-ares-1.34.5-r0 x86_64 {c-ares} (MIT) [installed]
 ca-certificates-20241121-r1 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
 ca-certificates-bundle-20241121-r1 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
 cairo-1.18.2-r1 x86_64 {cairo} (LGPL-2.1-or-later OR MPL-1.1) [installed]
@@ -37,7 +37,7 @@ freetype-2.13.3-r0 x86_64 {freetype} (FTL OR GPL-2.0-or-later) [installed]
 gdal-3.10.2-r0 x86_64 {gdal} (MIT) [installed]
 gdbm-1.24-r0 x86_64 {gdbm} (GPL-3.0-or-later) [installed]
 geos-3.13.0-r0 x86_64 {geos} (LGPL-2.1-or-later) [installed]
-giflib-5.2.2-r0 x86_64 {giflib} (MIT) [installed]
+giflib-5.2.2-r1 x86_64 {giflib} (MIT) [installed]
 gmp-6.3.0-r2 x86_64 {gmp} (LGPL-3.0-or-later OR GPL-2.0-or-later) [installed]
 gnu-libiconv-libs-1.17-r2 x86_64 {gnu-libiconv} (LGPL-2.1-or-later) [installed]
 icu-data-full-74.2-r0 x86_64 {icu} (ICU) [installed]
@@ -50,7 +50,7 @@ krb5-libs-1.21.3-r0 x86_64 {krb5} (MIT) [installed]
 lcms2-2.16-r0 x86_64 {lcms2} (MIT) [installed]
 lerc-4.0.0-r0 x86_64 {lerc} (Apache-2.0) [installed]
 libaec-1.1.3-r0 x86_64 {libaec} (BSD-2-Clause) [installed]
-libarchive-3.7.7-r0 x86_64 {libarchive} (BSD-2-Clause AND BSD-3-Clause AND Public-Domain) [installed]
+libarchive-3.7.9-r0 x86_64 {libarchive} (BSD-2-Clause AND BSD-3-Clause AND Public-Domain) [installed]
 libbsd-0.12.2-r0 x86_64 {libbsd} (BSD-3-Clause) [installed]
 libbz2-1.0.8-r6 x86_64 {bzip2} (bzip2-1.0.6) [installed]
 libcom_err-1.47.1-r1 x86_64 {e2fsprogs} (GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT) [installed]
