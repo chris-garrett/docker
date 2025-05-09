@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:2306da66fc2262f2e87f87f3ff1d2e2a6667e81fec899550131cb6e7f268ecee
+postgis/postgis@sha256:5e914def52f52d14724fbd53cf0965a91cf7bedf4e0b3bfff819d8121f376731
 
 ## Package Versions
 
@@ -11,8 +11,8 @@ org.opencontainers.image.postgis_version=16-3.5-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20250505.053458 noarch {.postgis-rundeps} () [installed]
-.postgresql-rundeps-20250228.232938 noarch {.postgresql-rundeps} () [installed]
+.postgis-rundeps-20250508.204510 noarch {.postgis-rundeps} () [installed]
+.postgresql-rundeps-20250508.191826 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.6.8-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
 alpine-baselayout-data-3.6.8-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -86,7 +86,7 @@ libspatialite-5.1.0-r3 x86_64 {libspatialite} (MPL-1.1) [installed]
 libssl3-3.3.3-r0 x86_64 {openssl} (Apache-2.0) [installed]
 libstdc++-14.2.0-r4 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
 libunistring-1.2-r0 x86_64 {libunistring} (GPL-2.0-or-later OR LGPL-3.0-or-later) [installed]
-libuuid-2.40.4-r0 x86_64 {util-linux} (BSD-3-Clause) [installed]
+libuuid-2.40.4-r1 x86_64 {util-linux} (BSD-3-Clause) [installed]
 libverto-0.3.2-r2 x86_64 {libverto} (MIT) [installed]
 libwebp-1.4.0-r0 x86_64 {libwebp} (BSD-3-Clause) [installed]
 libx11-1.8.10-r0 x86_64 {libx11} (X11) [installed]
@@ -96,7 +96,7 @@ libxdmcp-1.1.5-r1 x86_64 {libxdmcp} (MIT) [installed]
 libxext-1.3.6-r2 x86_64 {libxext} (MIT) [installed]
 libxml2-2.13.4-r5 x86_64 {libxml2} (MIT) [installed]
 libxrender-0.9.11-r5 x86_64 {libxrender} (MIT) [installed]
-libxslt-1.1.42-r1 x86_64 {libxslt} (X11) [installed]
+libxslt-1.1.42-r2 x86_64 {libxslt} (X11) [installed]
 llvm19-libs-19.1.4-r1 x86_64 {llvm19} (Apache-2.0) [installed]
 lz4-libs-1.10.0-r0 x86_64 {lz4} (BSD-2-Clause AND GPL-2.0-or-later) [installed]
 minizip-1.3.1-r0 x86_64 {minizip} (Zlib) [installed]
@@ -120,10 +120,10 @@ qhull-2020.2-r3 x86_64 {qhull} (custom) [installed]
 readline-8.2.13-r0 x86_64 {readline} (GPL-3.0-or-later) [installed]
 scanelf-1.3.8-r1 x86_64 {pax-utils} (GPL-2.0-only) [installed]
 sfcgal-2.0.0-r0 x86_64 {sfcgal} (LGPL-2.0-or-later) [installed]
-sqlite-libs-3.48.0-r1 x86_64 {sqlite} (blessing) [installed]
+sqlite-libs-3.48.0-r2 x86_64 {sqlite} (blessing) [installed]
 ssl_client-1.37.0-r12 x86_64 {busybox} (GPL-2.0-only) [installed]
 tiff-4.7.0-r0 x86_64 {tiff} (libtiff) [installed]
-tzdata-2025a-r0 x86_64 {tzdata} (Public-Domain) [installed]
+tzdata-2025b-r0 x86_64 {tzdata} (Public-Domain) [installed]
 unixodbc-2.3.12-r0 x86_64 {unixodbc} (LGPL-2.0-or-later) [installed]
 xerces-c-3.2.5-r0 x86_64 {xerces-c} (Apache-2.0) [installed]
 xz-libs-5.6.3-r1 x86_64 {xz} (GPL-2.0-or-later AND 0BSD AND Public-Domain AND LGPL-2.1-or-later) [installed]
