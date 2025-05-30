@@ -2,11 +2,11 @@
 
 ## base image digest
 
-ghcr.io/linuxserver/baseimage-debian@sha256:3b175522dcc43894977dbe85bb54be3859f91e0e31f3ea81ce535011fbcf7bb5
+ghcr.io/linuxserver/baseimage-debian@sha256:03b7350a315129b6cfa1083409a40097719d6f2488ee05abed33f8671cc1772e
 
 ## Package Versions
 
-build_version=Linuxserver.io version:- b508fb01-ls59 Build-date:- 2025-05-23T07:57:22+00:00
+build_version=Linuxserver.io version:- 8ecb07e6-ls60 Build-date:- 2025-05-30T07:57:38+00:00
 org.opencontainers.image.dockerize_version=0.7.0
 org.opencontainers.image.rust_version=1.84.0
 org.opencontainers.image.watchexec_version=2.1.2
@@ -215,7 +215,7 @@ ii  libssh2-1:amd64           1.10.0-3+b1                    amd64        SSH2 c
 ii  libssl3:amd64             3.0.16-1~deb12u1               amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-12-dev:amd64    12.2.0-14+deb12u1              amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64          12.2.0-14+deb12u1              amd64        GNU Standard C++ Library v3
-ii  libsystemd0:amd64         252.36-1~deb12u1               amd64        systemd utility library
+ii  libsystemd0:amd64         252.38-1~deb12u1               amd64        systemd utility library
 ii  libtasn1-6:amd64          4.19.0-2+deb12u1               amd64        Manage ASN.1 structures (runtime)
 ii  libtinfo6:amd64           6.4-4                          amd64        shared low-level terminfo library for terminal handling
 ii  libtirpc-common           1.3.3+ds-1                     all          transport-independent RPC library - common files
@@ -223,7 +223,7 @@ ii  libtirpc-dev:amd64        1.3.3+ds-1                     amd64        transp
 ii  libtirpc3:amd64           1.3.3+ds-1                     amd64        transport-independent RPC library
 ii  libtsan2:amd64            12.2.0-14+deb12u1              amd64        ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
 ii  libubsan1:amd64           12.2.0-14+deb12u1              amd64        UBSan -- undefined behaviour sanitizer (runtime)
-ii  libudev1:amd64            252.36-1~deb12u1               amd64        libudev shared library
+ii  libudev1:amd64            252.38-1~deb12u1               amd64        libudev shared library
 ii  libunbound8:amd64         1.17.1-2+deb12u2               amd64        library implementing DNS resolution and validation
 ii  libunistring2:amd64       1.0-2                          amd64        Unicode string library for C
 ii  libuuid1:amd64            2.38.1-5+deb12u3               amd64        Universally Unique ID library
