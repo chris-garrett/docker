@@ -54,7 +54,7 @@ ii  bsd-mailx                 8.1.2-0.20220412cvs-1          amd64        simple
 ii  bsdutils                  1:2.38.1-5+deb12u3             amd64        basic utilities from 4.4BSD-Lite
 ii  build-essential           12.9                           amd64        Informational list of build-essential packages
 ii  bzip2                     1.0.8-5+b1                     amd64        high-quality block-sorting file compressor - utilities
-ii  ca-certificates           20230311                       all          Common CA certificates
+ii  ca-certificates           20230311+deb12u1               all          Common CA certificates
 ii  catatonit                 0.1.7-1+b1                     amd64        init process for containers
 ii  coreutils                 9.1-1                          amd64        GNU core utilities
 ii  cpp                       4:12.2.0-3                     amd64        GNU C preprocessor (cpp)
