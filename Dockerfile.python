@@ -40,12 +40,12 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
-    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.2-${ARCH}-unknown-linux-gnu/watchexec
+    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.3.2/watchexec-2.3.2-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.3.2-${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.9.3/dockerize-linux-${TARGETARCH}-v0.9.3.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 # add static curl
@@ -55,7 +55,7 @@ RUN set -eux; \
     else\
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.11.1/curl-linux-${ARCH}-glibc-8.11.1.tar.xz; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.14.1/curl-linux-${ARCH}-glibc-8.14.1.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
 # install python via miniconda
@@ -68,7 +68,7 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/0.5.21/uv-${ARCH}-unknown-linux-gnu.tar.gz"; \
+    curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/0.7.13/uv-${ARCH}-unknown-linux-gnu.tar.gz"; \
     tar xf /tmp/uv.tgz -C /work/opt/bin --strip-components=1 uv-${ARCH}-unknown-linux-gnu/uv uv-${ARCH}-unknown-linux-gnu/uvx; \
     /work/opt/bin/uv venv /work/opt/venv --relocatable; \
     find /work/opt -type f -executable -exec file {} \; | grep "ELF" | cut -d: -f1 | xargs strip || true;
@@ -106,7 +106,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PS1="(venv) \${debian_chroot:+(\$debian_chroot)}\\u@\\h:\\w\\\$ "
 
 LABEL org.opencontainers.image.python_version="3.12"
-LABEL org.opencontainers.image.uv_version="0.5.21"
+LABEL org.opencontainers.image.uv_version="0.7.13"
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
     :::::::::  :::   ::: ::::::::::: :::    :::  ::::::::  ::::    ::: 
@@ -124,5 +124,5 @@ RUN set -eux; \
 
 WORKDIR /work/app
 
-LABEL org.opencontainers.image.watchexec_version="2.1.2"
-LABEL org.opencontainers.image.dockerize_version="0.7.0"
+LABEL org.opencontainers.image.watchexec_version="2.3.2"
+LABEL org.opencontainers.image.dockerize_version="0.9.3"

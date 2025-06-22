@@ -39,7 +39,7 @@ runs:
 
     - name: Setup env
       shell: bash
-      run: cat config.env >> $GITHUB_ENV
+      run: cat config.env | grep -v '^#' >> $GITHUB_ENV
 
     - name: Update Dockerfile
       shell: bash

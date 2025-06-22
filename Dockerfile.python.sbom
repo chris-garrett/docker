@@ -7,10 +7,10 @@ ghcr.io/linuxserver/baseimage-debian@sha256:0da6ea10da739bc217968a2766799cdc720b
 ## Package Versions
 
 build_version=Linuxserver.io version:- 7581351b-ls62 Build-date:- 2025-06-20T07:57:35+00:00
-org.opencontainers.image.dockerize_version=0.7.0
+org.opencontainers.image.dockerize_version=0.9.3
 org.opencontainers.image.python_version=3.12
-org.opencontainers.image.uv_version=0.5.21
-org.opencontainers.image.watchexec_version=2.1.2
+org.opencontainers.image.uv_version=0.7.13
+org.opencontainers.image.watchexec_version=2.3.2
 
 ## OS Versions
 

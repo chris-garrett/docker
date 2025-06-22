@@ -11,10 +11,10 @@ from __tasklib__ import TaskContext, load_env
 from __version__ import VersionBuilder, VersionIncrement
 
 git_env = {
-    "GIT_AUTHOR_EMAIL": "cibot@users.noreply.github.com",
-    "GIT_COMMITTER_EMAIL": "cibot@users.noreply.github.com",
-    "GIT_AUTHOR_NAME": "CI Bot",
-    "GIT_COMMITTER_NAME": "CI Bot",
+    "GIT_AUTHOR_EMAIL": "chris@nesteggs.ca",
+    "GIT_COMMITTER_EMAIL": "chris@nesteggs.ca",
+    "GIT_AUTHOR_NAME": "Auto Chris",
+    "GIT_COMMITTER_NAME": "Auto Chris",
 }
 
 
@@ -448,7 +448,7 @@ def pr_service(ctx: TaskContext, name: str):
     return 0
 
 
-def build_service(ctx: TaskContext, name: str, skip_ci=False):
+def build_service(ctx: TaskContext, name: str, skip_ci=False, platforms: str=None):
     ctx.log.info(f"Building container for {name}")
 
     ver = get_version(ctx, name)
@@ -462,7 +462,8 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False):
     for tag in tags:
         b.add_tag(tag)
     if not skip_ci and os.getenv("CI"):
-        for p in os.getenv("TARGET_PLATFORMS").split(","):
+        target_platforms = platforms or os.getenv("TARGET_PLATFORMS")
+        for p in target_platforms.split(","):
             b.add_platform(p)
         b.with_push(True)
     b.with_file(os.path.join(ctx.root_dir, f"Dockerfile.{name}"))

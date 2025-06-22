@@ -1,3 +1,4 @@
+import os
 from __ci__ import (
     build_service,
     pr_service,
@@ -32,7 +33,7 @@ def _add_service(builder: TaskBuilder, mod: str, name: str):
 
 def _add_postgres_service(builder: TaskBuilder, mod: str, name: str):
     builder.add_task(mod, f"{name}:update", lambda ctx: update_service(ctx, name))
-    builder.add_task(mod, f"{name}:build", lambda ctx: build_service(ctx, name))
+    builder.add_task(mod, f"{name}:build", lambda ctx: build_service(ctx, name, platforms="linux/amd64"))
     builder.add_task(mod, f"{name}:tag", lambda ctx: tag_service(ctx, name))
     builder.add_task(mod, f"{name}:pr", lambda ctx: pr_service(ctx, name))
     builder.add_task(mod, f"{name}:sbom", lambda ctx: update_sbom(ctx, name))
@@ -48,3 +49,4 @@ def configure(builder: TaskBuilder):
     _add_postgres_service(builder, mod, "postgres")
 
     builder.add_task(mod, "info", _info)
+    builder.add_task(mod, "update", lambda ctx: None, ["python:update", "node:update", "rust:update", "postgres:update"])

@@ -40,12 +40,12 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
-    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.2-${ARCH}-unknown-linux-gnu/watchexec
+    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.3.2/watchexec-2.3.2-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.3.2-${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.9.3/dockerize-linux-${TARGETARCH}-v0.9.3.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 # add static curl
@@ -55,7 +55,7 @@ RUN set -eux; \
     else\
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.11.1/curl-linux-${ARCH}-glibc-8.11.1.tar.xz; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.14.1/curl-linux-${ARCH}-glibc-8.14.1.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
 # install python via miniconda
@@ -66,7 +66,7 @@ ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
 RUN cat <<EOF > /tmp/fnm-init.sh
 #!/bin/bash
 source ~/.fnmrc
-/work/opt/bin/fnm use 20.18.3 --install-if-missing
+/work/opt/bin/fnm use 22.16.0 --install-if-missing
 npm install -g corepack@latest
 corepack enable
 EOF
@@ -92,7 +92,7 @@ RUN set -eux; \
     else \
     ARCHIVE="bun-linux-x64"; \
     fi; \
-    curl -o /tmp/bun.zip -LsSf "https://github.com/oven-sh/bun/releases/download/bun-v1.2.0/${ARCHIVE}.zip"; \
+    curl -o /tmp/bun.zip -LsSf "https://github.com/oven-sh/bun/releases/download/bun-v1.2.17/${ARCHIVE}.zip"; \
     unzip -d /tmp /tmp/bun.zip; \
     mv /tmp/${ARCHIVE}/bun /work/opt/bin/bun;
 
@@ -104,7 +104,7 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/deno.zip -LsSf "https://github.com/denoland/deno/releases/download/v2.1.10/deno-${ARCH}-unknown-linux-gnu.zip"; \
+    curl -o /tmp/deno.zip -LsSf "https://github.com/denoland/deno/releases/download/v2.3.6/deno-${ARCH}-unknown-linux-gnu.zip"; \
     unzip -d /work/opt/bin /tmp/deno.zip;
 
 
@@ -135,11 +135,11 @@ ENV NODE_ENV=development
 RUN set -eux; \
     fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm >> /home/sprout/.bashrc; \
     eval "`fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm`"; \
-    fnm use 20.18.3 --install-if-missing --corepack-enabled;
+    fnm use 22.16.0 --install-if-missing --corepack-enabled;
 
-LABEL org.opencontainers.image.node_version="20.18.3"
+LABEL org.opencontainers.image.node_version="22.16.0"
 LABEL org.opencontainers.image.fnm_version="1.38.1"
-LABEL org.opencontainers.image.bun_version="1.2.0"
+LABEL org.opencontainers.image.bun_version="1.2.17"
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
     ::::    :::  ::::::::  :::::::::  :::::::::: 
@@ -156,5 +156,5 @@ RUN set -eux; \
 
 WORKDIR /work/app
 
-LABEL org.opencontainers.image.watchexec_version="2.1.2"
-LABEL org.opencontainers.image.dockerize_version="0.7.0"
+LABEL org.opencontainers.image.watchexec_version="2.3.2"
+LABEL org.opencontainers.image.dockerize_version="0.9.3"

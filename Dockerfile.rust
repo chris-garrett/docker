@@ -40,12 +40,12 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.1.2/watchexec-2.1.2-${ARCH}-unknown-linux-gnu.tar.xz; \
-    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.1.2-${ARCH}-unknown-linux-gnu/watchexec
+    curl -o /tmp/watchexec.tar.xz -LsSf https://github.com/watchexec/watchexec/releases/download/v2.3.2/watchexec-2.3.2-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.3.2-${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-${TARGETARCH}-v0.7.0.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.9.3/dockerize-linux-${TARGETARCH}-v0.9.3.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 # add static curl
@@ -55,7 +55,7 @@ RUN set -eux; \
     else\
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.11.1/curl-linux-${ARCH}-glibc-8.11.1.tar.xz; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.14.1/curl-linux-${ARCH}-glibc-8.14.1.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
 # install python via miniconda
@@ -102,7 +102,7 @@ EOF
 ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 
-LABEL org.opencontainers.image.rust_version="1.84.0"
+LABEL org.opencontainers.image.rust_version="1.87.0"
 
 COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
     :::::::::  :::    :::  :::::::: ::::::::::: 
@@ -119,5 +119,5 @@ RUN set -eux; \
 
 WORKDIR /work/app
 
-LABEL org.opencontainers.image.watchexec_version="2.1.2"
-LABEL org.opencontainers.image.dockerize_version="0.7.0"
+LABEL org.opencontainers.image.watchexec_version="2.3.2"
+LABEL org.opencontainers.image.dockerize_version="0.9.3"
