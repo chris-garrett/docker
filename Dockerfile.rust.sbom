@@ -154,7 +154,7 @@ ii  libgpm2:amd64             1.20.7-10+b1                   amd64        Genera
 ii  libgprofng0:amd64         2.40-2                         amd64        GNU Next Generation profiler (runtime library)
 ii  libgssapi-krb5-2:amd64    1.20.1-2+deb12u3               amd64        MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
 ii  libhogweed6:amd64         3.8.1-2                        amd64        low level cryptographic library (public-key cryptos)
-ii  libicu72:amd64            72.1-3                         amd64        International Components for Unicode
+ii  libicu72:amd64            72.1-3+deb12u1                 amd64        International Components for Unicode
 ii  libidn12:amd64            1.41-1                         amd64        GNU Libidn library, implementation of IETF IDN specifications
 ii  libidn2-0:amd64           2.3.3-1+b1                     amd64        Internationalized domain names (IDNA2008/TR46) library
 ii  libisl23:amd64            0.25-1.1                       amd64        manipulating sets and relations of integer points bounded by linear constraints
