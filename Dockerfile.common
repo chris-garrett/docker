@@ -30,6 +30,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     ; \
     useradd -s /bin/bash -m sprout; \
     echo "alias l='ls -laFHh'" >> /root/.bashrc; \
+    echo "export PATH=\"/work/opt/bin:\$$PATH\"" >> /root/.bashrc; \
     mkdir -p /work/app /work/opt/bin; \
     rm -rf /var/lib/apt/lists/*;
 
