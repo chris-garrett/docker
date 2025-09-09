@@ -44,6 +44,28 @@ services:
       caddy.reverse_proxy: "{{upstreams 8000}}"
     restart: unless-stopped
 
+  ts:
+    profiles: ["all", "node"]
+    image: ghcr.io/chris-garrett/node:latest
+    command: |
+      dockerize
+        -wait tcp://o2:5080
+        bash -c -l '
+          yarn run up
+        '
+    ports:
+      - 8032:5173
+    environment:
+      - O2_TOKEN=ZG9ja2VyQGZiaS5jb206VTdGZmttQjFaY2dHb2FuOA==
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+    volumes:
+      - ./ts:/work/app
+    labels:
+      caddy: http://ts.fbi.com
+      caddy.reverse_proxy: "{{upstreams 5173}}"
+    restart: unless-stopped
+
   o2:
     profiles: ["all", "o2"]
     image: public.ecr.aws/zinclabs/openobserve:latest
