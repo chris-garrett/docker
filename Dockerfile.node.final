@@ -1,10 +1,9 @@
-#ENV PATH=/work/opt/venv/bin:$$PATH
 ENV NODE_ENV=development
+ENV FNM_DIR=/work/opt/fnm
+ENV FNM_COREPACK_ENABLED=true
 
 RUN set -eux; \
-    fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm >> /home/sprout/.bashrc; \
-    eval "`fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm`"; \
-    fnm use ${NODE_VERSION} --install-if-missing --corepack-enabled;
+    echo "eval \"\$$(/work/opt/bin/fnm env --use-on-cd --shell bash --fnm-dir=/work/opt/fnm)\"" >> /root/.bashrc;
 
 LABEL org.opencontainers.image.node_version="$NODE_VERSION"
 LABEL org.opencontainers.image.fnm_version="$FNM_VERSION"

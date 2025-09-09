@@ -1,15 +1,7 @@
-# install python via miniconda
-ENV PATH=/work/opt/venv/bin:$$PATH
-ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
+ENV NODE_ENV=development
+ENV FNM_DIR=/work/opt/fnm
+ENV FNM_COREPACK_ENABLED=true
 
-# install fnm/node
-RUN cat <<EOF > /tmp/fnm-init.sh
-#!/bin/bash
-source ~/.fnmrc
-/work/opt/bin/fnm use ${NODE_VERSION} --install-if-missing
-npm install -g corepack@latest
-corepack enable
-EOF
 RUN --mount=target=/root/.cache/node,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     if [ "$$TARGETARCH" = "arm64" ]; then \
@@ -18,12 +10,17 @@ RUN --mount=target=/root/.cache/node,type=cache,sharing=locked,mode=0755 \
     ARCH="linux"; \
     fi; \
     curl -o /tmp/fnm.zip -LsSf "https://github.com/Schniz/fnm/releases/download/v${FNM_VERSION}/fnm-$${ARCH}.zip"; \
-    unzip -d /work/opt/bin /tmp/fnm.zip; \
-    /work/opt/bin/fnm env >> /root/.fnmrc; \
-    echo "source ~/.fnmrc" >> /root/.bashrc; \
-    cat /tmp/fnm-init.sh; \
-    /bin/bash /tmp/fnm-init.sh;
+    unzip -d /work/opt/bin /tmp/fnm.zip;
 
+RUN cat <<EOF >> /tmp/fnm-init.sh
+#!/bin/bash
+eval "$$(/work/opt/bin/fnm env --use-on-cd --shell bash)"
+/work/opt/bin/fnm use ${NODE_VERSION} --install-if-missing --corepack-enabled;
+EOF
+
+# install node
+RUN set -eux; \
+    bash /tmp/fnm-init.sh;
 
 # install bun
 RUN set -eux; \
