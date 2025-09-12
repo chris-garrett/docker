@@ -37,20 +37,21 @@ services:
       - PGID=${PGID:-1000}
     volumes:
       - ./py:/work/app
-      # package cache
-      - uv_data:/root/.cache/uv
+      # package cache (abc's home is /config on LSIO images)
+      - uv_data:/config/.cache/uv
     labels:
       caddy: http://py.fbi.com
       caddy.reverse_proxy: "{{upstreams 8000}}"
     restart: unless-stopped
 
-  ts:
+  node:
     profiles: ["all", "node"]
     image: ghcr.io/chris-garrett/node:latest
     command: |
       dockerize
         -wait tcp://o2:5080
-        bash -c -l '
+        bash -l -c '
+          yarn install
           yarn run up
         '
     ports:
