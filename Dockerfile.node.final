@@ -8,13 +8,3 @@ RUN set -eux; \
 LABEL org.opencontainers.image.node_version="$NODE_VERSION"
 LABEL org.opencontainers.image.fnm_version="$FNM_VERSION"
 LABEL org.opencontainers.image.bun_version="$BUN_VERSION"
-
-COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-    ::::    :::  ::::::::  :::::::::  :::::::::: 
-    :+:+:   :+: :+:    :+: :+:    :+: :+:        
-    :+:+:+  +:+ +:+    +:+ +:+    +:+ +:+        
-    +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#   
-    +#+  +#+#+# +#+    +#+ +#+    +#+ +#+        
-    #+#   #+#+# #+#    #+# #+#    #+# #+#        
-    ###    ####  ########  #########  ########## 
-EOF

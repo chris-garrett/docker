@@ -2,13 +2,3 @@ ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 
 LABEL org.opencontainers.image.rust_version="$RUST_VERSION"
-
-COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-    :::::::::  :::    :::  :::::::: ::::::::::: 
-    :+:    :+: :+:    :+: :+:    :+:    :+:     
-    +:+    +:+ +:+    +:+ +:+           +:+     
-    +#++:++#:  +#+    +:+ +#++:++#++    +#+     
-    +#+    +#+ +#+    +#+        +#+    +#+     
-    #+#    #+# #+#    #+# #+#    #+#    #+#     
-    ###    ###  ########   ########     ###   
-EOF

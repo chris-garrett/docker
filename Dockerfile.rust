@@ -1,7 +1,9 @@
-FROM ghcr.io/linuxserver/baseimage-debian:bookworm AS build
+FROM debian:trixie-slim AS build
 
 ARG TARGETARCH
 
+ENV PUID=1000 PGID=1000
+ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/work/opt/bin:$PATH"
 ENV HOST_ENVIRONMENT=container
 
@@ -11,8 +13,9 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     apt update; \
     apt upgrade -y; \
     apt install -y --no-install-recommends \
+    gosu \
     ca-certificates \
-    libicu72 \
+    libicu76 \
     tzdata \
     xz-utils \
     vim \
@@ -28,7 +31,6 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     curl \
     file \
     ; \
-    useradd -s /bin/bash -m sprout; \
     echo "alias l='ls -laFHh'" >> /root/.bashrc; \
     echo "export PATH=\"/work/opt/bin:\$PATH\"" >> /root/.bashrc; \
     mkdir -p /work/app /work/opt/bin; \
@@ -82,41 +84,17 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
 
 FROM build AS final
 
-# don't bother being gracful in dev images. 
-# can be overriden in final image if req. 
-ENV S6_KILL_GRACETIME=0
-ENV S6_KEEP_ENV=1
-# linux defaults. override in compose. 
-ENV PUID=1000
-ENV PGID=1000
-
-COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-    :::::::::   ::::::::   ::::::::  :::    ::: :::::::::: :::::::::  
-    :+:    :+: :+:    :+: :+:    :+: :+:   :+:  :+:        :+:    :+: 
-    +:+    +:+ +:+    +:+ +:+        +:+  +:+   +:+        +:+    +:+ 
-    +#+    +:+ +#+    +:+ +#+        +#++:++    +#++:++#   +#++:++#:  
-    +#+    +#+ +#+    +#+ +#+        +#+  +#+   +#+        +#+    +#+ 
-    #+#    #+# #+#    #+# #+#    #+# #+#   #+#  #+#        #+#    #+# 
-    #########   ########   ########  ###    ### ########## ###    ### 
-EOF
-
 ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 
 LABEL org.opencontainers.image.rust_version="1.87.0"
 
-COPY <<EOF /etc/s6-overlay/s6-rc.d/init-adduser/branding
-    :::::::::  :::    :::  :::::::: ::::::::::: 
-    :+:    :+: :+:    :+: :+:    :+:    :+:     
-    +:+    +:+ +:+    +:+ +:+           +:+     
-    +#++:++#:  +#+    +:+ +#++:++#++    +#+     
-    +#+    +#+ +#+    +#+        +#+    +#+     
-    #+#    #+# #+#    #+# #+#    #+#    #+#     
-    ###    ###  ########   ########     ###   
-EOF
 
 RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /work/app
 

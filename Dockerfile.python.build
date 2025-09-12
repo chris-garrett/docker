@@ -11,4 +11,5 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-$${ARCH}-unknown-linux-gnu.tar.gz"; \
     tar xf /tmp/uv.tgz -C /work/opt/bin --strip-components=1 uv-$${ARCH}-unknown-linux-gnu/uv uv-$${ARCH}-unknown-linux-gnu/uvx; \
     /work/opt/bin/uv venv /work/opt/venv --relocatable; \
-    find /work/opt -type f -executable -exec file {} \; | grep "ELF" | cut -d: -f1 | xargs strip || true;
+    # Only strip standalone tools in /work/opt/bin. Do NOT strip Python/venv binaries.
+    find /work/opt/bin -maxdepth 1 -type f -executable -exec file {} \; | grep "ELF" | cut -d: -f1 | xargs -r strip || true;

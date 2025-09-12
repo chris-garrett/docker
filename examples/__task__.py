@@ -43,6 +43,11 @@ def _logs(ctx: TaskContext):
     return ctx.exec(f"{_prefix(ctx)} logs -f --tail 100")
 
 
+def _nlogs(ctx: TaskContext):
+    ctx.log.info("Showing docker-compose logs")
+    return ctx.exec(f"{_prefix(ctx)} logs --tail 100")
+
+
 def _restart(ctx: TaskContext):
     _down(ctx)
     _up(ctx)
@@ -91,6 +96,7 @@ def configure(builder: TaskBuilder):
     builder.add_task(mod, "ex:down", _down)
     builder.add_task(mod, "ex:restart", _restart)
     builder.add_task(mod, "ex:log", _logs)
+    builder.add_task(mod, "ex:nlog", _nlogs)
     builder.add_task(mod, "ex:pull", _pull)
     builder.add_task(mod, "ex:log:caddy", lambda ctx: _log_service(ctx, "caddy"))
     builder.add_task(mod, "ex:nuke", _nuke)
