@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:73b3b9f4b5e743cf4bfc121d8b924589231f1c3af7245d54875183a5e972714d
+postgis/postgis@sha256:dd51fe88a528269713767b573f03695ede70adeae85afba339f27b1819f0eba1
 
 ## Package Versions
 
@@ -11,8 +11,8 @@ org.opencontainers.image.postgis_version=17-3.5-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20250922.053309 noarch {.postgis-rundeps} () [installed]
-.postgresql-rundeps-20250908.215743 noarch {.postgresql-rundeps} () [installed]
+.postgis-rundeps-20250927.162815 noarch {.postgis-rundeps} () [installed]
+.postgresql-rundeps-20250923.231620 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
 alpine-baselayout-data-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -55,7 +55,7 @@ libarchive-3.8.1-r0 x86_64 {libarchive} (BSD-2-Clause AND BSD-3-Clause AND Publi
 libbsd-0.12.2-r0 x86_64 {libbsd} (BSD-3-Clause) [installed]
 libbz2-1.0.8-r6 x86_64 {bzip2} (bzip2-1.0.6) [installed]
 libcom_err-1.47.2-r2 x86_64 {e2fsprogs} (GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT) [installed]
-libcrypto3-3.5.2-r0 x86_64 {openssl} (Apache-2.0) [installed]
+libcrypto3-3.5.3-r1 x86_64 {openssl} (Apache-2.0) [installed]
 libcurl-8.14.1-r1 x86_64 {curl} (curl) [installed]
 libdeflate-1.23-r0 x86_64 {libdeflate} (MIT) [installed]
 libedit-20250104.3.1-r1 x86_64 {libedit} (BSD-3-Clause) [installed]
@@ -82,7 +82,7 @@ librttopo-1.1.0-r6 x86_64 {librttopo} (GPL-2.0-or-later) [installed]
 libsasl-2.1.28-r8 x86_64 {cyrus-sasl} (BSD-3-Clause-Attribution AND BSD-4-Clause) [installed]
 libsharpyuv-1.5.0-r0 x86_64 {libwebp} (BSD-3-Clause) [installed]
 libspatialite-5.1.0-r4 x86_64 {libspatialite} (MPL-1.1) [installed]
-libssl3-3.5.2-r0 x86_64 {openssl} (Apache-2.0) [installed]
+libssl3-3.5.3-r1 x86_64 {openssl} (Apache-2.0) [installed]
 libstdc++-14.2.0-r6 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
 libunistring-1.3-r0 x86_64 {libunistring} (GPL-2.0-or-later OR LGPL-3.0-or-later) [installed]
 libuuid-2.41-r9 x86_64 {util-linux} (BSD-3-Clause) [installed]
