@@ -160,7 +160,7 @@ ii  libsmartcols1:amd64            2.41-5                         amd64        s
 ii  libsodium23:amd64              1.0.18-1+b2                    amd64        Network communication, cryptography and signaturing library
 ii  libsqlite3-0:amd64             3.46.1-7                       amd64        SQLite 3 shared library
 ii  libssh2-1t64:amd64             1.11.1-1                       amd64        SSH2 client-side library
-ii  libssl3t64:amd64               3.5.1-1                        amd64        Secure Sockets Layer toolkit - shared libraries
+ii  libssl3t64:amd64               3.5.1-1+deb13u1                amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-14-dev:amd64         14.2.0-19                      amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64               14.2.0-19                      amd64        GNU Standard C++ Library v3
 ii  libsystemd0:amd64              257.8-1~deb13u2                amd64        systemd utility library
@@ -185,8 +185,8 @@ ii  mount                          2.41-5                         amd64        t
 ii  ncdu                           1.22-1                         amd64        ncurses disk usage viewer
 ii  ncurses-base                   6.5+20250216-2                 all          basic terminal type definitions
 ii  ncurses-bin                    6.5+20250216-2                 amd64        terminal-related programs and man pages
-ii  openssl                        3.5.1-1                        amd64        Secure Sockets Layer toolkit - cryptographic utility
-ii  openssl-provider-legacy        3.5.1-1                        amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssl                        3.5.1-1+deb13u1                amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssl-provider-legacy        3.5.1-1+deb13u1                amd64        Secure Sockets Layer toolkit - cryptographic utility
 ii  passwd                         1:4.17.4-2                     amd64        change and administer password and group data
 ii  patch                          2.8-2                          amd64        Apply a diff file to an original
 ii  perl                           5.40.1-6                       amd64        Larry Wall's Practical Extraction and Report Language
