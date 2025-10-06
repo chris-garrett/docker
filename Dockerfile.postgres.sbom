@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:6ebb2b32a6d5315c8fc2b00427356eebd4778bfaf7211d4b28eac481f3d194ec
+postgis/postgis@sha256:b5316941603622f8c10ccff770885cd3adf940555cb8f65b0e3d9c9040722492
 
 ## Package Versions
 
@@ -11,8 +11,8 @@ org.opencontainers.image.postgis_version=17-3.5-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20250929.053322 noarch {.postgis-rundeps} () [installed]
-.postgresql-rundeps-20250923.231620 noarch {.postgresql-rundeps} () [installed]
+.postgis-rundeps-20251006.053337 noarch {.postgis-rundeps} () [installed]
+.postgresql-rundeps-20251001.003307 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
 alpine-baselayout-data-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -29,7 +29,7 @@ brunsli-libs-0.1-r1 x86_64 {brunsli} (MIT) [installed]
 busybox-1.37.0-r18 x86_64 {busybox} (GPL-2.0-only) [installed]
 busybox-binsh-1.37.0-r18 x86_64 {busybox} (GPL-2.0-only) [installed]
 c-ares-1.34.5-r0 x86_64 {c-ares} (MIT) [installed]
-ca-certificates-20250619-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
+ca-certificates-20250911-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
 ca-certificates-bundle-20250619-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
 cairo-1.18.4-r0 x86_64 {cairo} (LGPL-2.1-or-later OR MPL-1.1) [installed]
 fontconfig-2.15.0-r3 x86_64 {fontconfig} (MIT) [installed]
@@ -55,8 +55,8 @@ libarchive-3.8.1-r0 x86_64 {libarchive} (BSD-2-Clause AND BSD-3-Clause AND Publi
 libbsd-0.12.2-r0 x86_64 {libbsd} (BSD-3-Clause) [installed]
 libbz2-1.0.8-r6 x86_64 {bzip2} (bzip2-1.0.6) [installed]
 libcom_err-1.47.2-r2 x86_64 {e2fsprogs} (GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT) [installed]
-libcrypto3-3.5.3-r1 x86_64 {openssl} (Apache-2.0) [installed]
-libcurl-8.14.1-r1 x86_64 {curl} (curl) [installed]
+libcrypto3-3.5.4-r0 x86_64 {openssl} (Apache-2.0) [installed]
+libcurl-8.14.1-r2 x86_64 {curl} (curl) [installed]
 libdeflate-1.23-r0 x86_64 {libdeflate} (MIT) [installed]
 libedit-20250104.3.1-r1 x86_64 {libedit} (BSD-3-Clause) [installed]
 libexpat-2.7.3-r0 x86_64 {expat} (MIT) [installed]
@@ -82,7 +82,7 @@ librttopo-1.1.0-r6 x86_64 {librttopo} (GPL-2.0-or-later) [installed]
 libsasl-2.1.28-r8 x86_64 {cyrus-sasl} (BSD-3-Clause-Attribution AND BSD-4-Clause) [installed]
 libsharpyuv-1.5.0-r0 x86_64 {libwebp} (BSD-3-Clause) [installed]
 libspatialite-5.1.0-r4 x86_64 {libspatialite} (MPL-1.1) [installed]
-libssl3-3.5.3-r1 x86_64 {openssl} (Apache-2.0) [installed]
+libssl3-3.5.4-r0 x86_64 {openssl} (Apache-2.0) [installed]
 libstdc++-14.2.0-r6 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
 libunistring-1.3-r0 x86_64 {libunistring} (GPL-2.0-or-later OR LGPL-3.0-or-later) [installed]
 libuuid-2.41-r9 x86_64 {util-linux} (BSD-3-Clause) [installed]
