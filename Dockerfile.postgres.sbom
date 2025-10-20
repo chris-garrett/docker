@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:55a855e12c5682a23f795e5ac8d625bfa283838a584be07be3a19fb215386c20
+postgis/postgis@sha256:fe40924204f8cbcc8a328053a98cd5cd206889ec43485037ac3e4a4f613c51dc
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=17-3.5-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20251015.201757 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20251020.053505 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20251008.225538 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -111,7 +111,7 @@ openexr-libilmthread-3.3.2-r0 x86_64 {openexr} (BSD-3-Clause) [installed]
 openexr-libopenexr-3.3.2-r0 x86_64 {openexr} (BSD-3-Clause) [installed]
 openexr-libopenexrcore-3.3.2-r0 x86_64 {openexr} (BSD-3-Clause) [installed]
 openjpeg-2.5.3-r0 x86_64 {openjpeg} (BSD-2-Clause) [installed]
-pcre2-10.43-r1 x86_64 {pcre2} (BSD-3-Clause) [installed]
+pcre2-10.46-r0 x86_64 {pcre2} (BSD-3-Clause) [installed]
 pixman-0.46.4-r0 x86_64 {pixman} (MIT) [installed]
 proj-9.6.0-r0 x86_64 {proj} (MIT) [installed]
 protobuf-c-1.5.2-r0 x86_64 {protobuf-c} (BSD-2-Clause) [installed]
