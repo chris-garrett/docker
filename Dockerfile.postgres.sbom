@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:f439e384b4111f0bc21b4a49e223f8fd7f40516285fc3825d7a8af15e710d47c
+postgis/postgis@sha256:5c37f065b662a82a113880662a5ef019109282c9a855435207a801e69036832e
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=17-3.5-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20251124.053652 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20251201.054412 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20251114.192004 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -73,7 +73,7 @@ liblapack-0.3.28-r0 x86_64 {openblas} (BSD-3-Clause) [installed]
 libldap-2.6.8-r0 x86_64 {openldap} (OLDAP-2.8) [installed]
 libmd-1.1.0-r0 x86_64 {libmd} (BSD-3-Clause AND BSD-2-Clause AND ISC AND Beerware AND Public Domain) [installed]
 libncursesw-6.5_p20250503-r0 x86_64 {ncurses} (X11) [installed]
-libpng-1.6.47-r0 x86_64 {libpng} (Libpng) [installed]
+libpng-1.6.51-r0 x86_64 {libpng} (Libpng) [installed]
 libpsl-0.21.5-r3 x86_64 {libpsl} (MIT) [installed]
 libqb3-1.2.0-r0 x86_64 {libqb3} (Apache-2.0) [installed]
 libquadmath-14.2.0-r6 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
