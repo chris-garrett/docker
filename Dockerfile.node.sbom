@@ -2,7 +2,7 @@
 
 ## base image digest
 
-debian@sha256:18764e98673c3baf1a6f8d960b5b5a1ec69092049522abac4e24a7726425b016
+debian@sha256:77ba0164de17b88dd0bf6cdc8f65569e6e5fa6cd256562998b62553134a00ef0
 
 ## Package Versions
 
@@ -20,9 +20,9 @@ Desired=Unknown/Install/Remove/Purge/Hold
 ||/ Name                           Version                        Architecture Description
 +++-==============================-==============================-============-===============================================================================
 ii  apt                            3.0.3                          amd64        commandline package manager
-ii  base-files                     13.8+deb13u2                   amd64        Debian base system miscellaneous files
+ii  base-files                     13.8+deb13u3                   amd64        Debian base system miscellaneous files
 ii  base-passwd                    3.6.7                          amd64        Debian base system master password and group files
-ii  bash                           5.2.37-2+b5                    amd64        GNU Bourne Again SHell
+ii  bash                           5.2.37-2+b7                    amd64        GNU Bourne Again SHell
 ii  binutils                       2.44-3                         amd64        GNU assembler, linker and binary utilities
 ii  binutils-common:amd64          2.44-3                         amd64        Common files for the GNU assembler, linker and binary utilities
 ii  binutils-x86-64-linux-gnu      2.44-3                         amd64        GNU binary utilities, for x86-64-linux-gnu target
@@ -77,15 +77,15 @@ ii  libbpf1:amd64                  1:1.5.0-3                      amd64        e
 ii  libbrotli1:amd64               1.1.0-2+b7                     amd64        library implementing brotli encoder and decoder (shared libraries)
 ii  libbsd0:amd64                  0.12.2-2                       amd64        utility functions from BSD systems - shared library
 ii  libbz2-1.0:amd64               1.0.8-6                        amd64        high-quality block-sorting file compressor library - runtime
-ii  libc-bin                       2.41-12                        amd64        GNU C Library: Binaries
-ii  libc-dev-bin                   2.41-12                        amd64        GNU C Library: Development binaries
-ii  libc6:amd64                    2.41-12                        amd64        GNU C Library: Shared libraries
-ii  libc6-dev:amd64                2.41-12                        amd64        GNU C Library: Development Libraries and Header Files
+ii  libc-bin                       2.41-12+deb13u1                amd64        GNU C Library: Binaries
+ii  libc-dev-bin                   2.41-12+deb13u1                amd64        GNU C Library: Development binaries
+ii  libc6:amd64                    2.41-12+deb13u1                amd64        GNU C Library: Shared libraries
+ii  libc6-dev:amd64                2.41-12+deb13u1                amd64        GNU C Library: Development Libraries and Header Files
 ii  libcap-ng0:amd64               0.8.5-4+b1                     amd64        alternate POSIX capabilities library
-ii  libcap2:amd64                  1:2.75-10+b1                   amd64        POSIX 1003.1e capabilities (library)
-ii  libcap2-bin                    1:2.75-10+b1                   amd64        POSIX 1003.1e capabilities (utilities)
+ii  libcap2:amd64                  1:2.75-10+b3                   amd64        POSIX 1003.1e capabilities (library)
+ii  libcap2-bin                    1:2.75-10+b3                   amd64        POSIX 1003.1e capabilities (utilities)
 ii  libcc1-0:amd64                 14.2.0-19                      amd64        GCC cc1 plugin for GDB
-ii  libcom-err2:amd64              1.47.2-3+b3                    amd64        common error description library
+ii  libcom-err2:amd64              1.47.2-3+b7                    amd64        common error description library
 ii  libcrypt-dev:amd64             1:4.4.38-1                     amd64        libcrypt development files
 ii  libcrypt1:amd64                1:4.4.38-1                     amd64        libcrypt shared library
 ii  libctf-nobfd0:amd64            2.44-3                         amd64        Compact C Type Format library (runtime, no BFD dependency)
@@ -104,7 +104,7 @@ ii  libgcc-s1:amd64                14.2.0-19                      amd64        G
 ii  libgdbm-compat4t64:amd64       1.24-2                         amd64        GNU dbm database routines (legacy support runtime version) 
 ii  libgdbm6t64:amd64              1.24-2                         amd64        GNU dbm database routines (runtime version) 
 ii  libgmp10:amd64                 2:6.3.0+dfsg-3                 amd64        Multiprecision arithmetic library
-ii  libgnutls30t64:amd64           3.8.9-3                        amd64        GNU TLS library - main runtime library
+ii  libgnutls30t64:amd64           3.8.9-3+deb13u1                amd64        GNU TLS library - main runtime library
 ii  libgomp1:amd64                 14.2.0-19                      amd64        GCC OpenMP (GOMP) support library
 ii  libgpm2:amd64                  1.20.7-11+b2                   amd64        General Purpose Mouse - shared library
 ii  libgprofng0:amd64              2.44-3                         amd64        GNU Next Generation profiler (runtime library)
@@ -158,7 +158,7 @@ ii  libsemanage2:amd64             3.8.1-1                        amd64        S
 ii  libsepol2:amd64                3.8.1-1                        amd64        SELinux library for manipulating binary security policies
 ii  libsframe1:amd64               2.44-3                         amd64        Library to handle the SFrame format (runtime library)
 ii  libsmartcols1:amd64            2.41-5                         amd64        smart column output alignment library
-ii  libsodium23:amd64              1.0.18-1+b2                    amd64        Network communication, cryptography and signaturing library
+ii  libsodium23:amd64              1.0.18-1+deb13u1               amd64        Network communication, cryptography and signaturing library
 ii  libsqlite3-0:amd64             3.46.1-7                       amd64        SQLite 3 shared library
 ii  libssh2-1t64:amd64             1.11.1-1                       amd64        SSH2 client-side library
 ii  libssl3t64:amd64               3.5.4-1~deb13u1                amd64        Secure Sockets Layer toolkit - shared libraries
@@ -177,7 +177,7 @@ ii  libuuid1:amd64                 2.41-5                         amd64        U
 ii  libxtables12:amd64             1.8.11-2                       amd64        netfilter xtables library
 ii  libxxhash0:amd64               0.8.3-2                        amd64        shared library for xxhash
 ii  libzstd1:amd64                 1.5.7+dfsg-1                   amd64        fast lossless compression algorithm
-ii  linux-libc-dev                 6.12.57-1                      all          Linux support headers for userspace development
+ii  linux-libc-dev                 6.12.63-1                      all          Linux support headers for userspace development
 ii  login                          1:4.16.0-2+really2.41-5        amd64        system login tools
 ii  login.defs                     1:4.17.4-2                     all          system user management configuration
 ii  make                           4.4.1-2                        amd64        utility for directing compilation
@@ -196,7 +196,7 @@ ii  perl-modules-5.40              5.40.1-6                       all          C
 ii  procps                         2:4.0.4-9                      amd64        /proc file system utilities
 ii  rpcsvc-proto                   1.4.3-1                        amd64        RPC protocol compiler and definitions
 ii  sed                            4.9-2                          amd64        GNU stream editor for filtering/transforming text
-ii  sqv                            1.3.0-3                        amd64        OpenPGP signature verification program from Sequoia
+ii  sqv                            1.3.0-3+b2                     amd64        OpenPGP signature verification program from Sequoia
 ii  sysvinit-utils                 3.14-4                         amd64        System-V-like utilities
 ii  tar                            1.35+dfsg-3.1                  amd64        GNU version of the tar archiving utility
 ii  tzdata                         2025b-4+deb13u1                all          time zone and daylight-saving time data
