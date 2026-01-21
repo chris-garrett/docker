@@ -48,7 +48,7 @@ RUN set -eux; \
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.9.3/dockerize-linux-${TARGETARCH}-v0.9.3.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.9.9/dockerize-linux-${TARGETARCH}-v0.9.9.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 # add static curl
@@ -58,7 +58,7 @@ RUN set -eux; \
     else\
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.14.1/curl-linux-${ARCH}-glibc-8.14.1.tar.xz; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.18.0/curl-linux-${ARCH}-glibc-8.18.0.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
 # install python via miniconda
@@ -71,7 +71,7 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/0.7.13/uv-${ARCH}-unknown-linux-gnu.tar.gz"; \
+    curl -o /tmp/uv.tgz -LsSf "https://github.com/astral-sh/uv/releases/download/0.9.25/uv-${ARCH}-unknown-linux-gnu.tar.gz"; \
     tar xf /tmp/uv.tgz -C /work/opt/bin --strip-components=1 uv-${ARCH}-unknown-linux-gnu/uv uv-${ARCH}-unknown-linux-gnu/uvx; \
     /work/opt/bin/uv venv /work/opt/venv --relocatable; \
     # Only strip standalone tools in /work/opt/bin. Do NOT strip Python/venv binaries.
@@ -92,7 +92,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PS1="(venv) \${debian_chroot:+(\$debian_chroot)}\\u@\\h:\\w\\\$ "
 
 LABEL org.opencontainers.image.python_version="3.12"
-LABEL org.opencontainers.image.uv_version="0.7.13"
+LABEL org.opencontainers.image.uv_version="0.9.25"
 
 
 RUN set -eux; \
@@ -104,4 +104,4 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 WORKDIR /work/app
 
 LABEL org.opencontainers.image.watchexec_version="2.3.2"
-LABEL org.opencontainers.image.dockerize_version="0.9.3"
+LABEL org.opencontainers.image.dockerize_version="0.9.9"
