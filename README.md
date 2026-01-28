@@ -27,9 +27,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Rust: **1.92.0**
 - Watchexec: **2.3.2**
 
-### Node 26.1.0
+### Node 26.2.0
 
-`docker pull ghcr.io/chris-garrett/node:26.1.0`
+`docker pull ghcr.io/chris-garrett/node:26.2.0`
 
 - Bun: **1.3.6**
 - Dockerize: **0.9.9**
