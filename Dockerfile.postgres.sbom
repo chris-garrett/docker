@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:69919df8b2629a06f17fb1c05fbf2499f82d1a8fea37f8153eeff1f85b7e9b87
+postgis/postgis@sha256:95f09dd8ed2800968047d9645777591a554ee70f4f3b50b1568532fbd603c817
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=17-3.6-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20260204.084851 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20260204.181123 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20260128.023207 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -59,7 +59,7 @@ libcrypto3-3.5.5-r0 x86_64 {openssl} (Apache-2.0) [installed]
 libcurl-8.14.1-r2 x86_64 {curl} (curl) [installed]
 libdeflate-1.23-r0 x86_64 {libdeflate} (MIT) [installed]
 libedit-20250104.3.1-r1 x86_64 {libedit} (BSD-3-Clause) [installed]
-libexpat-2.7.3-r0 x86_64 {expat} (MIT) [installed]
+libexpat-2.7.4-r0 x86_64 {expat} (MIT) [installed]
 libffi-3.4.8-r0 x86_64 {libffi} (MIT) [installed]
 libgcc-14.2.0-r6 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
 libgeotiff-1.7.3-r2 x86_64 {libgeotiff} (Public-Domain) [installed]
