@@ -552,7 +552,9 @@ def _process_tasks():
     resolved_tasks = _resolve_deps(task_names, tasks_with_deps)
 
     # runtime
-    ret_code = 0
+    # NOTE: fail-fast. If any task returns non-zero, exit immediately.
+    # This prevents later tasks (or dependencies) from overwriting the exit code
+    # back to 0 and making CI appear green.
     for task_name in resolved_tasks:
         if task_name in tasks:
             task = tasks[task_name]
@@ -560,13 +562,17 @@ def _process_tasks():
                 task_context = _build_task_context(task)
                 task_context.args = tasks_with_args.get(task_name, {})
                 ret = task.func(task_context)
+
                 if isinstance(ret, CompletedProcess):
-                    ret_code = ret.returncode
+                    if ret.returncode != 0:
+                        sys.exit(ret.returncode)
                 elif isinstance(ret, int):
-                    ret_code = ret
+                    if ret != 0:
+                        sys.exit(ret)
             except KeyboardInterrupt:
                 pass
-    sys.exit(ret_code)
+
+    sys.exit(0)
 
 
 if __name__ == "__main__":
