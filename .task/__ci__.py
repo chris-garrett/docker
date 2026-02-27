@@ -2,6 +2,7 @@ import re
 import http.client
 import json
 import os
+import shlex
 import time
 import urllib.parse
 from string import Template
@@ -343,6 +344,111 @@ def pr_service(ctx: TaskContext, name: str):
     ci_token = f"{os.getenv('CI_GITHUB_TOKEN')}"
     repo_url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}"
 
+    max_merge_retries = 3
+    merge_retry_delay = 5  # seconds
+
+    def _delete_tag_if_exists(tag: str):
+        if not tag:
+            return
+        # Best-effort cleanup. Don't mask the original failure.
+        try:
+            safe_tag = shlex.quote(tag)
+            ret = ctx.exec(f"git tag -l {safe_tag}", capture=True)
+            if ret.returncode == 0 and tag in ret.stdout.split():
+                ctx.log.warning(f"Deleting orphaned tag {tag}")
+                ctx.exec(f"git tag -d {safe_tag}")
+                ctx.exec(f"git push origin :refs/tags/{safe_tag}")
+        except Exception as ex:
+            ctx.log.warning(f"Failed to delete tag {tag}: {ex}")
+
+    def _sync_branch_with_main(branch: str) -> int:
+        """Keep branch mergeable when main moves between PR creation and merge."""
+        ret = ctx.exec("git fetch origin main", capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error fetching main: {ret.stderr}")
+            return 1
+
+        # Rebase branch onto latest main (preferred: linear history).
+        ret = ctx.exec("git rebase origin/main", capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Rebase failed: {ret.stderr}")
+            ctx.exec("git rebase --abort", capture=True)
+            return 1
+
+        safe_branch = shlex.quote(branch)
+        ret = ctx.exec(f"git push --force-with-lease origin {safe_branch}", capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error pushing rebased branch: {ret.stderr}")
+            return 1
+
+        return 0
+
+    def _merge_pr(pull_number: int, commit_title: str) -> tuple:
+        """Attempt to merge a PR. Returns the raw fetch result tuple."""
+        return fetch(
+            f"{repo_url}/pulls/{pull_number}/merge",
+            {
+                "commit_title": commit_title,
+                "merge_method": "squash",
+            },
+            {
+                "User-Agent": "CI Github Bot",
+                "Accept": "application/vnd.github.v3+json",
+                "Authorization": f"Bearer {token}",
+            },
+            method="PUT",
+        )
+
+    def _merge_pr_with_retry(pull_number: int, commit_title: str, branch: str, orphan_tag: str) -> int:
+        """Merge a PR, retrying with rebase if base branch moves (HTTP 405)."""
+        for attempt in range(1, max_merge_retries + 1):
+            ret = _merge_pr(pull_number, commit_title)
+            if ret[0] == 200:
+                return 0
+
+            body = ret[2].decode("utf-8", errors="ignore") if isinstance(ret[2], (bytes, bytearray)) else str(ret[2])
+            if ret[0] == 405 and "Base branch was modified" in body:
+                ctx.log.warning(f"Base branch moved during merge (attempt {attempt}/{max_merge_retries}). Syncing and retrying...")
+                if _sync_branch_with_main(branch) != 0:
+                    _delete_tag_if_exists(orphan_tag)
+                    return 1
+                time.sleep(merge_retry_delay)
+                continue
+
+            # Non-retryable error
+            ctx.log.error(f"Error merging PR {ret[0]} | {ret[1]} | {ret[2]}")
+            _delete_tag_if_exists(orphan_tag)
+            return 1
+
+        ctx.log.error(f"Failed to merge PR after {max_merge_retries} attempts")
+        _delete_tag_if_exists(orphan_tag)
+        return 1
+
+    def _find_open_pr_number(head_branch: str) -> int | None:
+        """Find an existing open PR for this branch (e.g. if a prior run created it)."""
+        ret = fetch(
+            f"{repo_url}/pulls?state=open&head={os.getenv('GITHUB_REPOSITORY').split('/')[0]}:{head_branch}&base=main",
+            {},
+            {
+                "User-Agent": "CI Github Bot",
+                "Accept": "application/vnd.github.v3+json",
+                "Authorization": f"Bearer {token}",
+            },
+            method="GET",
+        )
+        if ret[0] != 200:
+            ctx.log.error(f"Error listing PRs {ret[0]} | {ret[1]} | {ret[2]}")
+            return None
+
+        try:
+            prs = json.loads(ret[2])
+            if len(prs) == 0:
+                return None
+            return prs[0]["number"]
+        except Exception as ex:
+            ctx.log.error(f"Error parsing PR list: {ex}")
+            return None
+
     # check for local changes
     ret = ctx.exec("git status --porcelain", capture=True)
     if ret.returncode != 0:
@@ -363,7 +469,36 @@ def pr_service(ctx: TaskContext, name: str):
         return 1
     if f"origin/{branch}" in ret.stdout:
         ctx.log.info(f"Branch {branch} already exists")
-        return 0
+
+        pull_number = _find_open_pr_number(branch)
+        if not pull_number:
+            ctx.log.warning(f"Branch {branch} exists but has no open PR. Orphaned branch?")
+            return 0
+
+        ctx.log.info(f"Found existing PR {pull_number} for {branch}. Will try to sync + merge.")
+
+        safe_branch = shlex.quote(branch)
+
+        # checkout the branch so we can sync it
+        ret = ctx.exec(f"git fetch origin {safe_branch}", capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error fetching branch {branch}: {ret.stderr}")
+            return 1
+
+        ret = ctx.exec(f"git checkout -B {safe_branch} origin/{safe_branch}", capture=True)
+        if ret.returncode != 0:
+            ctx.log.error(f"Error checking out branch {branch}: {ret.stderr}")
+            return 1
+
+        orphan_tag = f"{name}/v{ver.semver_full}"
+        commit_title = f"chore: {name} {ver.semver_full}"
+
+        if _sync_branch_with_main(branch) != 0:
+            _delete_tag_if_exists(orphan_tag)
+            return 1
+
+        ctx.log.info(f"Merging PR for {name} PR {pull_number}")
+        return _merge_pr_with_retry(pull_number, commit_title, branch, orphan_tag)
 
     # create branch
     ret = ctx.exec(f"git checkout -b {branch}", capture=True)
@@ -428,24 +563,8 @@ def pr_service(ctx: TaskContext, name: str):
     time.sleep(sleep_sec)
 
     ctx.log.info(f"Merging PR for {name} PR {pull_number}")
-    ret = fetch(
-        f"{repo_url}/pulls/{pull_number}/merge",
-        {
-            "commit_title": commit_msg,
-            "merge_method": "squash",
-        },
-        {
-            "User-Agent": "CI Github Bot",
-            "Accept": "application/vnd.github.v3+json",
-            "Authorization": f"Bearer {token}",
-        },
-        method="PUT",
-    )
-    if ret[0] != 200:
-        ctx.log.error(f"Error merging PR {ret[0]} | {ret[1]} | {ret[2]}")
-        return 1
-
-    return 0
+    orphan_tag = f"{name}/v{ver.semver_full}"
+    return _merge_pr_with_retry(pull_number, commit_msg, branch, orphan_tag)
 
 
 def build_service(ctx: TaskContext, name: str, skip_ci=False, platforms: str=None):
