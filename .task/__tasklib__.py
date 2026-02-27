@@ -552,9 +552,11 @@ def _process_tasks():
     resolved_tasks = _resolve_deps(task_names, tasks_with_deps)
 
     # runtime
-    # NOTE: fail-fast. If any task returns non-zero, exit immediately.
+    # NOTE: fail-fast. If any task returns non-zero, exit immediately via sys.exit().
     # This prevents later tasks (or dependencies) from overwriting the exit code
     # back to 0 and making CI appear green.
+    # Tradeoff: sys.exit() bypasses any cleanup/finally logic in the task runner.
+    # Tasks that need cleanup should use try/finally internally.
     for task_name in resolved_tasks:
         if task_name in tasks:
             task = tasks[task_name]
