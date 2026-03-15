@@ -19,9 +19,9 @@ Desired=Unknown/Install/Remove/Purge/Hold
 ||/ Name                           Version                        Architecture Description
 +++-==============================-==============================-============-===============================================================================
 ii  apt                            3.0.3                          amd64        commandline package manager
-ii  base-files                     13.8+deb13u3                   amd64        Debian base system miscellaneous files
+ii  base-files                     13.8+deb13u4                   amd64        Debian base system miscellaneous files
 ii  base-passwd                    3.6.7                          amd64        Debian base system master password and group files
-ii  bash                           5.2.37-2+b7                    amd64        GNU Bourne Again SHell
+ii  bash                           5.2.37-2+b8                    amd64        GNU Bourne Again SHell
 ii  binutils                       2.44-3                         amd64        GNU assembler, linker and binary utilities
 ii  binutils-common:amd64          2.44-3                         amd64        Common files for the GNU assembler, linker and binary utilities
 ii  binutils-x86-64-linux-gnu      2.44-3                         amd64        GNU binary utilities, for x86-64-linux-gnu target
@@ -40,8 +40,8 @@ ii  debconf                        1.5.91                         all          D
 ii  debian-archive-keyring         2025.1                         all          OpenPGP archive certificates of the Debian archive
 ii  debianutils                    5.23.2                         amd64        Miscellaneous utilities specific to Debian
 ii  diffutils                      1:3.10-4                       amd64        File comparison utilities
-ii  dpkg                           1.22.21                        amd64        Debian package management system
-ii  dpkg-dev                       1.22.21                        all          Debian package development tools
+ii  dpkg                           1.22.22                        amd64        Debian package management system
+ii  dpkg-dev                       1.22.22                        all          Debian package development tools
 ii  file                           1:5.46-5                       amd64        Recognize the type of data in a file using "magic" numbers
 ii  findutils                      4.10.0-3                       amd64        utilities for finding files--find, xargs
 ii  g++                            4:14.2.0-1                     amd64        GNU C++ compiler
@@ -76,15 +76,15 @@ ii  libbpf1:amd64                  1:1.5.0-3                      amd64        e
 ii  libbrotli1:amd64               1.1.0-2+b7                     amd64        library implementing brotli encoder and decoder (shared libraries)
 ii  libbsd0:amd64                  0.12.2-2                       amd64        utility functions from BSD systems - shared library
 ii  libbz2-1.0:amd64               1.0.8-6                        amd64        high-quality block-sorting file compressor library - runtime
-ii  libc-bin                       2.41-12+deb13u1                amd64        GNU C Library: Binaries
-ii  libc-dev-bin                   2.41-12+deb13u1                amd64        GNU C Library: Development binaries
-ii  libc6:amd64                    2.41-12+deb13u1                amd64        GNU C Library: Shared libraries
-ii  libc6-dev:amd64                2.41-12+deb13u1                amd64        GNU C Library: Development Libraries and Header Files
+ii  libc-bin                       2.41-12+deb13u2                amd64        GNU C Library: Binaries
+ii  libc-dev-bin                   2.41-12+deb13u2                amd64        GNU C Library: Development binaries
+ii  libc6:amd64                    2.41-12+deb13u2                amd64        GNU C Library: Shared libraries
+ii  libc6-dev:amd64                2.41-12+deb13u2                amd64        GNU C Library: Development Libraries and Header Files
 ii  libcap-ng0:amd64               0.8.5-4+b1                     amd64        alternate POSIX capabilities library
-ii  libcap2:amd64                  1:2.75-10+b3                   amd64        POSIX 1003.1e capabilities (library)
-ii  libcap2-bin                    1:2.75-10+b3                   amd64        POSIX 1003.1e capabilities (utilities)
+ii  libcap2:amd64                  1:2.75-10+b8                   amd64        POSIX 1003.1e capabilities (library)
+ii  libcap2-bin                    1:2.75-10+b8                   amd64        POSIX 1003.1e capabilities (utilities)
 ii  libcc1-0:amd64                 14.2.0-19                      amd64        GCC cc1 plugin for GDB
-ii  libcom-err2:amd64              1.47.2-3+b7                    amd64        common error description library
+ii  libcom-err2:amd64              1.47.2-3+b10                   amd64        common error description library
 ii  libcrypt-dev:amd64             1:4.4.38-1                     amd64        libcrypt development files
 ii  libcrypt1:amd64                1:4.4.38-1                     amd64        libcrypt shared library
 ii  libctf-nobfd0:amd64            2.44-3                         amd64        Compact C Type Format library (runtime, no BFD dependency)
@@ -93,7 +93,7 @@ ii  libcurl3t64-gnutls:amd64       8.14.1-2+deb13u2               amd64        e
 ii  libcurl4t64:amd64              8.14.1-2+deb13u2               amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
 ii  libdb5.3t64:amd64              5.3.28+dfsg2-9                 amd64        Berkeley v5.3 Database Libraries [runtime]
 ii  libdebconfclient0:amd64        0.280                          amd64        Debian Configuration Management System (C-implementation library)
-ii  libdpkg-perl                   1.22.21                        all          Dpkg perl modules
+ii  libdpkg-perl                   1.22.22                        all          Dpkg perl modules
 ii  libelf1t64:amd64               0.192-4                        amd64        library to read and write ELF files
 ii  liberror-perl                  0.17030-1                      all          Perl module for error/exception handling in an OO-ish way
 ii  libexpat1:amd64                2.7.1-2                        amd64        XML parsing C library - runtime library
@@ -158,9 +158,9 @@ ii  libsepol2:amd64                3.8.1-1                        amd64        S
 ii  libsframe1:amd64               2.44-3                         amd64        Library to handle the SFrame format (runtime library)
 ii  libsmartcols1:amd64            2.41-5                         amd64        smart column output alignment library
 ii  libsodium23:amd64              1.0.18-1+deb13u1               amd64        Network communication, cryptography and signaturing library
-ii  libsqlite3-0:amd64             3.46.1-7                       amd64        SQLite 3 shared library
+ii  libsqlite3-0:amd64             3.46.1-7+deb13u1               amd64        SQLite 3 shared library
 ii  libssh2-1t64:amd64             1.11.1-1                       amd64        SSH2 client-side library
-ii  libssl3t64:amd64               3.5.4-1~deb13u2                amd64        Secure Sockets Layer toolkit - shared libraries
+ii  libssl3t64:amd64               3.5.5-1~deb13u1                amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-14-dev:amd64         14.2.0-19                      amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64               14.2.0-19                      amd64        GNU Standard C++ Library v3
 ii  libsystemd0:amd64              257.9-1~deb13u1                amd64        systemd utility library
@@ -185,8 +185,8 @@ ii  mount                          2.41-5                         amd64        t
 ii  ncdu                           1.22-1                         amd64        ncurses disk usage viewer
 ii  ncurses-base                   6.5+20250216-2                 all          basic terminal type definitions
 ii  ncurses-bin                    6.5+20250216-2                 amd64        terminal-related programs and man pages
-ii  openssl                        3.5.4-1~deb13u2                amd64        Secure Sockets Layer toolkit - cryptographic utility
-ii  openssl-provider-legacy        3.5.4-1~deb13u2                amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssl                        3.5.5-1~deb13u1                amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssl-provider-legacy        3.5.5-1~deb13u1                amd64        Secure Sockets Layer toolkit - cryptographic utility
 ii  passwd                         1:4.17.4-2                     amd64        change and administer password and group data
 ii  patch                          2.8-2                          amd64        Apply a diff file to an original
 ii  perl                           5.40.1-6                       amd64        Larry Wall's Practical Extraction and Report Language
@@ -198,7 +198,7 @@ ii  sed                            4.9-2                          amd64        G
 ii  sqv                            1.3.0-3+b2                     amd64        OpenPGP signature verification program from Sequoia
 ii  sysvinit-utils                 3.14-4                         amd64        System-V-like utilities
 ii  tar                            1.35+dfsg-3.1                  amd64        GNU version of the tar archiving utility
-ii  tzdata                         2025b-4+deb13u1                all          time zone and daylight-saving time data
+ii  tzdata                         2026a-0+deb13u1                all          time zone and daylight-saving time data
 ii  unzip                          6.0-29                         amd64        De-archiver for .zip files
 ii  util-linux                     2.41-5                         amd64        miscellaneous system utilities
 ii  vim                            2:9.1.1230-2                   amd64        Vi IMproved - enhanced vi editor
