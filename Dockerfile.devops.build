@@ -14,7 +14,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /etc/apt/keyrings/postgresql.asc; \
     echo "deb [signed-by=/etc/apt/keyrings/postgresql.asc] http://apt.postgresql.org/pub/repos/apt trixie-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-# install apt packages: azure-cli, psql 17 + 18, openssh-server, openvpn, easy-rsa, neovim, jq, sqlite3, mtr
+# install apt packages: azure-cli, psql 17 + 18, openssh-server, openvpn, easy-rsa, neovim, jq, sqlite3, mtr-tiny
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
     set -eux; \
@@ -29,7 +29,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
         neovim=$NEOVIM_VERSION \
         jq=$JQ_VERSION \
         sqlite3=$SQLITE3_VERSION \
-        mtr=$MTR_VERSION \
+        mtr-tiny \
     ; \
     ln -sf /usr/lib/postgresql/17/bin/psql /work/opt/bin/psql17; \
     ln -sf /usr/lib/postgresql/18/bin/psql /work/opt/bin/psql18; \

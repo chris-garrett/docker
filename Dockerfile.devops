@@ -77,7 +77,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /etc/apt/keyrings/postgresql.asc; \
     echo "deb [signed-by=/etc/apt/keyrings/postgresql.asc] http://apt.postgresql.org/pub/repos/apt trixie-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-# install apt packages: azure-cli, psql 17 + 18, openssh-server, openvpn, easy-rsa, neovim, jq, sqlite3, mtr
+# install apt packages: azure-cli, psql 17 + 18, openssh-server, openvpn, easy-rsa, neovim, jq, sqlite3, mtr-tiny
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
     set -eux; \
@@ -92,7 +92,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
         neovim=0.10.4-8 \
         jq=1.7.1-6+deb13u1 \
         sqlite3=3.46.1-7+deb13u1 \
-        mtr=0.95-1.1+b1 \
+        mtr-tiny \
     ; \
     ln -sf /usr/lib/postgresql/17/bin/psql /work/opt/bin/psql17; \
     ln -sf /usr/lib/postgresql/18/bin/psql /work/opt/bin/psql18; \
@@ -171,7 +171,6 @@ LABEL org.opencontainers.image.easyrsa_version="3.2.2-1"
 LABEL org.opencontainers.image.neovim_version="0.10.4-8"
 LABEL org.opencontainers.image.jq_version="1.7.1-6+deb13u1"
 LABEL org.opencontainers.image.sqlite3_version="3.46.1-7+deb13u1"
-LABEL org.opencontainers.image.mtr_version="0.95-1.1+b1"
 LABEL org.opencontainers.image.openssh_server_version="1:10.0p1-7+deb13u2"
 
 
