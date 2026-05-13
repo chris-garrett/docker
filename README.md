@@ -58,7 +58,6 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - K9s: **0.50.18**
 - Kubectl: **1.36.1**
 - Kubelogin: **0.2.17**
-- Mtr: **0.95-1.1+b1**
 - Neovim: **0.10.4-8**
 - Openssh_server: **1:10.0p1-7+deb13u2**
 - Openvpn: **2.6.14-1+deb13u1**
