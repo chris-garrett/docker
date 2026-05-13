@@ -46,7 +46,8 @@ def configure(builder: TaskBuilder):
     _add_service(builder, mod, "python")
     _add_service(builder, mod, "node")
     _add_service(builder, mod, "rust")
+    _add_service(builder, mod, "devops")
     _add_postgres_service(builder, mod, "postgres")
 
     builder.add_task(mod, "info", _info)
-    builder.add_task(mod, "update", lambda ctx: None, ["python:update", "node:update", "rust:update", "postgres:update"])
+    builder.add_task(mod, "update", lambda ctx: None, ["python:update", "node:update", "rust:update", "devops:update", "postgres:update"])

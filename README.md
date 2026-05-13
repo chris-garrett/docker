@@ -6,6 +6,7 @@ Kitchen sink developer images. These are intended for use with docker compose.
 [![Rust: Build](https://github.com/chris-garrett/docker/actions/workflows/build-rust.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-rust.yaml)
 [![Node: Build](https://github.com/chris-garrett/docker/actions/workflows/build-node.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-node.yaml)
 [![Postgres: Build](https://github.com/chris-garrett/docker/actions/workflows/build-postgres.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-postgres.yaml)
+[![Devops: Build](https://github.com/chris-garrett/docker/actions/workflows/build-devops.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-devops.yaml)
 
 
 ## Versions
@@ -43,6 +44,30 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 - Pgvector: **0.8.1**
 - Postgis: **17-3.6-alpine**
+
+### Devops 26.1.0
+
+`docker pull ghcr.io/chris-garrett/devops:26.1.0`
+
+- Aws: **2.27.40**
+- Azure_cli: **2.86.0-1~bookworm**
+- Dockerize: **0.9.9**
+- Duckdb: **1.5.2**
+- Easyrsa: **3.2.2-1**
+- Jq: **1.7.1-6+deb13u1**
+- K9s: **0.50.18**
+- Kubectl: **1.36.1**
+- Kubelogin: **0.2.17**
+- Mtr: **0.95-1.1+b1**
+- Neovim: **0.10.4-8**
+- Openssh_server: **1:10.0p1-7+deb13u2**
+- Openvpn: **2.6.14-1+deb13u1**
+- Psql17: **17.9-1.pgdg13+1**
+- Psql18: **18.3-1.pgdg13+1**
+- Sqlite3: **3.46.1-7+deb13u1**
+- Tini: **0.19.0**
+- Tofu: **1.11.7**
+- Watchexec: **2.3.2**
 
 ## Examples
 

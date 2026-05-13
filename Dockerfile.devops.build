@@ -1,0 +1,90 @@
+# add apt prerequisites + Microsoft (azure-cli) + PGDG (postgresql-client) repos
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    apt update; \
+    apt install -y --no-install-recommends \
+        apt-transport-https \
+        gnupg \
+        lsb-release \
+    ; \
+    install -d /etc/apt/keyrings; \
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc -o /etc/apt/keyrings/microsoft.asc; \
+    echo "deb [signed-by=/etc/apt/keyrings/microsoft.asc] https://packages.microsoft.com/repos/azure-cli/ bookworm main" > /etc/apt/sources.list.d/azure-cli.list; \
+    curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /etc/apt/keyrings/postgresql.asc; \
+    echo "deb [signed-by=/etc/apt/keyrings/postgresql.asc] http://apt.postgresql.org/pub/repos/apt trixie-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+
+# install apt packages: azure-cli, psql 17 + 18, openssh-server, openvpn, easy-rsa, neovim, jq, sqlite3, mtr
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    apt update; \
+    apt install -y --no-install-recommends \
+        azure-cli=$AZURE_CLI_VERSION \
+        postgresql-client-17=$PSQL17_VERSION \
+        postgresql-client-18=$PSQL18_VERSION \
+        openssh-server=$OPENSSH_SERVER_VERSION \
+        openvpn=$OPENVPN_VERSION \
+        easy-rsa=$EASYRSA_VERSION \
+        neovim=$NEOVIM_VERSION \
+        jq=$JQ_VERSION \
+        sqlite3=$SQLITE3_VERSION \
+        mtr=$MTR_VERSION \
+    ; \
+    ln -sf /usr/lib/postgresql/17/bin/psql /work/opt/bin/psql17; \
+    ln -sf /usr/lib/postgresql/18/bin/psql /work/opt/bin/psql18; \
+    rm -rf /var/lib/apt/lists/*
+
+# install AWS CLI v2 (official zip, installs into /work/opt/aws, symlinks in /work/opt/bin)
+RUN set -eux; \
+    if [ "$$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else \
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/awscli.zip -LsSf "https://awscli.amazonaws.com/awscli-exe-linux-$${ARCH}-$AWS_VERSION.zip"; \
+    unzip -q /tmp/awscli.zip -d /tmp; \
+    /tmp/aws/install --install-dir /work/opt/aws --bin-dir /work/opt/bin; \
+    rm -rf /tmp/awscli.zip /tmp/aws
+
+# install tofu (OpenTofu)
+RUN set -eux; \
+    curl -o /tmp/tofu.tgz -LsSf "https://github.com/opentofu/opentofu/releases/download/v$TOFU_VERSION/tofu_${TOFU_VERSION}_linux_$${TARGETARCH}.tar.gz"; \
+    tar -C /work/opt/bin -xf /tmp/tofu.tgz tofu; \
+    chmod +x /work/opt/bin/tofu; \
+    rm /tmp/tofu.tgz
+
+# install kubectl
+RUN set -eux; \
+    curl -o /work/opt/bin/kubectl -LsSf "https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/$${TARGETARCH}/kubectl"; \
+    chmod +x /work/opt/bin/kubectl
+
+# install kubelogin
+RUN set -eux; \
+    curl -o /tmp/kubelogin.zip -LsSf "https://github.com/Azure/kubelogin/releases/download/v$KUBELOGIN_VERSION/kubelogin-linux-$${TARGETARCH}.zip"; \
+    unzip -j /tmp/kubelogin.zip "bin/linux_$${TARGETARCH}/kubelogin" -d /work/opt/bin; \
+    chmod +x /work/opt/bin/kubelogin; \
+    rm /tmp/kubelogin.zip
+
+# install k9s
+RUN set -eux; \
+    curl -o /tmp/k9s.tgz -LsSf "https://github.com/derailed/k9s/releases/download/v$K9S_VERSION/k9s_Linux_$${TARGETARCH}.tar.gz"; \
+    tar -C /work/opt/bin -xf /tmp/k9s.tgz k9s; \
+    chmod +x /work/opt/bin/k9s; \
+    rm /tmp/k9s.tgz
+
+# install duckdb
+RUN set -eux; \
+    curl -o /tmp/duckdb.zip -LsSf "https://github.com/duckdb/duckdb/releases/download/v$DUCKDB_VERSION/duckdb_cli-linux-$${TARGETARCH}.zip"; \
+    unzip -d /work/opt/bin /tmp/duckdb.zip; \
+    chmod +x /work/opt/bin/duckdb; \
+    rm /tmp/duckdb.zip
+
+# install tini
+RUN set -eux; \
+    curl -o /work/opt/bin/tini -LsSf "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-static-$${TARGETARCH}"; \
+    chmod +x /work/opt/bin/tini
+
+# strip standalone tools in /work/opt/bin. Do not touch /work/opt/aws (AWS CLI ships its own python runtime).
+RUN set -eux; \
+    find /work/opt/bin -maxdepth 1 -type f -executable -exec file {} \; | grep "ELF" | cut -d: -f1 | xargs -r strip || true
