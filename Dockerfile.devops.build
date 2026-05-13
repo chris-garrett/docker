@@ -29,7 +29,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
         neovim=$NEOVIM_VERSION \
         jq=$JQ_VERSION \
         sqlite3=$SQLITE3_VERSION \
-        mtr-tiny=$MTR_VERSION \
+        mtr-tiny \
     ; \
     ln -sf /usr/lib/postgresql/17/bin/psql /work/opt/bin/psql17; \
     ln -sf /usr/lib/postgresql/18/bin/psql /work/opt/bin/psql18; \
