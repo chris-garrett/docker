@@ -45,9 +45,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Pgvector: **0.8.1**
 - Postgis: **17-3.6-alpine**
 
-### Devops 26.1.0
+### Devops 26.2.0
 
-`docker pull ghcr.io/chris-garrett/devops:26.1.0`
+`docker pull ghcr.io/chris-garrett/devops:26.2.0`
 
 - Aws: **2.27.40**
 - Azure_cli: **2.86.0-1~bookworm**
