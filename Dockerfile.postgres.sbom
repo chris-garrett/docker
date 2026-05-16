@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:d5e1dace3ca6bfc3818c89719b5801a86da42ddca60d288472e485c54805d64e
+postgis/postgis@sha256:3b3d082be70f27edbaf49c65174519044aac63c430f12fd2ba2a4c4144bd4f0d
 
 ## Package Versions
 
@@ -11,8 +11,8 @@ org.opencontainers.image.postgis_version=17-3.6-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20260511.083557 noarch {.postgis-rundeps} () [installed]
-.postgresql-rundeps-20260421.230930 noarch {.postgresql-rundeps} () [installed]
+.postgis-rundeps-20260515.134157 noarch {.postgis-rundeps} () [installed]
+.postgresql-rundeps-20260514.190352 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.2-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
 alpine-baselayout-data-3.7.2-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -125,7 +125,7 @@ sqlite-libs-3.51.2-r0 x86_64 {sqlite} (blessing) [installed]
 ssl_client-1.37.0-r30 x86_64 {busybox} (GPL-2.0-only) [installed]
 superlu-7.0.0-r0 x86_64 {superlu} (BSD-3-Clause) [installed]
 tiff-4.7.1-r0 x86_64 {tiff} (libtiff) [installed]
-tzdata-2026a-r0 x86_64 {tzdata} (Public-Domain) [installed]
+tzdata-2026b-r0 x86_64 {tzdata} (Public-Domain) [installed]
 unixodbc-2.3.14-r0 x86_64 {unixodbc} (LGPL-2.0-or-later) [installed]
 xerces-c-3.2.5-r3 x86_64 {xerces-c} (Apache-2.0) [installed]
 xz-libs-5.8.3-r0 x86_64 {xz} (GPL-2.0-or-later AND 0BSD AND Public-Domain AND LGPL-2.1-or-later) [installed]
