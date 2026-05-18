@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:3b3d082be70f27edbaf49c65174519044aac63c430f12fd2ba2a4c4144bd4f0d
+postgis/postgis@sha256:9df4aaa146632fb9bb8aeb768e818d69be4f1f4d5d5605a0c57ff496f7a07331
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=17-3.6-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20260515.134157 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20260518.085332 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20260514.190352 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.2-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -57,7 +57,7 @@ libbsd-0.12.2-r0 x86_64 {libbsd} (BSD-3-Clause) [installed]
 libbz2-1.0.8-r6 x86_64 {bzip2} (bzip2-1.0.6) [installed]
 libcom_err-1.47.3-r0 x86_64 {e2fsprogs} (GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT) [installed]
 libcrypto3-3.5.6-r0 x86_64 {openssl} (Apache-2.0) [installed]
-libcurl-8.17.0-r1 x86_64 {curl} (curl) [installed]
+libcurl-8.19.0-r0 x86_64 {curl} (curl) [installed]
 libdav1d-1.5.2-r0 x86_64 {dav1d} (BSD-2-Clause) [installed]
 libdeflate-1.25-r0 x86_64 {libdeflate} (MIT) [installed]
 libedit-20251016.3.1-r0 x86_64 {libedit} (BSD-3-Clause) [installed]
@@ -76,7 +76,7 @@ liblapack-0.3.30-r2 x86_64 {openblas} (BSD-3-Clause) [installed]
 libldap-2.6.10-r0 x86_64 {openldap} (OLDAP-2.8) [installed]
 libmd-1.1.0-r0 x86_64 {libmd} (BSD-3-Clause AND BSD-2-Clause AND ISC AND Beerware AND Public Domain) [installed]
 libncursesw-6.5_p20251123-r0 x86_64 {ncurses} (X11) [installed]
-libpng-1.6.57-r0 x86_64 {libpng} (Libpng) [installed]
+libpng-1.6.58-r1 x86_64 {libpng} (Libpng) [installed]
 libpsl-0.21.5-r3 x86_64 {libpsl} (MIT) [installed]
 libqb3-1.3.2-r0 x86_64 {libqb3} (Apache-2.0) [installed]
 libquadmath-15.2.0-r2 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
@@ -109,7 +109,6 @@ musl-1.2.5-r23 x86_64 {musl} (MIT) [installed]
 musl-utils-1.2.5-r23 x86_64 {musl} (MIT AND BSD-2-Clause AND GPL-2.0-or-later) [installed]
 ncurses-terminfo-base-6.5_p20251123-r0 x86_64 {ncurses} (X11) [installed]
 nghttp2-libs-1.69.0-r0 x86_64 {nghttp2} (MIT) [installed]
-nghttp3-1.13.1-r0 x86_64 {nghttp3} (MIT) [installed]
 nss_wrapper-1.1.12-r1 x86_64 {nss_wrapper} (BSD-3-Clause) [installed]
 openblas-0.3.30-r2 x86_64 {openblas} (BSD-3-Clause) [installed]
 openjpeg-2.5.4-r1 x86_64 {openjpeg} (BSD-2-Clause) [installed]
