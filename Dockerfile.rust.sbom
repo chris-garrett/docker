@@ -2,7 +2,7 @@
 
 ## base image digest
 
-debian@sha256:109e2c65005bf160609e4ba6acf7783752f8502ad218e298253428690b9eaa4b
+debian@sha256:b6e2a152f22a40ff69d92cb397223c906017e1391a73c952b588e51af8883bf8
 
 ## Package Versions
 
@@ -102,7 +102,7 @@ ii  libgcc-s1:amd64                14.2.0-19                      amd64        G
 ii  libgdbm-compat4t64:amd64       1.24-2                         amd64        GNU dbm database routines (legacy support runtime version) 
 ii  libgdbm6t64:amd64              1.24-2                         amd64        GNU dbm database routines (runtime version) 
 ii  libgmp10:amd64                 2:6.3.0+dfsg-3                 amd64        Multiprecision arithmetic library
-ii  libgnutls30t64:amd64           3.8.9-3+deb13u3                amd64        GNU TLS library - main runtime library
+ii  libgnutls30t64:amd64           3.8.9-3+deb13u4                amd64        GNU TLS library - main runtime library
 ii  libgomp1:amd64                 14.2.0-19                      amd64        GCC OpenMP (GOMP) support library
 ii  libgpm2:amd64                  1.20.7-11+b2                   amd64        General Purpose Mouse - shared library
 ii  libgprofng0:amd64              2.44-3                         amd64        GNU Next Generation profiler (runtime library)
