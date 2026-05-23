@@ -54,12 +54,12 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Dockerize: **0.9.9**
 - Duckdb: **1.5.2**
 - Easyrsa: **3.2.2-1**
-- Jq: **1.7.1-6+deb13u1**
+- Jq: **1.7.1-6+deb13u2**
 - K9s: **0.50.18**
 - Kubectl: **1.36.1**
 - Kubelogin: **0.2.17**
 - Neovim: **0.10.4-8**
-- Openssh_server: **1:10.0p1-7+deb13u2**
+- Openssh_server: **1:10.0p1-7+deb13u4**
 - Openvpn: **2.6.14-1+deb13u1**
 - Psql17: **17.9-1.pgdg13+1**
 - Psql18: **18.3-1.pgdg13+1**

@@ -2,7 +2,7 @@
 
 ## base image digest
 
-debian@sha256:109e2c65005bf160609e4ba6acf7783752f8502ad218e298253428690b9eaa4b
+debian@sha256:b6e2a152f22a40ff69d92cb397223c906017e1391a73c952b588e51af8883bf8
 
 ## Package Versions
 
@@ -11,12 +11,12 @@ org.opencontainers.image.azure_cli_version=2.86.0-1~bookworm
 org.opencontainers.image.dockerize_version=0.9.9
 org.opencontainers.image.duckdb_version=1.5.2
 org.opencontainers.image.easyrsa_version=3.2.2-1
-org.opencontainers.image.jq_version=1.7.1-6+deb13u1
+org.opencontainers.image.jq_version=1.7.1-6+deb13u2
 org.opencontainers.image.k9s_version=0.50.18
 org.opencontainers.image.kubectl_version=1.36.1
 org.opencontainers.image.kubelogin_version=0.2.17
 org.opencontainers.image.neovim_version=0.10.4-8
-org.opencontainers.image.openssh_server_version=1:10.0p1-7+deb13u2
+org.opencontainers.image.openssh_server_version=1:10.0p1-7+deb13u4
 org.opencontainers.image.openvpn_version=2.6.14-1+deb13u1
 org.opencontainers.image.psql17_version=17.9-1.pgdg13+1
 org.opencontainers.image.psql18_version=18.3-1.pgdg13+1
@@ -36,9 +36,9 @@ ii  adduser                        3.152                          all          a
 ii  apt                            3.0.3                          amd64        commandline package manager
 ii  apt-transport-https            3.0.3                          all          transitional package for https support
 ii  azure-cli                      2.86.0-1~bookworm              amd64        Azure CLI
-ii  base-files                     13.8+deb13u4                   amd64        Debian base system miscellaneous files
+ii  base-files                     13.8+deb13u5                   amd64        Debian base system miscellaneous files
 ii  base-passwd                    3.6.7                          amd64        Debian base system master password and group files
-ii  bash                           5.2.37-2+b8                    amd64        GNU Bourne Again SHell
+ii  bash                           5.2.37-2+b9                    amd64        GNU Bourne Again SHell
 ii  binutils                       2.44-3                         amd64        GNU assembler, linker and binary utilities
 ii  binutils-common:amd64          2.44-3                         amd64        Common files for the GNU assembler, linker and binary utilities
 ii  binutils-x86-64-linux-gnu      2.44-3                         amd64        GNU binary utilities, for x86-64-linux-gnu target
@@ -51,13 +51,13 @@ ii  cpp                            4:14.2.0-1                     amd64        G
 ii  cpp-14                         14.2.0-19                      amd64        GNU C preprocessor
 ii  cpp-14-x86-64-linux-gnu        14.2.0-19                      amd64        GNU C preprocessor for x86_64-linux-gnu
 ii  cpp-x86-64-linux-gnu           4:14.2.0-1                     amd64        GNU C preprocessor (cpp) for the amd64 architecture
-ii  curl                           8.14.1-2+deb13u2               amd64        command line tool for transferring data with URL syntax
+ii  curl                           8.14.1-2+deb13u3               amd64        command line tool for transferring data with URL syntax
 ii  dash                           0.5.12-12                      amd64        POSIX-compliant shell
 ii  debconf                        1.5.91                         all          Debian configuration management system
 ii  debian-archive-keyring         2025.1                         all          OpenPGP archive certificates of the Debian archive
 ii  debianutils                    5.23.2                         amd64        Miscellaneous utilities specific to Debian
 ii  diffutils                      1:3.10-4                       amd64        File comparison utilities
-ii  dirmngr                        2.4.7-21+deb13u1+b2            amd64        GNU privacy guard - network certificate management service
+ii  dirmngr                        2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - network certificate management service
 ii  dpkg                           1.22.22                        amd64        Debian package management system
 ii  dpkg-dev                       1.22.22                        all          Debian package development tools
 ii  easy-rsa                       3.2.2-1                        all          Simple shell based CA utility
@@ -73,22 +73,22 @@ ii  gcc-14-base:amd64              14.2.0-19                      amd64        G
 ii  gcc-14-x86-64-linux-gnu        14.2.0-19                      amd64        GNU C compiler for the x86_64-linux-gnu architecture
 ii  gcc-x86-64-linux-gnu           4:14.2.0-1                     amd64        GNU C compiler for the amd64 architecture
 ii  git                            1:2.47.3-0+deb13u1             amd64        fast, scalable, distributed revision control system
-ii  git-lfs                        3.6.1-1+b5                     amd64        Git Large File Support
+ii  git-lfs                        3.6.1-1+deb13u1                amd64        Git Large File Support
 ii  git-man                        1:2.47.3-0+deb13u1             all          fast, scalable, distributed revision control system (manual pages)
 ii  gnupg                          2.4.7-21+deb13u1               all          GNU privacy guard - a free PGP replacement
 ii  gnupg-l10n                     2.4.7-21+deb13u1               all          GNU privacy guard - localization files
 ii  gosu                           1.17-3+b4                      amd64        Simple Go-based setuid+setgid+setgroups+exec
-ii  gpg                            2.4.7-21+deb13u1+b2            amd64        GNU Privacy Guard -- minimalist public key operations
-ii  gpg-agent                      2.4.7-21+deb13u1+b2            amd64        GNU privacy guard - cryptographic agent
-ii  gpgconf                        2.4.7-21+deb13u1+b2            amd64        GNU privacy guard - core configuration utilities
-ii  gpgsm                          2.4.7-21+deb13u1+b2            amd64        GNU privacy guard - S/MIME version
+ii  gpg                            2.4.7-21+deb13u1+b3            amd64        GNU Privacy Guard -- minimalist public key operations
+ii  gpg-agent                      2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - cryptographic agent
+ii  gpgconf                        2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - core configuration utilities
+ii  gpgsm                          2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - S/MIME version
 ii  grep                           3.11-4                         amd64        GNU grep, egrep and fgrep
 ii  gzip                           1.13-1                         amd64        GNU compression utilities
 ii  hostname                       3.25                           amd64        utility to set/show the host name or domain name
 ii  init-system-helpers            1.69~deb13u1                   all          helper tools for all init systems
 ii  iproute2                       6.15.0-1                       amd64        networking and traffic control tools
 ii  iputils-ping                   3:20240905-3                   amd64        Tools to test the reachability of network hosts
-ii  jq                             1.7.1-6+deb13u1                amd64        lightweight and flexible command-line JSON processor
+ii  jq                             1.7.1-6+deb13u2                amd64        lightweight and flexible command-line JSON processor
 ii  libacl1:amd64                  2.3.2-2+b1                     amd64        access control list - shared library
 ii  libapparmor1:amd64             4.1.0-1                        amd64        changehat AppArmor library
 ii  libapt-pkg7.0:amd64            3.0.3                          amd64        package management runtime library
@@ -104,22 +104,22 @@ ii  libbpf1:amd64                  1:1.5.0-3                      amd64        e
 ii  libbrotli1:amd64               1.1.0-2+b7                     amd64        library implementing brotli encoder and decoder (shared libraries)
 ii  libbsd0:amd64                  0.12.2-2                       amd64        utility functions from BSD systems - shared library
 ii  libbz2-1.0:amd64               1.0.8-6                        amd64        high-quality block-sorting file compressor library - runtime
-ii  libc-bin                       2.41-12+deb13u2                amd64        GNU C Library: Binaries
-ii  libc-dev-bin                   2.41-12+deb13u2                amd64        GNU C Library: Development binaries
-ii  libc6:amd64                    2.41-12+deb13u2                amd64        GNU C Library: Shared libraries
-ii  libc6-dev:amd64                2.41-12+deb13u2                amd64        GNU C Library: Development Libraries and Header Files
+ii  libc-bin                       2.41-12+deb13u3                amd64        GNU C Library: Binaries
+ii  libc-dev-bin                   2.41-12+deb13u3                amd64        GNU C Library: Development binaries
+ii  libc6:amd64                    2.41-12+deb13u3                amd64        GNU C Library: Shared libraries
+ii  libc6-dev:amd64                2.41-12+deb13u3                amd64        GNU C Library: Development Libraries and Header Files
 ii  libcap-ng0:amd64               0.8.5-4+b1                     amd64        alternate POSIX capabilities library
-ii  libcap2:amd64                  1:2.75-10+b8                   amd64        POSIX 1003.1e capabilities (library)
-ii  libcap2-bin                    1:2.75-10+b8                   amd64        POSIX 1003.1e capabilities (utilities)
+ii  libcap2:amd64                  1:2.75-10+deb13u1+b1           amd64        POSIX 1003.1e capabilities (library)
+ii  libcap2-bin                    1:2.75-10+deb13u1+b1           amd64        POSIX 1003.1e capabilities (utilities)
 ii  libcbor0.10:amd64              0.10.2-2                       amd64        library for parsing and generating CBOR (RFC 7049)
 ii  libcc1-0:amd64                 14.2.0-19                      amd64        GCC cc1 plugin for GDB
-ii  libcom-err2:amd64              1.47.2-3+b10                   amd64        common error description library
+ii  libcom-err2:amd64              1.47.2-3+b11                   amd64        common error description library
 ii  libcrypt-dev:amd64             1:4.4.38-1                     amd64        libcrypt development files
 ii  libcrypt1:amd64                1:4.4.38-1                     amd64        libcrypt shared library
 ii  libctf-nobfd0:amd64            2.44-3                         amd64        Compact C Type Format library (runtime, no BFD dependency)
 ii  libctf0:amd64                  2.44-3                         amd64        Compact C Type Format library (runtime, BFD dependency)
-ii  libcurl3t64-gnutls:amd64       8.14.1-2+deb13u2               amd64        easy-to-use client-side URL transfer library (GnuTLS flavour)
-ii  libcurl4t64:amd64              8.14.1-2+deb13u2               amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
+ii  libcurl3t64-gnutls:amd64       8.14.1-2+deb13u3               amd64        easy-to-use client-side URL transfer library (GnuTLS flavour)
+ii  libcurl4t64:amd64              8.14.1-2+deb13u3               amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
 ii  libdb5.3t64:amd64              5.3.28+dfsg2-9                 amd64        Berkeley v5.3 Database Libraries [runtime]
 ii  libdebconfclient0:amd64        0.280                          amd64        Debian Configuration Management System (C-implementation library)
 ii  libdpkg-perl                   1.22.22                        all          Dpkg perl modules
@@ -131,16 +131,16 @@ ii  libffi8:amd64                  3.4.8-2                        amd64        F
 ii  libfido2-1:amd64               1.15.0-1+b1                    amd64        library for generating and verifying FIDO 2.0 objects
 ii  libgcc-14-dev:amd64            14.2.0-19                      amd64        GCC support library (development files)
 ii  libgcc-s1:amd64                14.2.0-19                      amd64        GCC support library
-ii  libgcrypt20:amd64              1.11.0-7                       amd64        LGPL Crypto library - runtime library
+ii  libgcrypt20:amd64              1.11.0-7+deb13u1               amd64        LGPL Crypto library - runtime library
 ii  libgdbm-compat4t64:amd64       1.24-2                         amd64        GNU dbm database routines (legacy support runtime version) 
 ii  libgdbm6t64:amd64              1.24-2                         amd64        GNU dbm database routines (runtime version) 
 ii  libgmp10:amd64                 2:6.3.0+dfsg-3                 amd64        Multiprecision arithmetic library
-ii  libgnutls30t64:amd64           3.8.9-3+deb13u2                amd64        GNU TLS library - main runtime library
+ii  libgnutls30t64:amd64           3.8.9-3+deb13u4                amd64        GNU TLS library - main runtime library
 ii  libgomp1:amd64                 14.2.0-19                      amd64        GCC OpenMP (GOMP) support library
 ii  libgpg-error0:amd64            1.51-4                         amd64        GnuPG development runtime library
 ii  libgpm2:amd64                  1.20.7-11+b2                   amd64        General Purpose Mouse - shared library
 ii  libgprofng0:amd64              2.44-3                         amd64        GNU Next Generation profiler (runtime library)
-ii  libgssapi-krb5-2:amd64         1.21.3-5                       amd64        MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
+ii  libgssapi-krb5-2:amd64         1.21.3-5+deb13u1               amd64        MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
 ii  libhogweed6t64:amd64           3.10.1-1                       amd64        low level cryptographic library (public-key cryptos)
 ii  libhwasan0:amd64               14.2.0-19                      amd64        AddressSanitizer -- a fast memory error detector
 ii  libicu76:amd64                 76.1-4                         amd64        International Components for Unicode
@@ -148,11 +148,11 @@ ii  libidn2-0:amd64                2.3.8-2                        amd64        I
 ii  libisl23:amd64                 0.27-1                         amd64        manipulating sets and relations of integer points bounded by linear constraints
 ii  libitm1:amd64                  14.2.0-19                      amd64        GNU Transactional Memory Library
 ii  libjansson4:amd64              2.14-2+b3                      amd64        C library for encoding, decoding and manipulating JSON data
-ii  libjq1:amd64                   1.7.1-6+deb13u1                amd64        lightweight and flexible command-line JSON processor - shared library
-ii  libk5crypto3:amd64             1.21.3-5                       amd64        MIT Kerberos runtime libraries - Crypto Library
+ii  libjq1:amd64                   1.7.1-6+deb13u2                amd64        lightweight and flexible command-line JSON processor - shared library
+ii  libk5crypto3:amd64             1.21.3-5+deb13u1               amd64        MIT Kerberos runtime libraries - Crypto Library
 ii  libkeyutils1:amd64             1.6.3-6                        amd64        Linux Key Management Utilities (library)
-ii  libkrb5-3:amd64                1.21.3-5                       amd64        MIT Kerberos runtime libraries
-ii  libkrb5support0:amd64          1.21.3-5                       amd64        MIT Kerberos runtime libraries - Support library
+ii  libkrb5-3:amd64                1.21.3-5+deb13u1               amd64        MIT Kerberos runtime libraries
+ii  libkrb5support0:amd64          1.21.3-5+deb13u1               amd64        MIT Kerberos runtime libraries - Support library
 ii  libksba8:amd64                 1.6.7-2+b1                     amd64        X.509 and CMS support library
 ii  liblastlog2-2:amd64            2.41-5                         amd64        lastlog2 database shared library
 ii  libldap2:amd64                 2.6.10+dfsg-1                  amd64        OpenLDAP libraries
@@ -207,11 +207,11 @@ ii  libsmartcols1:amd64            2.41-5                         amd64        s
 ii  libsodium23:amd64              1.0.18-1+deb13u1               amd64        Network communication, cryptography and signaturing library
 ii  libsqlite3-0:amd64             3.46.1-7+deb13u1               amd64        SQLite 3 shared library
 ii  libssh2-1t64:amd64             1.11.1-1                       amd64        SSH2 client-side library
-ii  libssl3t64:amd64               3.5.5-1~deb13u2                amd64        Secure Sockets Layer toolkit - shared libraries
+ii  libssl3t64:amd64               3.5.6-1~deb13u1                amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-14-dev:amd64         14.2.0-19                      amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64               14.2.0-19                      amd64        GNU Standard C++ Library v3
-ii  libsystemd-shared:amd64        257.9-1~deb13u1                amd64        systemd shared private library
-ii  libsystemd0:amd64              257.9-1~deb13u1                amd64        systemd utility library
+ii  libsystemd-shared:amd64        257.13-1~deb13u1               amd64        systemd shared private library
+ii  libsystemd0:amd64              257.13-1~deb13u1               amd64        systemd utility library
 ii  libtasn1-6:amd64               4.20.0-2                       amd64        Manage ASN.1 structures (runtime)
 ii  libtext-charwidth-perl:amd64   0.04-11+b4                     amd64        get display widths of characters on the terminal
 ii  libtext-wrapi18n-perl          0.06-10                        all          internationalized substitute of Text::Wrap
@@ -221,7 +221,7 @@ ii  libtirpc3t64:amd64             1.3.6+ds-1                     amd64        t
 ii  libtree-sitter0.22:amd64       0.22.6-6+b1                    amd64        incremental parsing system for programming tools
 ii  libtsan2:amd64                 14.2.0-19                      amd64        ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
 ii  libubsan1:amd64                14.2.0-19                      amd64        UBSan -- undefined behaviour sanitizer (runtime)
-ii  libudev1:amd64                 257.9-1~deb13u1                amd64        libudev shared library
+ii  libudev1:amd64                 257.13-1~deb13u1               amd64        libudev shared library
 ii  libunibilium4:amd64            2.1.1-2+b1                     amd64        simple, self-contained terminfo library
 ii  libunistring5:amd64            1.3-2                          amd64        Unicode string library for C
 ii  libuuid1:amd64                 2.41-5                         amd64        Universally Unique ID library
@@ -248,11 +248,11 @@ ii  ncurses-bin                    6.5+20250216-2                 amd64        t
 ii  neovim                         0.10.4-8                       amd64        heavily refactored vim fork
 ii  neovim-runtime                 0.10.4-8                       all          heavily refactored vim fork (runtime files)
 ii  netbase                        6.5                            all          Basic TCP/IP networking system
-ii  openssh-client                 1:10.0p1-7+deb13u2             amd64        secure shell (SSH) client, for secure access to remote machines
-ii  openssh-server                 1:10.0p1-7+deb13u2             amd64        secure shell (SSH) server, for secure access from remote machines
-ii  openssh-sftp-server            1:10.0p1-7+deb13u2             amd64        secure shell (SSH) sftp server module, for SFTP access from remote machines
-ii  openssl                        3.5.5-1~deb13u2                amd64        Secure Sockets Layer toolkit - cryptographic utility
-ii  openssl-provider-legacy        3.5.5-1~deb13u2                amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssh-client                 1:10.0p1-7+deb13u4             amd64        secure shell (SSH) client, for secure access to remote machines
+ii  openssh-server                 1:10.0p1-7+deb13u4             amd64        secure shell (SSH) server, for secure access from remote machines
+ii  openssh-sftp-server            1:10.0p1-7+deb13u4             amd64        secure shell (SSH) sftp server module, for SFTP access from remote machines
+ii  openssl                        3.5.6-1~deb13u1                amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssl-provider-legacy        3.5.6-1~deb13u1                amd64        Secure Sockets Layer toolkit - cryptographic utility
 ii  openvpn                        2.6.14-1+deb13u1               amd64        virtual private network daemon
 ii  passwd                         1:4.17.4-2                     amd64        change and administer password and group data
 ii  patch                          2.8-2                          amd64        Apply a diff file to an original
@@ -267,14 +267,14 @@ ii  procps                         2:4.0.4-9                      amd64        /
 ii  readline-common                8.2-6                          all          GNU readline and history libraries, common files
 ii  rpcsvc-proto                   1.4.3-1                        amd64        RPC protocol compiler and definitions
 ii  runit-helper                   2.16.4                         all          dh-runit implementation detail
-ii  sed                            4.9-2                          amd64        GNU stream editor for filtering/transforming text
+ii  sed                            4.9-2+deb13u1                  amd64        GNU stream editor for filtering/transforming text
 ii  sensible-utils                 0.0.25                         all          Utilities for sensible alternative selection
 ii  sqlite3                        3.46.1-7+deb13u1               amd64        Command line interface for SQLite 3
 ii  sqv                            1.3.0-3+b2                     amd64        OpenPGP signature verification program from Sequoia
-ii  systemd                        257.9-1~deb13u1                amd64        system and service manager
+ii  systemd                        257.13-1~deb13u1               amd64        system and service manager
 ii  sysvinit-utils                 3.14-4                         amd64        System-V-like utilities
 ii  tar                            1.35+dfsg-3.1                  amd64        GNU version of the tar archiving utility
-ii  tzdata                         2026a-0+deb13u1                all          time zone and daylight-saving time data
+ii  tzdata                         2026b-0+deb13u1                all          time zone and daylight-saving time data
 ii  ucf                            3.0052                         all          Update Configuration File(s): preserve user changes to config files
 ii  unzip                          6.0-29                         amd64        De-archiver for .zip files
 ii  util-linux                     2.41-5                         amd64        miscellaneous system utilities
