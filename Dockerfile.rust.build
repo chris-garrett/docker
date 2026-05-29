@@ -4,6 +4,16 @@ ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
 ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    apt update; \
+    apt install -y --no-install-recommends \
+    pkg-config \
+    libssl-dev \
+    ; \
+    rm -rf /var/lib/apt/lists/*
+
 # install fnm/node
 RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     set -eux; \
@@ -15,4 +25,3 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     curl -o /tmp/rustup.sh -sSf https://sh.rustup.rs; \
     sh /tmp/rustup.sh -y; \
     rm -fr /work/opt/rustup/toolchains/stable-$${ARCH}-unknown-linux-gnu/share/doc;
-

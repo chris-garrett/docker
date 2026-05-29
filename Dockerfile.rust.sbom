@@ -143,6 +143,7 @@ ii  libpam-runtime                 1.7.0-5                        all          R
 ii  libpam0g:amd64                 1.7.0-5                        amd64        Pluggable Authentication Modules library
 ii  libpcre2-8-0:amd64             10.46-1~deb13u1                amd64        New Perl Compatible Regular Expression Library- 8 bit runtime files
 ii  libperl5.40:amd64              5.40.1-6                       amd64        shared Perl library
+ii  libpkgconf3:amd64              1.8.1-4                        amd64        shared library for pkgconf
 ii  libproc2-0:amd64               2:4.0.4-9                      amd64        library for accessing process information from /proc
 ii  libpsl5t64:amd64               0.21.2-1.1+b1                  amd64        Library for Public Suffix List (shared libraries)
 ii  libquadmath0:amd64             14.2.0-19                      amd64        GCC Quad-Precision Math Library
@@ -159,6 +160,7 @@ ii  libsmartcols1:amd64            2.41-5                         amd64        s
 ii  libsodium23:amd64              1.0.18-1+deb13u1               amd64        Network communication, cryptography and signaturing library
 ii  libsqlite3-0:amd64             3.46.1-7+deb13u1               amd64        SQLite 3 shared library
 ii  libssh2-1t64:amd64             1.11.1-1                       amd64        SSH2 client-side library
+ii  libssl-dev:amd64               3.5.6-1~deb13u1                amd64        Secure Sockets Layer toolkit - development files
 ii  libssl3t64:amd64               3.5.6-1~deb13u1                amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-14-dev:amd64         14.2.0-19                      amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64               14.2.0-19                      amd64        GNU Standard C++ Library v3
@@ -175,7 +177,7 @@ ii  libuuid1:amd64                 2.41-5                         amd64        U
 ii  libxtables12:amd64             1.8.11-2                       amd64        netfilter xtables library
 ii  libxxhash0:amd64               0.8.3-2                        amd64        shared library for xxhash
 ii  libzstd1:amd64                 1.5.7+dfsg-1                   amd64        fast lossless compression algorithm
-ii  linux-libc-dev                 6.12.90-1                      all          Linux support headers for userspace development
+ii  linux-libc-dev                 6.12.90-2                      all          Linux support headers for userspace development
 ii  login                          1:4.16.0-2+really2.41-5        amd64        system login tools
 ii  login.defs                     1:4.17.4-2                     all          system user management configuration
 ii  make                           4.4.1-2                        amd64        utility for directing compilation
@@ -191,6 +193,9 @@ ii  patch                          2.8-2                          amd64        A
 ii  perl                           5.40.1-6                       amd64        Larry Wall's Practical Extraction and Report Language
 ii  perl-base                      5.40.1-6                       amd64        minimal Perl system
 ii  perl-modules-5.40              5.40.1-6                       all          Core Perl modules
+ii  pkg-config:amd64               1.8.1-4                        amd64        manage compile and link flags for libraries (transitional package)
+ii  pkgconf:amd64                  1.8.1-4                        amd64        manage compile and link flags for libraries
+ii  pkgconf-bin                    1.8.1-4                        amd64        manage compile and link flags for libraries (binaries)
 ii  procps                         2:4.0.4-9                      amd64        /proc file system utilities
 ii  rpcsvc-proto                   1.4.3-1                        amd64        RPC protocol compiler and definitions
 ii  sed                            4.9-2+deb13u1                  amd64        GNU stream editor for filtering/transforming text
