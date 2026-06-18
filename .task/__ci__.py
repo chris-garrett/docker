@@ -385,6 +385,9 @@ def pr_service(ctx: TaskContext, name: str):
 
     def _merge_pr(pull_number: int, commit_title: str) -> tuple:
         """Attempt to merge a PR. Returns the raw fetch result tuple."""
+        # Merge with the PAT (not GITHUB_TOKEN): pushes to main made with the
+        # default GITHUB_TOKEN do not trigger downstream workflows (GitHub's
+        # anti-recursion rule), so build-*.yaml would never fire on merge.
         return fetch(
             f"{repo_url}/pulls/{pull_number}/merge",
             {
@@ -394,7 +397,7 @@ def pr_service(ctx: TaskContext, name: str):
             {
                 "User-Agent": "CI Github Bot",
                 "Accept": "application/vnd.github.v3+json",
-                "Authorization": f"Bearer {token}",
+                "Authorization": f"Bearer {ci_token}",
             },
             method="PUT",
         )
