@@ -61,6 +61,27 @@ RUN set -eux; \
     curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.18.0/curl-linux-${ARCH}-glibc-8.18.0.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
+# install github actions runner (extracted to /work/opt/actions-runner; run ./config.sh & ./run.sh from there)
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    RUNNER_ARCH="arm64"; \
+    else \
+    RUNNER_ARCH="x64"; \
+    fi; \
+    mkdir -p /work/opt/actions-runner; \
+    curl -o /tmp/actions-runner.tar.gz -LsSf https://github.com/actions/runner/releases/download/v2.335.0/actions-runner-linux-${RUNNER_ARCH}-2.335.0.tar.gz; \
+    tar -C /work/opt/actions-runner -xzf /tmp/actions-runner.tar.gz; \
+    rm /tmp/actions-runner.tar.gz; \
+    /work/opt/actions-runner/bin/installdependencies.sh; \
+    rm -rf /var/lib/apt/lists/*
+
+# install gitea act_runner (single binary on PATH)
+RUN set -eux; \
+    curl -o /work/opt/bin/act_runner -LsSf https://dl.gitea.com/act_runner/0.6.1/act_runner-0.6.1-linux-${TARGETARCH}; \
+    chmod +x /work/opt/bin/act_runner
+
 # install python via miniconda
 ENV PATH=/work/opt/venv/bin:$PATH
 ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
@@ -105,3 +126,5 @@ WORKDIR /work/app
 
 LABEL org.opencontainers.image.watchexec_version="2.3.2"
 LABEL org.opencontainers.image.dockerize_version="0.9.9"
+LABEL org.opencontainers.image.actions_runner_version="2.335.0"
+LABEL org.opencontainers.image.act_runner_version="0.6.1"
