@@ -53,6 +53,8 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 `docker pull ghcr.io/chris-garrett/devops:26.3.0`
 
+- Act_runner: **0.6.1**
+- Actions_runner: **2.335.0**
 - Aws: **2.27.40**
 - Azure_cli: **2.86.0-1~bookworm**
 - Dockerize: **0.9.9**
