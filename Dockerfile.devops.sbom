@@ -6,6 +6,8 @@ debian@sha256:4e401d95de7083948053197a9c3913343cd06b706bf15eb6a0c3ccd26f436a0e
 
 ## Package Versions
 
+org.opencontainers.image.act_runner_version=0.6.1
+org.opencontainers.image.actions_runner_version=2.335.0
 org.opencontainers.image.aws_version=2.27.40
 org.opencontainers.image.azure_cli_version=2.86.0-1~bookworm
 org.opencontainers.image.dockerize_version=0.9.9
@@ -157,6 +159,9 @@ ii  libksba8:amd64                 1.6.7-2+b1                     amd64        X
 ii  liblastlog2-2:amd64            2.41-5                         amd64        lastlog2 database shared library
 ii  libldap2:amd64                 2.6.10+dfsg-1                  amd64        OpenLDAP libraries
 ii  liblsan0:amd64                 14.2.0-19                      amd64        LeakSanitizer -- a memory leak detector (runtime)
+ii  liblttng-ust-common1t64:amd64  2.13.9-1                       amd64        LTTng 2.0 Userspace Tracer (common library)
+ii  liblttng-ust-ctl5t64:amd64     2.13.9-1                       amd64        LTTng 2.0 Userspace Tracer (trace control library)
+ii  liblttng-ust1t64:amd64         2.13.9-1                       amd64        LTTng 2.0 Userspace Tracer (tracing libraries)
 ii  libluajit-5.1-2:amd64          2.1.0+openresty20250117-2      amd64        OpenResty-maintained branch of LuaJIT (shared objects)
 ii  libluajit-5.1-common           2.1.0+openresty20250117-2      all          OpenResty-maintained branch of LuaJIT (common files)
 ii  liblz4-1:amd64                 1.10.0-4                       amd64        Fast LZ compression algorithm library - runtime
@@ -180,6 +185,7 @@ ii  libngtcp2-crypto-gnutls8:amd64 1.11.0-1+deb13u1               amd64        i
 ii  libnl-3-200:amd64              3.7.0-2                        amd64        library for dealing with netlink sockets
 ii  libnl-genl-3-200:amd64         3.7.0-2                        amd64        library for dealing with netlink sockets - generic netlink
 ii  libnpth0t64:amd64              1.8-3                          amd64        replacement for GNU Pth using system threads
+ii  libnuma1:amd64                 2.0.19-1                       amd64        Libraries for controlling NUMA policy
 ii  libonig5:amd64                 6.9.9-1+b1                     amd64        regular expressions library
 ii  libp11-kit0:amd64              0.25.5-3                       amd64        library for loading and coordinating access to PKCS#11 modules - runtime
 ii  libpam-modules:amd64           1.7.0-5                        amd64        Pluggable Authentication Modules for PAM
