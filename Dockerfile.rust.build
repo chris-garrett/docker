@@ -21,7 +21,7 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     ARCH="aarch64"; \
     else \
     ARCH="x86_64"; \
-    fi; \    
+    fi; \
     curl -o /tmp/rustup.sh -sSf https://sh.rustup.rs; \
-    sh /tmp/rustup.sh -y; \
+    sh /tmp/rustup.sh -y --no-modify-path; \
     rm -fr /work/opt/rustup/toolchains/stable-$${ARCH}-unknown-linux-gnu/share/doc;
