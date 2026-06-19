@@ -34,6 +34,8 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 `docker pull ghcr.io/chris-garrett/node:26.5.0`
 
+- Act_runner: **0.6.1**
+- Actions_runner: **2.335.0**
 - Bun: **1.3.6**
 - Dockerize: **0.9.9**
 - Fnm: **1.38.1**
