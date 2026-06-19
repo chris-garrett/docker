@@ -61,6 +61,27 @@ RUN set -eux; \
     curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/${CURL_VERSION}/curl-linux-$${ARCH}-glibc-${CURL_VERSION}.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
+# install github actions runner (extracted to /work/opt/actions-runner; run ./config.sh & ./run.sh from there)
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    if [ "$$TARGETARCH" = "arm64" ]; then \
+    RUNNER_ARCH="arm64"; \
+    else \
+    RUNNER_ARCH="x64"; \
+    fi; \
+    mkdir -p /work/opt/actions-runner; \
+    curl -o /tmp/actions-runner.tar.gz -LsSf https://github.com/actions/runner/releases/download/v$ACTIONS_RUNNER_VERSION/actions-runner-linux-$${RUNNER_ARCH}-$ACTIONS_RUNNER_VERSION.tar.gz; \
+    tar -C /work/opt/actions-runner -xzf /tmp/actions-runner.tar.gz; \
+    rm /tmp/actions-runner.tar.gz; \
+    /work/opt/actions-runner/bin/installdependencies.sh; \
+    rm -rf /var/lib/apt/lists/*
+
+# install gitea act_runner (single binary on PATH)
+RUN set -eux; \
+    curl -o /work/opt/bin/act_runner -LsSf https://dl.gitea.com/act_runner/$ACT_RUNNER_VERSION/act_runner-$ACT_RUNNER_VERSION-linux-$${TARGETARCH}; \
+    chmod +x /work/opt/bin/act_runner
+
 $BUILD_TEMPLATE
 
 
@@ -78,3 +99,5 @@ WORKDIR /work/app
 
 LABEL org.opencontainers.image.watchexec_version="$WATCHEXEC_VERSION"
 LABEL org.opencontainers.image.dockerize_version="$DOCKERIZE_VERSION"
+LABEL org.opencontainers.image.actions_runner_version="$ACTIONS_RUNNER_VERSION"
+LABEL org.opencontainers.image.act_runner_version="$ACT_RUNNER_VERSION"
