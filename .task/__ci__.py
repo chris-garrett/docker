@@ -231,8 +231,8 @@ def update_sbom(
         with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "r") as f:
             final = f.read()
 
-        # get image used by FROM as final
-        pattern = r"FROM\s+(\S+)\s+AS\s+final"
+        # get the external base image from the build stage
+        pattern = r"FROM\s+(\S+)\s+AS\s+build"
 
         # Search for the pattern in the input string
         match = re.search(pattern, final)
