@@ -1,4 +1,4 @@
-FROM postgis/postgis:17-3.6-alpine AS base
+FROM postgis/postgis:17-3.6-alpine AS build
 
 RUN --mount=type=cache,target=/var/cache/apk,sharing=locked set -x; \
     apk update \
@@ -7,7 +7,7 @@ RUN --mount=type=cache,target=/var/cache/apk,sharing=locked set -x; \
     build-base
 
 
-FROM base AS pgvector
+FROM build AS pgvector
 
 RUN --mount=type=cache,target=/var/cache/apk,sharing=locked set -x; \
     apk add \
