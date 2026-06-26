@@ -166,7 +166,7 @@ ii  libsframe1:amd64               2.44-3                         amd64        L
 ii  libsmartcols1:amd64            2.41-5                         amd64        smart column output alignment library
 ii  libsodium23:amd64              1.0.18-1+deb13u1               amd64        Network communication, cryptography and signaturing library
 ii  libsqlite3-0:amd64             3.46.1-7+deb13u1               amd64        SQLite 3 shared library
-ii  libssh2-1t64:amd64             1.11.1-1                       amd64        SSH2 client-side library
+ii  libssh2-1t64:amd64             1.11.1-1+deb13u1               amd64        SSH2 client-side library
 ii  libssl3t64:amd64               3.5.6-1~deb13u2                amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-14-dev:amd64         14.2.0-19                      amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64               14.2.0-19                      amd64        GNU Standard C++ Library v3
