@@ -11,9 +11,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 ## Versions
 
-### Python 26.9.0
+### Python 26.10.0
 
-`docker pull ghcr.io/chris-garrett/python:26.9.0`
+`docker pull ghcr.io/chris-garrett/python:26.10.0`
 
 - Act_runner: **0.6.1**
 - Actions_runner: **2.335.0**
