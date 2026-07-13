@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:2c58fc4ddd76cb4600e840b3b25676a8b1ca02d7a76f6fd67e153a0737e00442
+postgis/postgis@sha256:209a8fd85fb2d0a4c64e9dc302c1a86f3e72b8549ce426bcefa4431668b25977
 
 ## Package Versions
 
@@ -11,8 +11,8 @@ org.opencontainers.image.postgis_version=17-3.6-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20260706.103039 noarch {.postgis-rundeps} () [installed]
-.postgresql-rundeps-20260616.230041 noarch {.postgresql-rundeps} () [installed]
+.postgis-rundeps-20260713.083137 noarch {.postgis-rundeps} () [installed]
+.postgresql-rundeps-20260707.174631 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.2-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
 alpine-baselayout-data-3.7.2-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -28,7 +28,7 @@ brotli-libs-1.2.0-r1 x86_64 {brotli} (MIT) [installed]
 brunsli-libs-0.1-r1 x86_64 {brunsli} (MIT) [installed]
 busybox-1.37.0-r31 x86_64 {busybox} (GPL-2.0-only) [installed]
 busybox-binsh-1.37.0-r31 x86_64 {busybox} (GPL-2.0-only) [installed]
-c-ares-1.34.6-r0 x86_64 {c-ares} (MIT) [installed]
+c-ares-1.34.8-r0 x86_64 {c-ares} (MIT) [installed]
 ca-certificates-20260611-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
 ca-certificates-bundle-20260611-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
 cairo-1.18.4-r1 x86_64 {cairo} (LGPL-2.1-or-later OR MPL-1.1) [installed]
@@ -85,7 +85,7 @@ libspatialite-5.1.0-r5 x86_64 {libspatialite} (MPL-1.1) [installed]
 libssl3-3.5.7-r0 x86_64 {openssl} (Apache-2.0) [installed]
 libstdc++-15.2.0-r5 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
 libunistring-1.4.2-r0 x86_64 {libunistring} (GPL-2.0-or-later OR LGPL-3.0-or-later) [installed]
-libuuid-2.42-r0 x86_64 {util-linux} (BSD-3-Clause) [installed]
+libuuid-2.42.1-r0 x86_64 {util-linux} (BSD-3-Clause) [installed]
 libverto-0.3.2-r2 x86_64 {libverto} (MIT) [installed]
 libwebp-1.6.0-r0 x86_64 {libwebp} (BSD-3-Clause) [installed]
 libx11-1.8.13-r0 x86_64 {libx11} (X11) [installed]
