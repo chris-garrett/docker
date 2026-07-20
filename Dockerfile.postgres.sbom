@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:209a8fd85fb2d0a4c64e9dc302c1a86f3e72b8549ce426bcefa4431668b25977
+postgis/postgis@sha256:88c78b602e7f2340ed46a090b78c96e9291d249517d50ea03a1cafb82d33ebe2
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=17-3.6-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20260713.083137 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20260720.082316 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20260707.174631 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.2-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -34,7 +34,7 @@ ca-certificates-bundle-20260611-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [i
 cairo-1.18.4-r1 x86_64 {cairo} (LGPL-2.1-or-later OR MPL-1.1) [installed]
 fontconfig-2.17.1-r1 x86_64 {fontconfig} (MIT) [installed]
 freetype-2.14.3-r0 x86_64 {freetype} (FTL OR GPL-2.0-or-later) [installed]
-gdal-3.13.0-r1 x86_64 {gdal} (MIT) [installed]
+gdal-3.13.1-r0 x86_64 {gdal} (MIT) [installed]
 gdbm-1.26-r0 x86_64 {gdbm} (GPL-3.0-or-later) [installed]
 geos-3.14.1-r0 x86_64 {geos} (LGPL-2.1-or-later) [installed]
 giflib-5.2.2-r1 x86_64 {giflib} (MIT) [installed]
