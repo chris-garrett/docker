@@ -2,7 +2,7 @@
 
 ## base image digest
 
-debian@sha256:28de0877c2189802884ccd20f15ee41c203573bd87bb6b883f5f46362d24c5c2
+debian@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
 
 ## Package Versions
 
@@ -19,7 +19,7 @@ org.opencontainers.image.kubectl_version=1.36.1
 org.opencontainers.image.kubelogin_version=0.2.17
 org.opencontainers.image.neovim_version=0.10.4-8
 org.opencontainers.image.openssh_server_version=1:10.0p1-7+deb13u4
-org.opencontainers.image.openvpn_version=2.6.14-1+deb13u1
+org.opencontainers.image.openvpn_version=2.6.14*
 org.opencontainers.image.psql17_version=17.9-1.pgdg13+1
 org.opencontainers.image.psql18_version=18.3-1.pgdg13+1
 org.opencontainers.image.sqlite3_version=3.46.1-7+deb13u1
@@ -38,7 +38,7 @@ ii  adduser                        3.152                          all          a
 ii  apt                            3.0.3                          amd64        commandline package manager
 ii  apt-transport-https            3.0.3                          all          transitional package for https support
 ii  azure-cli                      2.86.0-1~bookworm              amd64        Azure CLI
-ii  base-files                     13.8+deb13u5                   amd64        Debian base system miscellaneous files
+ii  base-files                     13.8+deb13u6                   amd64        Debian base system miscellaneous files
 ii  base-passwd                    3.6.7                          amd64        Debian base system master password and group files
 ii  bash                           5.2.37-2+b9                    amd64        GNU Bourne Again SHell
 ii  binutils                       2.44-3                         amd64        GNU assembler, linker and binary utilities
@@ -53,13 +53,13 @@ ii  cpp                            4:14.2.0-1                     amd64        G
 ii  cpp-14                         14.2.0-19                      amd64        GNU C preprocessor
 ii  cpp-14-x86-64-linux-gnu        14.2.0-19                      amd64        GNU C preprocessor for x86_64-linux-gnu
 ii  cpp-x86-64-linux-gnu           4:14.2.0-1                     amd64        GNU C preprocessor (cpp) for the amd64 architecture
-ii  curl                           8.14.1-2+deb13u3               amd64        command line tool for transferring data with URL syntax
+ii  curl                           8.14.1-2+deb13u4               amd64        command line tool for transferring data with URL syntax
 ii  dash                           0.5.12-12                      amd64        POSIX-compliant shell
 ii  debconf                        1.5.91                         all          Debian configuration management system
 ii  debian-archive-keyring         2025.1                         all          OpenPGP archive certificates of the Debian archive
 ii  debianutils                    5.23.2                         amd64        Miscellaneous utilities specific to Debian
 ii  diffutils                      1:3.10-4                       amd64        File comparison utilities
-ii  dirmngr                        2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - network certificate management service
+ii  dirmngr                        2.4.7-21+deb13u1+b4            amd64        GNU privacy guard - network certificate management service
 ii  dpkg                           1.22.22                        amd64        Debian package management system
 ii  dpkg-dev                       1.22.22                        all          Debian package development tools
 ii  easy-rsa                       3.2.2-1                        all          Simple shell based CA utility
@@ -80,10 +80,10 @@ ii  git-man                        1:2.47.3-0+deb13u1             all          f
 ii  gnupg                          2.4.7-21+deb13u1               all          GNU privacy guard - a free PGP replacement
 ii  gnupg-l10n                     2.4.7-21+deb13u1               all          GNU privacy guard - localization files
 ii  gosu                           1.17-3+b4                      amd64        Simple Go-based setuid+setgid+setgroups+exec
-ii  gpg                            2.4.7-21+deb13u1+b3            amd64        GNU Privacy Guard -- minimalist public key operations
-ii  gpg-agent                      2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - cryptographic agent
-ii  gpgconf                        2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - core configuration utilities
-ii  gpgsm                          2.4.7-21+deb13u1+b3            amd64        GNU privacy guard - S/MIME version
+ii  gpg                            2.4.7-21+deb13u1+b4            amd64        GNU Privacy Guard -- minimalist public key operations
+ii  gpg-agent                      2.4.7-21+deb13u1+b4            amd64        GNU privacy guard - cryptographic agent
+ii  gpgconf                        2.4.7-21+deb13u1+b4            amd64        GNU privacy guard - core configuration utilities
+ii  gpgsm                          2.4.7-21+deb13u1+b4            amd64        GNU privacy guard - S/MIME version
 ii  grep                           3.11-4                         amd64        GNU grep, egrep and fgrep
 ii  gzip                           1.13-1                         amd64        GNU compression utilities
 ii  hostname                       3.25                           amd64        utility to set/show the host name or domain name
@@ -120,8 +120,8 @@ ii  libcrypt-dev:amd64             1:4.4.38-1                     amd64        l
 ii  libcrypt1:amd64                1:4.4.38-1                     amd64        libcrypt shared library
 ii  libctf-nobfd0:amd64            2.44-3                         amd64        Compact C Type Format library (runtime, no BFD dependency)
 ii  libctf0:amd64                  2.44-3                         amd64        Compact C Type Format library (runtime, BFD dependency)
-ii  libcurl3t64-gnutls:amd64       8.14.1-2+deb13u3               amd64        easy-to-use client-side URL transfer library (GnuTLS flavour)
-ii  libcurl4t64:amd64              8.14.1-2+deb13u3               amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
+ii  libcurl3t64-gnutls:amd64       8.14.1-2+deb13u4               amd64        easy-to-use client-side URL transfer library (GnuTLS flavour)
+ii  libcurl4t64:amd64              8.14.1-2+deb13u4               amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
 ii  libdb5.3t64:amd64              5.3.28+dfsg2-9                 amd64        Berkeley v5.3 Database Libraries [runtime]
 ii  libdebconfclient0:amd64        0.280                          amd64        Debian Configuration Management System (C-implementation library)
 ii  libdpkg-perl                   1.22.22                        all          Dpkg perl modules
@@ -165,7 +165,7 @@ ii  liblttng-ust1t64:amd64         2.13.9-1                       amd64        L
 ii  libluajit-5.1-2:amd64          2.1.0+openresty20250117-2      amd64        OpenResty-maintained branch of LuaJIT (shared objects)
 ii  libluajit-5.1-common           2.1.0+openresty20250117-2      all          OpenResty-maintained branch of LuaJIT (common files)
 ii  liblz4-1:amd64                 1.10.0-4                       amd64        Fast LZ compression algorithm library - runtime
-ii  liblzma5:amd64                 5.8.1-1                        amd64        XZ-format compression library
+ii  liblzma5:amd64                 5.8.1-1+deb13u1                amd64        XZ-format compression library
 ii  liblzo2-2:amd64                2.10-3+b1                      amd64        data compression library
 ii  libmagic-mgc                   1:5.46-5                       amd64        File type determination library using "magic" numbers (compiled magic file)
 ii  libmagic1t64:amd64             1:5.46-5                       amd64        Recognize the type of data in a file using "magic" numbers - library
@@ -218,7 +218,7 @@ ii  libstdc++-14-dev:amd64         14.2.0-19                      amd64        G
 ii  libstdc++6:amd64               14.2.0-19                      amd64        GNU Standard C++ Library v3
 ii  libsystemd-shared:amd64        257.13-1~deb13u1               amd64        systemd shared private library
 ii  libsystemd0:amd64              257.13-1~deb13u1               amd64        systemd utility library
-ii  libtasn1-6:amd64               4.20.0-2                       amd64        Manage ASN.1 structures (runtime)
+ii  libtasn1-6:amd64               4.20.0-2+deb13u1               amd64        Manage ASN.1 structures (runtime)
 ii  libtext-charwidth-perl:amd64   0.04-11+b4                     amd64        get display widths of characters on the terminal
 ii  libtext-wrapi18n-perl          0.06-10                        all          internationalized substitute of Text::Wrap
 ii  libtinfo6:amd64                6.5+20250216-2                 amd64        shared low-level terminfo library for terminal handling
@@ -238,7 +238,7 @@ ii  libwtmpdb0:amd64               0.73.0-3+deb13u1               amd64        w
 ii  libxtables12:amd64             1.8.11-2                       amd64        netfilter xtables library
 ii  libxxhash0:amd64               0.8.3-2                        amd64        shared library for xxhash
 ii  libzstd1:amd64                 1.5.7+dfsg-1                   amd64        fast lossless compression algorithm
-ii  linux-libc-dev                 6.12.95-1                      all          Linux support headers for userspace development
+ii  linux-libc-dev                 6.12.96-1                      all          Linux support headers for userspace development
 ii  login                          1:4.16.0-2+really2.41-5        amd64        system login tools
 ii  login.defs                     1:4.17.4-2                     all          system user management configuration
 ii  lsb-release                    12.1-1                         all          Linux Standard Base version reporting utility (minimal implementation)
@@ -259,7 +259,7 @@ ii  openssh-server                 1:10.0p1-7+deb13u4             amd64        s
 ii  openssh-sftp-server            1:10.0p1-7+deb13u4             amd64        secure shell (SSH) sftp server module, for SFTP access from remote machines
 ii  openssl                        3.5.6-1~deb13u2                amd64        Secure Sockets Layer toolkit - cryptographic utility
 ii  openssl-provider-legacy        3.5.6-1~deb13u2                amd64        Secure Sockets Layer toolkit - cryptographic utility
-ii  openvpn                        2.6.14-1+deb13u1               amd64        virtual private network daemon
+ii  openvpn                        2.6.14-1+deb13u3               amd64        virtual private network daemon
 ii  passwd                         1:4.17.4-2                     amd64        change and administer password and group data
 ii  patch                          2.8-2                          amd64        Apply a diff file to an original
 ii  perl                           5.40.1-6                       amd64        Larry Wall's Practical Extraction and Report Language
@@ -268,7 +268,7 @@ ii  perl-modules-5.40              5.40.1-6                       all          C
 ii  pinentry-curses                1.3.1-2                        amd64        curses-based PIN or pass-phrase entry dialog for GnuPG
 ii  postgresql-client-17           17.9-1.pgdg13+1                amd64        front-end programs for PostgreSQL 17
 ii  postgresql-client-18           18.3-1.pgdg13+1                amd64        front-end programs for PostgreSQL 18
-ii  postgresql-client-common       291.pgdg13+1                   all          manager for multiple PostgreSQL client versions
+ii  postgresql-client-common       293.pgdg13+1                   all          manager for multiple PostgreSQL client versions
 ii  procps                         2:4.0.4-9                      amd64        /proc file system utilities
 ii  readline-common                8.2-6                          all          GNU readline and history libraries, common files
 ii  rpcsvc-proto                   1.4.3-1                        amd64        RPC protocol compiler and definitions
@@ -287,5 +287,5 @@ ii  util-linux                     2.41-5                         amd64        m
 ii  vim                            2:9.1.1230-2                   amd64        Vi IMproved - enhanced vi editor
 ii  vim-common                     2:9.1.1230-2                   all          Vi IMproved - Common files
 ii  vim-runtime                    2:9.1.1230-2                   all          Vi IMproved - Runtime files
-ii  xz-utils                       5.8.1-1                        amd64        XZ-format compression utilities
+ii  xz-utils                       5.8.1-1+deb13u1                amd64        XZ-format compression utilities
 ii  zlib1g:amd64                   1:1.3.dfsg+really1.3.1-1+b1    amd64        compression library - runtime
