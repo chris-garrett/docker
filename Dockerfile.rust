@@ -118,7 +118,7 @@ ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 ENV PATH=/work/opt/cargo/bin:$PATH
 
-LABEL org.opencontainers.image.rust_version="1.92.0"
+LABEL org.opencontainers.image.rust_version="1.97.1"
 
 
 RUN set -eux; \
