@@ -51,9 +51,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Pgvector: **0.8.3**
 - Postgis: **17-3.6-alpine**
 
-### Devops 26.11.0
+### Devops 26.12.0
 
-`docker pull ghcr.io/chris-garrett/devops:26.11.0`
+`docker pull ghcr.io/chris-garrett/devops:26.12.0`
 
 - Act_runner: **0.6.1**
 - Actions_runner: **2.335.0**
@@ -62,7 +62,7 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Dockerize: **0.9.9**
 - Duckdb: **1.5.2**
 - Easyrsa: **3.2.2-1**
-- Jq: **1.7.1-6+deb13u2**
+- Jq: **1.7.1-6***
 - K9s: **0.50.18**
 - Kubectl: **1.36.1**
 - Kubelogin: **0.2.17**
