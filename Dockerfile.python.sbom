@@ -98,7 +98,7 @@ ii  libdebconfclient0:amd64        0.280                             amd64      
 ii  libdpkg-perl                   1.22.22                           all          Dpkg perl modules
 ii  libelf1t64:amd64               0.192-4                           amd64        library to read and write ELF files
 ii  liberror-perl                  0.17030-1                         all          Perl module for error/exception handling in an OO-ish way
-ii  libexpat1:amd64                2.8.2-1~deb13u1                   amd64        XML parsing C library - runtime library
+ii  libexpat1:amd64                2.8.3-1~deb13u1                   amd64        XML parsing C library - runtime library
 ii  libffi8:amd64                  3.4.8-2                           amd64        Foreign Function Interface library runtime
 ii  libgcc-14-dev:amd64            14.2.0-19                         amd64        GCC support library (development files)
 ii  libgcc-s1:amd64                14.2.0-19                         amd64        GCC support library
