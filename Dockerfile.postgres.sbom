@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:92774d862d74a7f06ea5d7d10bd2ad1532cc270520ab290948f6fef9026ea0fa
+postgis/postgis@sha256:deca3e715faa16f9ce5715d2e45b4aeb493c433f78f05df8f3a3a7059c522630
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=17-3.6-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20260817.054956 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20260824.055256 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20260813.191733 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.2-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -34,7 +34,7 @@ ca-certificates-bundle-20260611-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [i
 cairo-1.18.4-r1 x86_64 {cairo} (LGPL-2.1-or-later OR MPL-1.1) [installed]
 fontconfig-2.17.1-r1 x86_64 {fontconfig} (MIT) [installed]
 freetype-2.14.3-r0 x86_64 {freetype} (FTL OR GPL-2.0-or-later) [installed]
-gdal-3.13.2-r0 x86_64 {gdal} (MIT) [installed]
+gdal-3.13.3-r0 x86_64 {gdal} (MIT) [installed]
 gdbm-1.26-r0 x86_64 {gdbm} (GPL-3.0-or-later) [installed]
 geos-3.14.1-r0 x86_64 {geos} (LGPL-2.1-or-later) [installed]
 giflib-5.2.2-r1 x86_64 {giflib} (MIT) [installed]
@@ -58,7 +58,7 @@ libcrypto3-3.5.7-r0 x86_64 {openssl} (Apache-2.0) [installed]
 libcurl-8.21.0-r0 x86_64 {curl} (curl) [installed]
 libdeflate-1.25-r0 x86_64 {libdeflate} (MIT) [installed]
 libedit-20260508.3.1-r1 x86_64 {libedit} (BSD-3-Clause) [installed]
-libexpat-2.8.2-r0 x86_64 {expat} (MIT) [installed]
+libexpat-2.8.3-r0 x86_64 {expat} (MIT) [installed]
 libffi-3.5.2-r1 x86_64 {libffi} (MIT) [installed]
 libgcc-15.2.0-r5 x86_64 {gcc} (GPL-2.0-or-later AND LGPL-2.1-or-later) [installed]
 libgeotiff-1.7.4-r0 x86_64 {libgeotiff} (Public-Domain) [installed]
@@ -116,7 +116,7 @@ qhull-2020.2-r3 x86_64 {qhull} (custom) [installed]
 readline-8.3.3-r1 x86_64 {readline} (GPL-3.0-or-later) [installed]
 scanelf-1.3.9-r1 x86_64 {pax-utils} (GPL-2.0-only) [installed]
 sfcgal-2.2.0-r0 x86_64 {sfcgal} (LGPL-2.0-or-later) [installed]
-sqlite-libs-3.53.2-r0 x86_64 {sqlite} (blessing) [installed]
+sqlite-libs-3.53.4-r0 x86_64 {sqlite} (blessing) [installed]
 ssl_client-1.37.0-r31 x86_64 {busybox} (GPL-2.0-only) [installed]
 superlu-7.0.1-r0 x86_64 {superlu} (BSD-3-Clause) [installed]
 tiff-4.7.1-r0 x86_64 {tiff} (libtiff) [installed]
