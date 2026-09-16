@@ -51,9 +51,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Pgvector: **0.8.3**
 - Postgis: **17-3.6-alpine**
 
-### Devops 26.18.0
+### Devops 26.19.0
 
-`docker pull ghcr.io/chris-garrett/devops:26.18.0`
+`docker pull ghcr.io/chris-garrett/devops:26.19.0`
 
 - Act_runner: **0.6.1**
 - Actions_runner: **2.335.0**
@@ -71,7 +71,7 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Openvpn: **2.6.14***
 - Psql17: **17.9-1.pgdg13+1**
 - Psql18: **18.3-1.pgdg13+1**
-- Sqlite3: **3.46.1-7+deb13u1**
+- Sqlite3: **3.46.1-7+deb13u2**
 - Tini: **0.19.0**
 - Tofu: **1.11.7**
 - Watchexec: **2.3.2**
