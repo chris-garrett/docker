@@ -90,7 +90,7 @@ ii  hostname                       3.25                              amd64      
 ii  init-system-helpers            1.69~deb13u1                      all          helper tools for all init systems
 ii  iproute2                       6.15.0-1                          amd64        networking and traffic control tools
 ii  iputils-ping                   3:20240905-3                      amd64        Tools to test the reachability of network hosts
-ii  jq                             1.7.1-6+deb13u3                   amd64        lightweight and flexible command-line JSON processor
+ii  jq                             1.7.1-6+deb13u4                   amd64        lightweight and flexible command-line JSON processor
 ii  libacl1:amd64                  2.3.2-2+b1                        amd64        access control list - shared library
 ii  libapparmor1:amd64             4.1.0-1                           amd64        changehat AppArmor library
 ii  libapt-pkg7.0:amd64            3.0.3                             amd64        package management runtime library
@@ -150,7 +150,7 @@ ii  libidn2-0:amd64                2.3.8-2                           amd64      
 ii  libisl23:amd64                 0.27-1                            amd64        manipulating sets and relations of integer points bounded by linear constraints
 ii  libitm1:amd64                  14.2.0-19                         amd64        GNU Transactional Memory Library
 ii  libjansson4:amd64              2.14-2+b3                         amd64        C library for encoding, decoding and manipulating JSON data
-ii  libjq1:amd64                   1.7.1-6+deb13u3                   amd64        lightweight and flexible command-line JSON processor - shared library
+ii  libjq1:amd64                   1.7.1-6+deb13u4                   amd64        lightweight and flexible command-line JSON processor - shared library
 ii  libk5crypto3:amd64             1.21.3-5+deb13u1                  amd64        MIT Kerberos runtime libraries - Crypto Library
 ii  libkeyutils1:amd64             1.6.3-6                           amd64        Linux Key Management Utilities (library)
 ii  libkrb5-3:amd64                1.21.3-5+deb13u1                  amd64        MIT Kerberos runtime libraries
