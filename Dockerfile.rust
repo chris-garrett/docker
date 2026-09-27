@@ -110,6 +110,18 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     sh /tmp/rustup.sh -y --no-modify-path; \
     rm -fr /work/opt/rustup/toolchains/stable-${ARCH}-unknown-linux-gnu/share/doc;
 
+# install sccache
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else \
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/sccache.tgz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-${ARCH}-unknown-linux-musl.tar.gz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/sccache.tgz sccache-v0.18.0-${ARCH}-unknown-linux-musl/sccache; \
+    chmod +x /work/opt/bin/sccache; \
+    rm /tmp/sccache.tgz
+
 
 
 FROM build AS final
@@ -119,6 +131,7 @@ ENV CARGO_HOME=/work/opt/cargo
 ENV PATH=/work/opt/cargo/bin:$PATH
 
 LABEL org.opencontainers.image.rust_version="1.97.1"
+LABEL org.opencontainers.image.sccache_version="0.18.0"
 
 
 RUN set -eux; \

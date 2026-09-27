@@ -22,14 +22,15 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Uv: **0.9.25**
 - Watchexec: **2.3.2**
 
-### Rust 26.29.0
+### Rust 26.30.0
 
-`docker pull ghcr.io/chris-garrett/rust:26.29.0`
+`docker pull ghcr.io/chris-garrett/rust:26.30.0`
 
 - Act_runner: **0.6.1**
 - Actions_runner: **2.335.0**
 - Dockerize: **0.9.9**
 - Rust: **1.97.1**
+- Sccache: **0.18.0**
 - Watchexec: **2.3.2**
 
 ### Node 26.27.0

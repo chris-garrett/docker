@@ -10,6 +10,7 @@ org.opencontainers.image.act_runner_version=0.6.1
 org.opencontainers.image.actions_runner_version=2.335.0
 org.opencontainers.image.dockerize_version=0.9.9
 org.opencontainers.image.rust_version=1.97.1
+org.opencontainers.image.sccache_version=0.18.0
 org.opencontainers.image.watchexec_version=2.3.2
 
 ## OS Versions
