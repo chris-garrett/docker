@@ -192,7 +192,7 @@ ii  libpam-modules:amd64           1.7.0-5                           amd64      
 ii  libpam-modules-bin             1.7.0-5                           amd64        Pluggable Authentication Modules for PAM - helper binaries
 ii  libpam-runtime                 1.7.0-5                           all          Runtime support for the PAM library
 ii  libpam0g:amd64                 1.7.0-5                           amd64        Pluggable Authentication Modules library
-ii  libpcre2-8-0:amd64             10.46-1~deb13u2                   amd64        New Perl Compatible Regular Expression Library- 8 bit runtime files
+ii  libpcre2-8-0:amd64             10.46-1~deb13u3                   amd64        New Perl Compatible Regular Expression Library- 8 bit runtime files
 ii  libperl5.40:amd64              5.40.1-6+deb13u1                  amd64        shared Perl library
 ii  libpkcs11-helper1t64:amd64     1.30.0-1+b1                       amd64        library that simplifies the interaction with PKCS#11
 ii  libpq5:amd64                   18.6-1.pgdg13+2                   amd64        PostgreSQL C client library
@@ -213,7 +213,7 @@ ii  libsmartcols1:amd64            2.41.5-0+deb13u1                  amd64      
 ii  libsodium23:amd64              1.0.18-1+deb13u1                  amd64        Network communication, cryptography and signaturing library
 ii  libsqlite3-0:amd64             3.46.1-7+deb13u2                  amd64        SQLite 3 shared library
 ii  libssh2-1t64:amd64             1.11.1-1+deb13u2                  amd64        SSH2 client-side library
-ii  libssl3t64:amd64               3.5.7-1~deb13u2                   amd64        Secure Sockets Layer toolkit - shared libraries
+ii  libssl3t64:amd64               3.5.7-1~deb13u3                   amd64        Secure Sockets Layer toolkit - shared libraries
 ii  libstdc++-14-dev:amd64         14.2.0-19                         amd64        GNU Standard C++ Library v3 (development files)
 ii  libstdc++6:amd64               14.2.0-19                         amd64        GNU Standard C++ Library v3
 ii  libsystemd-shared:amd64        257.13-1~deb13u1                  amd64        systemd shared private library
@@ -257,8 +257,8 @@ ii  netbase                        6.5                               all        
 ii  openssh-client                 1:10.0p1-7+deb13u4                amd64        secure shell (SSH) client, for secure access to remote machines
 ii  openssh-server                 1:10.0p1-7+deb13u4                amd64        secure shell (SSH) server, for secure access from remote machines
 ii  openssh-sftp-server            1:10.0p1-7+deb13u4                amd64        secure shell (SSH) sftp server module, for SFTP access from remote machines
-ii  openssl                        3.5.7-1~deb13u2                   amd64        Secure Sockets Layer toolkit - cryptographic utility
-ii  openssl-provider-legacy        3.5.7-1~deb13u2                   amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssl                        3.5.7-1~deb13u3                   amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  openssl-provider-legacy        3.5.7-1~deb13u3                   amd64        Secure Sockets Layer toolkit - cryptographic utility
 ii  openvpn                        2.6.14-1+deb13u3                  amd64        virtual private network daemon
 ii  passwd                         1:4.17.4-2                        amd64        change and administer password and group data
 ii  patch                          2.8-2                             amd64        Apply a diff file to an original
