@@ -526,7 +526,8 @@ def pr_service(ctx: TaskContext, name: str):
         ctx.log.error(f"Error pushing branch {ret.stderr}")
         return 1
 
-    # create PR
+    # Create with the PAT so pull_request workflows can run without manual
+    # approval. GITHUB_TOKEN-created PRs require workflow approval.
     time.sleep(sleep_sec)
 
     ctx.log.info(f"Creating PR for {name}")
@@ -536,7 +537,7 @@ def pr_service(ctx: TaskContext, name: str):
         {
             "User-Agent": "CI Github Bot",
             "Accept": "application/vnd.github.v3+json",
-            "Authorization": f"Bearer {token}",
+            "Authorization": f"Bearer {ci_token}",
         },
     )
     if ret[0] != 201:
@@ -545,7 +546,8 @@ def pr_service(ctx: TaskContext, name: str):
 
     pull_number = json.loads(ret[2])["number"]
 
-    # approve PR
+    # Review with the separate bot identity: a PR author cannot approve
+    # their own PR. A PR review is separate from workflow-run approval.
     time.sleep(sleep_sec)
 
     ctx.log.info(f"Accepting PR for {name} PR {pull_number}")
@@ -555,7 +557,7 @@ def pr_service(ctx: TaskContext, name: str):
         {
             "User-Agent": "CI Github Bot",
             "Accept": "application/vnd.github.v3+json",
-            "Authorization": f"Bearer {ci_token}",
+            "Authorization": f"Bearer {token}",
         },
     )
     if ret[0] != 200:

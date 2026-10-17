@@ -5,10 +5,10 @@ inputs:
     description: "Service name. Example: python"
     required: true
   github_token:
-    description: "GitHub token for creating/merging PR"
+    description: "Default GitHub token for registry login and PR review"
     required: true
   ci_github_token:
-    description: "GitHub token for accepting PR. Must be different than github_token."
+    description: "PAT for creating and merging PRs without workflow approval. Must use a different identity than github_token."
     required: true
 
 runs:

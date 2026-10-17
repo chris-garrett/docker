@@ -56,6 +56,7 @@ Templating is Python `string.Template` fed by `config.env`. Because `$` is the s
 - `update-<svc>.yaml` — daily cron → `<svc>:update` then `<svc>:pr` (auto version-bump PR). Uses the composite action `.github/actions/update-dockerfile`.
 - `build-<svc>.yaml` — on push to `main` (and PRs) touching `config.env`, `Dockerfile.<svc>`, or `Dockerfile.<svc>.sbom` → `<svc>:build` (multi-arch push) + `<svc>:tag`. Uses `.github/actions/build-image`.
 - Auto-merge deliberately uses the PAT `CI_GITHUB_TOKEN` (not the default `GITHUB_TOKEN`). Pushing to `main` with `GITHUB_TOKEN` would not trigger the `build-*` workflows (GitHub anti-recursion), so the build would never fire. Keep merges on the PAT.
+- PR creation also uses `CI_GITHUB_TOKEN` so PR workflows run without manual workflow approval. PR reviews use the separate `GITHUB_TOKEN` bot identity because a PR author cannot approve their own PR. PR review approval does not approve workflow runs.
 
 ## Runtime behavior
 
