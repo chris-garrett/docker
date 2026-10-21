@@ -2,7 +2,7 @@
 
 ## base image digest
 
-debian@sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f
+debian@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad
 
 ## Package Versions
 
@@ -31,7 +31,7 @@ ii  binutils-x86-64-linux-gnu      2.44-3                            amd64      
 ii  bsdutils                       1:2.41.5-0+deb13u1                amd64        basic utilities from 4.4BSD-Lite
 ii  build-essential                12.12                             amd64        Informational list of build-essential packages
 ii  bzip2                          1.0.8-6                           amd64        high-quality block-sorting file compressor - utilities
-ii  ca-certificates                20250419                          all          Common CA certificates
+ii  ca-certificates                20250419+deb13u1                  all          Common CA certificates
 ii  coreutils                      9.7-3                             amd64        GNU core utilities
 ii  cpp                            4:14.2.0-1                        amd64        GNU C preprocessor (cpp)
 ii  cpp-14                         14.2.0-19                         amd64        GNU C preprocessor
