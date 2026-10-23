@@ -55,7 +55,13 @@ fi
 
 # Fix ownership of required paths
 mkdir -p "$HOME_DIR" /work
-chown -R sprout:sprout "$HOME_DIR" /work
+chown -R sprout:sprout "$HOME_DIR"
+# Large bind mounts can retain ownership managed by the host.
+case "${ENTRYPOINT_CHOWN_WORK:-1}" in
+  1) chown -R sprout:sprout /work ;;
+  0) ;;
+  *) echo "ENTRYPOINT_CHOWN_WORK must be 0 or 1" >&2; exit 1 ;;
+esac
 
 # Execute the passed command as 'sprout'
 if [ "$#" -eq 0 ]; then
