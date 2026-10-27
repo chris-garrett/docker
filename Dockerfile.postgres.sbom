@@ -2,7 +2,7 @@
 
 ## base image digest
 
-postgis/postgis@sha256:cd7b00a457793cabd269af2af292a994754d130ac1e564ae1c053abb22b947cf
+postgis/postgis@sha256:cd2ae468934722d6f61691198ab29d4d2fd94f3a8684bc3ee6f79459e374c1b0
 
 ## Package Versions
 
@@ -11,7 +11,7 @@ org.opencontainers.image.postgis_version=17-3.6-alpine
 
 ## OS Versions
 
-.postgis-rundeps-20261022.040505 noarch {.postgis-rundeps} () [installed]
+.postgis-rundeps-20261026.160434 noarch {.postgis-rundeps} () [installed]
 .postgresql-rundeps-20261021.225731 noarch {.postgresql-rundeps} () [installed]
 acl-libs-2.3.2-r1 x86_64 {acl} (LGPL-2.1-or-later AND GPL-2.0-or-later) [installed]
 alpine-baselayout-3.7.2-r1 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
@@ -24,7 +24,7 @@ arpack-3.9.1-r0 x86_64 {arpack} (BSD-3-Clause) [installed]
 bash-5.3.9-r1 x86_64 {bash} (GPL-3.0-or-later) [installed]
 blosc-1.21.6-r0 x86_64 {blosc} (BSD-3-Clause) [installed]
 boost1.84-serialization-1.84.0-r6 x86_64 {boost1.84} (BSL-1.0) [installed]
-brotli-libs-1.2.0-r1 x86_64 {brotli} (MIT) [installed]
+brotli-libs-1.2.1-r0 x86_64 {brotli} (MIT) [installed]
 brunsli-libs-0.1-r1 x86_64 {brunsli} (MIT) [installed]
 busybox-1.37.0-r31 x86_64 {busybox} (GPL-2.0-only) [installed]
 busybox-binsh-1.37.0-r31 x86_64 {busybox} (GPL-2.0-only) [installed]
@@ -55,7 +55,7 @@ libbsd-0.12.2-r0 x86_64 {libbsd} (BSD-3-Clause) [installed]
 libbz2-1.0.8-r6 x86_64 {bzip2} (bzip2-1.0.6) [installed]
 libcom_err-1.47.4-r0 x86_64 {e2fsprogs} (GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT) [installed]
 libcrypto3-3.5.9-r0 x86_64 {openssl} (Apache-2.0) [installed]
-libcurl-8.22.0-r0 x86_64 {curl} (curl) [installed]
+libcurl-8.23.0-r0 x86_64 {curl} (curl) [installed]
 libdeflate-1.25-r0 x86_64 {libdeflate} (MIT) [installed]
 libedit-20260508.3.1-r1 x86_64 {libedit} (BSD-3-Clause) [installed]
 libexpat-2.9.0-r0 x86_64 {expat} (MIT) [installed]
