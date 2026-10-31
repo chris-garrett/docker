@@ -204,7 +204,7 @@ ii  sed                            4.9-2+deb13u1                     amd64      
 ii  sqv                            1.3.0-3+b2                        amd64        OpenPGP signature verification program from Sequoia
 ii  sysvinit-utils                 3.14-4                            amd64        System-V-like utilities
 ii  tar                            1.35+dfsg-3.1                     amd64        GNU version of the tar archiving utility
-ii  tzdata                         2026e-0+deb13u1                   all          time zone and daylight-saving time data
+ii  tzdata                         2026f-0+deb13u1                   all          time zone and daylight-saving time data
 ii  unzip                          6.0-29+deb13u1                    amd64        De-archiver for .zip files
 ii  util-linux                     2.41.5-0+deb13u1                  amd64        miscellaneous system utilities
 ii  vim                            2:9.1.1230-2                      amd64        Vi IMproved - enhanced vi editor
