@@ -33,9 +33,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Sccache: **0.18.0**
 - Watchexec: **2.3.2**
 
-### Node 26.39.0
+### Node 26.40.0
 
-`docker pull ghcr.io/chris-garrett/node:26.39.0`
+`docker pull ghcr.io/chris-garrett/node:26.40.0`
 
 - Act_runner: **0.6.1**
 - Actions_runner: **2.335.0**
