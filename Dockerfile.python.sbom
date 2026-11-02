@@ -207,8 +207,8 @@ ii  tar                            1.35+dfsg-3.1                     amd64      
 ii  tzdata                         2026f-0+deb13u1                   all          time zone and daylight-saving time data
 ii  unzip                          6.0-29+deb13u1                    amd64        De-archiver for .zip files
 ii  util-linux                     2.41.5-0+deb13u1                  amd64        miscellaneous system utilities
-ii  vim                            2:9.1.1230-2                      amd64        Vi IMproved - enhanced vi editor
-ii  vim-common                     2:9.1.1230-2                      all          Vi IMproved - Common files
-ii  vim-runtime                    2:9.1.1230-2                      all          Vi IMproved - Runtime files
+ii  vim                            2:9.1.1230-2+deb13u1              amd64        Vi IMproved - enhanced vi editor
+ii  vim-common                     2:9.1.1230-2+deb13u1              all          Vi IMproved - Common files
+ii  vim-runtime                    2:9.1.1230-2+deb13u1              all          Vi IMproved - Runtime files
 ii  xz-utils                       5.8.1-1+deb13u2                   amd64        XZ-format compression utilities
 ii  zlib1g:amd64                   1:1.3.dfsg+really1.3.1-1+b1       amd64        compression library - runtime
