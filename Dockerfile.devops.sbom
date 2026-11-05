@@ -2,7 +2,7 @@
 
 ## base image digest
 
-debian@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4
+debian@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2
 
 ## Package Versions
 
@@ -35,8 +35,8 @@ Desired=Unknown/Install/Remove/Purge/Hold
 ||/ Name                           Version                           Architecture Description
 +++-==============================-=================================-============-===============================================================================
 ii  adduser                        3.152                             all          add and remove users and groups
-ii  apt                            3.0.3                             amd64        commandline package manager
-ii  apt-transport-https            3.0.3                             all          transitional package for https support
+ii  apt                            3.0.4                             amd64        commandline package manager
+ii  apt-transport-https            3.0.4                             all          transitional package for https support
 ii  azure-cli                      2.86.0-1~bookworm                 amd64        Azure CLI
 ii  base-files                     13.8+deb13u7                      amd64        Debian base system miscellaneous files
 ii  base-passwd                    3.6.7                             amd64        Debian base system master password and group files
@@ -93,7 +93,7 @@ ii  iputils-ping                   3:20240905-3                      amd64      
 ii  jq                             1.7.1-6+deb13u4                   amd64        lightweight and flexible command-line JSON processor
 ii  libacl1:amd64                  2.3.2-2+b1                        amd64        access control list - shared library
 ii  libapparmor1:amd64             4.1.0-1                           amd64        changehat AppArmor library
-ii  libapt-pkg7.0:amd64            3.0.3                             amd64        package management runtime library
+ii  libapt-pkg7.0:amd64            3.0.4                             amd64        package management runtime library
 ii  libasan8:amd64                 14.2.0-19                         amd64        AddressSanitizer -- a fast memory error detector
 ii  libassuan9:amd64               3.0.2-2                           amd64        IPC library for the GnuPG components
 ii  libatomic1:amd64               14.2.0-19                         amd64        support library providing __atomic built-in functions
