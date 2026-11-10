@@ -43,12 +43,12 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/watchexec/watchexec/releases/download/v2.3.2/watchexec-2.3.2-${ARCH}-unknown-linux-gnu.tar.xz; \
-    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.3.2-${ARCH}-unknown-linux-gnu/watchexec
+    curl -o /tmp/watchexec.tar.xz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.8.0-${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.9.9/dockerize-linux-${TARGETARCH}-v0.9.9.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.16.0/dockerize-linux-${TARGETARCH}-v0.16.0.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 # add static curl
@@ -58,7 +58,7 @@ RUN set -eux; \
     else\
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.18.0/curl-linux-${ARCH}-glibc-8.18.0.tar.xz; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.23.0-1/curl-linux-${ARCH}-glibc-8.23.0-1.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
 # install github actions runner (extracted to /work/opt/actions-runner; run ./config.sh & ./run.sh from there)
@@ -71,15 +71,15 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     RUNNER_ARCH="x64"; \
     fi; \
     mkdir -p /work/opt/actions-runner; \
-    curl -o /tmp/actions-runner.tar.gz -LsSf https://github.com/actions/runner/releases/download/v2.335.0/actions-runner-linux-${RUNNER_ARCH}-2.335.0.tar.gz; \
+    curl -o /tmp/actions-runner.tar.gz -LsSf https://github.com/actions/runner/releases/download/v2.338.2/actions-runner-linux-${RUNNER_ARCH}-2.338.2.tar.gz; \
     tar -C /work/opt/actions-runner -xzf /tmp/actions-runner.tar.gz; \
     rm /tmp/actions-runner.tar.gz; \
     /work/opt/actions-runner/bin/installdependencies.sh; \
     rm -rf /var/lib/apt/lists/*
 
-# install gitea act_runner (single binary on PATH)
+# install Gitea runner (upstream renamed act_runner; keep the existing command)
 RUN set -eux; \
-    curl -o /work/opt/bin/act_runner -LsSf https://dl.gitea.com/act_runner/0.6.1/act_runner-0.6.1-linux-${TARGETARCH}; \
+    curl -o /work/opt/bin/act_runner -LsSf https://gitea.com/gitea/runner/releases/download/v5.4.1/gitea-runner-5.4.1-linux-${TARGETARCH}; \
     chmod +x /work/opt/bin/act_runner
 
 # add apt prerequisites + Microsoft (azure-cli) + PGDG (postgresql-client) repos
@@ -104,14 +104,14 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     apt update; \
     apt install -y --no-install-recommends \
-        azure-cli=2.86.0-1~bookworm \
-        postgresql-client-17=17.9-1.pgdg13+1 \
-        postgresql-client-18=18.3-1.pgdg13+1 \
+        azure-cli=2.92.0-1~bookworm \
+        postgresql-client-17=17.11-1.pgdg13+2 \
+        postgresql-client-18=18.6-1.pgdg13+2 \
         openssh-server=1:10.0p1-7+deb13u4 \
-        openvpn=2.6.14* \
+        openvpn=2.6.14-1+deb13u3 \
         easy-rsa=3.2.2-1 \
         neovim=0.10.4-8 \
-        jq=1.7.1-6* \
+        jq=1.7.1-6+deb13u4 \
         sqlite3=3.46.1-7+deb13u2 \
         mtr-tiny \
     ; \
@@ -126,43 +126,43 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/awscli.zip -LsSf "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}-2.27.40.zip"; \
+    curl -o /tmp/awscli.zip -LsSf "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}-2.39.7.zip"; \
     unzip -q /tmp/awscli.zip -d /tmp; \
     /tmp/aws/install --install-dir /work/opt/aws --bin-dir /work/opt/bin; \
     rm -rf /tmp/awscli.zip /tmp/aws
 
 # install tofu (OpenTofu)
 RUN set -eux; \
-    curl -o /tmp/tofu.tgz -LsSf "https://github.com/opentofu/opentofu/releases/download/v1.11.7/tofu_1.11.7_linux_${TARGETARCH}.tar.gz"; \
+    curl -o /tmp/tofu.tgz -LsSf "https://github.com/opentofu/opentofu/releases/download/v1.13.9/tofu_1.13.9_linux_${TARGETARCH}.tar.gz"; \
     tar -C /work/opt/bin -xf /tmp/tofu.tgz tofu; \
     chmod +x /work/opt/bin/tofu; \
     rm /tmp/tofu.tgz
 
 # install kubectl
 RUN set -eux; \
-    curl -o /work/opt/bin/kubectl -LsSf "https://dl.k8s.io/release/v1.36.1/bin/linux/${TARGETARCH}/kubectl"; \
+    curl -o /work/opt/bin/kubectl -LsSf "https://dl.k8s.io/release/v1.37.2/bin/linux/${TARGETARCH}/kubectl"; \
     chmod +x /work/opt/bin/kubectl
 
 # install kubelogin
 RUN set -eux; \
-    curl -o /tmp/kubelogin.zip -LsSf "https://github.com/Azure/kubelogin/releases/download/v0.2.17/kubelogin-linux-${TARGETARCH}.zip"; \
+    curl -o /tmp/kubelogin.zip -LsSf "https://github.com/Azure/kubelogin/releases/download/v0.2.22/kubelogin-linux-${TARGETARCH}.zip"; \
     unzip -j /tmp/kubelogin.zip "bin/linux_${TARGETARCH}/kubelogin" -d /work/opt/bin; \
     chmod +x /work/opt/bin/kubelogin; \
     rm /tmp/kubelogin.zip
 
 # install k9s
 RUN set -eux; \
-    curl -o /tmp/k9s.tgz -LsSf "https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_Linux_${TARGETARCH}.tar.gz"; \
+    curl -o /tmp/k9s.tgz -LsSf "https://github.com/derailed/k9s/releases/download/v0.51.0/k9s_Linux_${TARGETARCH}.tar.gz"; \
     tar -C /work/opt/bin -xf /tmp/k9s.tgz k9s; \
     chmod +x /work/opt/bin/k9s; \
     rm /tmp/k9s.tgz
 
 # install duckdb
 RUN set -eux; \
-    curl -o /tmp/duckdb.zip -LsSf "https://github.com/duckdb/duckdb/releases/download/v1.5.2/duckdb_cli-linux-${TARGETARCH}.zip"; \
-    unzip -d /work/opt/bin /tmp/duckdb.zip; \
+    curl -o /tmp/duckdb.tar.gz -LsSf "https://github.com/duckdb/duckdb/releases/download/v2.0.0/duckdb-cli-linux-${TARGETARCH}.tar.gz"; \
+    tar -C /work/opt/bin -xzf /tmp/duckdb.tar.gz duckdb; \
     chmod +x /work/opt/bin/duckdb; \
-    rm /tmp/duckdb.zip
+    rm /tmp/duckdb.tar.gz
 
 # install tini
 RUN set -eux; \
@@ -177,20 +177,20 @@ RUN set -eux; \
 
 FROM build AS final
 
-LABEL org.opencontainers.image.azure_cli_version="2.86.0-1~bookworm"
-LABEL org.opencontainers.image.aws_version="2.27.40"
-LABEL org.opencontainers.image.tofu_version="1.11.7"
-LABEL org.opencontainers.image.kubectl_version="1.36.1"
-LABEL org.opencontainers.image.kubelogin_version="0.2.17"
-LABEL org.opencontainers.image.k9s_version="0.50.18"
-LABEL org.opencontainers.image.duckdb_version="1.5.2"
+LABEL org.opencontainers.image.azure_cli_version="2.92.0-1~bookworm"
+LABEL org.opencontainers.image.aws_version="2.39.7"
+LABEL org.opencontainers.image.tofu_version="1.13.9"
+LABEL org.opencontainers.image.kubectl_version="1.37.2"
+LABEL org.opencontainers.image.kubelogin_version="0.2.22"
+LABEL org.opencontainers.image.k9s_version="0.51.0"
+LABEL org.opencontainers.image.duckdb_version="2.0.0"
 LABEL org.opencontainers.image.tini_version="0.19.0"
-LABEL org.opencontainers.image.psql17_version="17.9-1.pgdg13+1"
-LABEL org.opencontainers.image.psql18_version="18.3-1.pgdg13+1"
-LABEL org.opencontainers.image.openvpn_version="2.6.14*"
+LABEL org.opencontainers.image.psql17_version="17.11-1.pgdg13+2"
+LABEL org.opencontainers.image.psql18_version="18.6-1.pgdg13+2"
+LABEL org.opencontainers.image.openvpn_version="2.6.14-1+deb13u3"
 LABEL org.opencontainers.image.easyrsa_version="3.2.2-1"
 LABEL org.opencontainers.image.neovim_version="0.10.4-8"
-LABEL org.opencontainers.image.jq_version="1.7.1-6*"
+LABEL org.opencontainers.image.jq_version="1.7.1-6+deb13u4"
 LABEL org.opencontainers.image.sqlite3_version="3.46.1-7+deb13u2"
 LABEL org.opencontainers.image.openssh_server_version="1:10.0p1-7+deb13u4"
 
@@ -203,7 +203,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /work/app
 
-LABEL org.opencontainers.image.watchexec_version="2.3.2"
-LABEL org.opencontainers.image.dockerize_version="0.9.9"
-LABEL org.opencontainers.image.actions_runner_version="2.335.0"
-LABEL org.opencontainers.image.act_runner_version="0.6.1"
+LABEL org.opencontainers.image.watchexec_version="2.8.0"
+LABEL org.opencontainers.image.dockerize_version="0.16.0"
+LABEL org.opencontainers.image.curl_version="8.23.0-1"
+LABEL org.opencontainers.image.actions_runner_version="2.338.2"
+LABEL org.opencontainers.image.act_runner_version="5.4.1"

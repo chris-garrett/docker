@@ -43,12 +43,12 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/watchexec.tar.xz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/watchexec/watchexec/releases/download/v2.3.2/watchexec-2.3.2-${ARCH}-unknown-linux-gnu.tar.xz; \
-    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.3.2-${ARCH}-unknown-linux-gnu/watchexec
+    curl -o /tmp/watchexec.tar.xz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.8.0-${ARCH}-unknown-linux-gnu/watchexec
 
 # install dockerize
 RUN set -eux; \
-    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.9.9/dockerize-linux-${TARGETARCH}-v0.9.9.tar.gz; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.16.0/dockerize-linux-${TARGETARCH}-v0.16.0.tar.gz; \
     tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
 
 # add static curl
@@ -58,7 +58,7 @@ RUN set -eux; \
     else\
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.18.0/curl-linux-${ARCH}-glibc-8.18.0.tar.xz; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.23.0-1/curl-linux-${ARCH}-glibc-8.23.0-1.tar.xz; \
     tar -C /work/opt/bin -xf /tmp/curl.tgz
 
 # install github actions runner (extracted to /work/opt/actions-runner; run ./config.sh & ./run.sh from there)
@@ -71,20 +71,17 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     RUNNER_ARCH="x64"; \
     fi; \
     mkdir -p /work/opt/actions-runner; \
-    curl -o /tmp/actions-runner.tar.gz -LsSf https://github.com/actions/runner/releases/download/v2.335.0/actions-runner-linux-${RUNNER_ARCH}-2.335.0.tar.gz; \
+    curl -o /tmp/actions-runner.tar.gz -LsSf https://github.com/actions/runner/releases/download/v2.338.2/actions-runner-linux-${RUNNER_ARCH}-2.338.2.tar.gz; \
     tar -C /work/opt/actions-runner -xzf /tmp/actions-runner.tar.gz; \
     rm /tmp/actions-runner.tar.gz; \
     /work/opt/actions-runner/bin/installdependencies.sh; \
     rm -rf /var/lib/apt/lists/*
 
-# install gitea act_runner (single binary on PATH)
+# install Gitea runner (upstream renamed act_runner; keep the existing command)
 RUN set -eux; \
-    curl -o /work/opt/bin/act_runner -LsSf https://dl.gitea.com/act_runner/0.6.1/act_runner-0.6.1-linux-${TARGETARCH}; \
+    curl -o /work/opt/bin/act_runner -LsSf https://gitea.com/gitea/runner/releases/download/v5.4.1/gitea-runner-5.4.1-linux-${TARGETARCH}; \
     chmod +x /work/opt/bin/act_runner
 
-# install python via miniconda
-ENV PATH=/work/opt/venv/bin:$PATH
-ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
 ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 
@@ -98,7 +95,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     ; \
     rm -rf /var/lib/apt/lists/*
 
-# install fnm/node
+# install the pinned stable Rust toolchain
 RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     if [ "$TARGETARCH" = "arm64" ]; then \
@@ -107,8 +104,8 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     ARCH="x86_64"; \
     fi; \
     curl -o /tmp/rustup.sh -sSf https://sh.rustup.rs; \
-    sh /tmp/rustup.sh -y --no-modify-path; \
-    rm -fr /work/opt/rustup/toolchains/stable-${ARCH}-unknown-linux-gnu/share/doc;
+    sh /tmp/rustup.sh -y --no-modify-path --default-toolchain "1.99.1"; \
+    rm -fr /work/opt/rustup/toolchains/1.99.1-${ARCH}-unknown-linux-gnu/share/doc;
 
 # install sccache
 RUN set -eux; \
@@ -117,8 +114,8 @@ RUN set -eux; \
     else \
     ARCH="x86_64"; \
     fi; \
-    curl -o /tmp/sccache.tgz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-${ARCH}-unknown-linux-musl.tar.gz; \
-    tar -C /work/opt/bin --strip-components=1 -xf /tmp/sccache.tgz sccache-v0.18.0-${ARCH}-unknown-linux-musl/sccache; \
+    curl -o /tmp/sccache.tgz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/mozilla/sccache/releases/download/v0.19.0/sccache-v0.19.0-${ARCH}-unknown-linux-musl.tar.gz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/sccache.tgz sccache-v0.19.0-${ARCH}-unknown-linux-musl/sccache; \
     chmod +x /work/opt/bin/sccache; \
     rm /tmp/sccache.tgz
 
@@ -130,8 +127,8 @@ ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 ENV PATH=/work/opt/cargo/bin:$PATH
 
-LABEL org.opencontainers.image.rust_version="1.97.1"
-LABEL org.opencontainers.image.sccache_version="0.18.0"
+LABEL org.opencontainers.image.rust_version="1.99.1"
+LABEL org.opencontainers.image.sccache_version="0.19.0"
 
 
 RUN set -eux; \
@@ -142,7 +139,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /work/app
 
-LABEL org.opencontainers.image.watchexec_version="2.3.2"
-LABEL org.opencontainers.image.dockerize_version="0.9.9"
-LABEL org.opencontainers.image.actions_runner_version="2.335.0"
-LABEL org.opencontainers.image.act_runner_version="0.6.1"
+LABEL org.opencontainers.image.watchexec_version="2.8.0"
+LABEL org.opencontainers.image.dockerize_version="0.16.0"
+LABEL org.opencontainers.image.curl_version="8.23.0-1"
+LABEL org.opencontainers.image.actions_runner_version="2.338.2"
+LABEL org.opencontainers.image.act_runner_version="5.4.1"

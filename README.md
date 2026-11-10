@@ -11,71 +11,77 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 ## Versions
 
-### Python 26.44.0
+### Python 26.45.0
 
-`docker pull ghcr.io/chris-garrett/python:26.44.0`
+`docker pull ghcr.io/chris-garrett/python:26.45.0`
 
-- Act_runner: **0.6.1**
-- Actions_runner: **2.335.0**
-- Dockerize: **0.9.9**
-- Python: **3.12**
-- Uv: **0.9.25**
-- Watchexec: **2.3.2**
+- Act_runner: **5.4.1**
+- Actions_runner: **2.338.2**
+- Curl: **8.23.0-1**
+- Dockerize: **0.16.0**
+- Python: **3.15.2**
+- Uv: **0.13.7**
+- Watchexec: **2.8.0**
 
-### Rust 26.48.0
+### Rust 26.49.0
 
-`docker pull ghcr.io/chris-garrett/rust:26.48.0`
+`docker pull ghcr.io/chris-garrett/rust:26.49.0`
 
-- Act_runner: **0.6.1**
-- Actions_runner: **2.335.0**
-- Dockerize: **0.9.9**
-- Rust: **1.97.1**
-- Sccache: **0.18.0**
-- Watchexec: **2.3.2**
+- Act_runner: **5.4.1**
+- Actions_runner: **2.338.2**
+- Curl: **8.23.0-1**
+- Dockerize: **0.16.0**
+- Rust: **1.99.1**
+- Sccache: **0.19.0**
+- Watchexec: **2.8.0**
 
-### Node 26.45.0
+### Node 26.46.0
 
-`docker pull ghcr.io/chris-garrett/node:26.45.0`
+`docker pull ghcr.io/chris-garrett/node:26.46.0`
 
-- Act_runner: **0.6.1**
-- Actions_runner: **2.335.0**
-- Bun: **1.3.6**
-- Dockerize: **0.9.9**
-- Fnm: **1.38.1**
-- Node: **22.22.0**
-- Watchexec: **2.3.2**
+- Act_runner: **5.4.1**
+- Actions_runner: **2.338.2**
+- Bun: **1.4.4**
+- Corepack: **0.36.0**
+- Curl: **8.23.0-1**
+- Dockerize: **0.16.0**
+- Fnm: **1.39.0**
+- Node: **26.13.0**
+- Vite_plus: **1.5.1**
+- Watchexec: **2.8.0**
 
-### Postgres 26.22.0
+### Postgres 26.23.0
 
-`docker pull ghcr.io/chris-garrett/postgres:26.22.0`
+`docker pull ghcr.io/chris-garrett/postgres:26.23.0`
 
-- Pgvector: **0.8.3**
-- Postgis: **17-3.6-alpine**
+- Pgvector: **0.8.7**
+- Postgis: **17-3.7-alpine**
 
-### Devops 26.40.0
+### Devops 26.41.0
 
-`docker pull ghcr.io/chris-garrett/devops:26.40.0`
+`docker pull ghcr.io/chris-garrett/devops:26.41.0`
 
-- Act_runner: **0.6.1**
-- Actions_runner: **2.335.0**
-- Aws: **2.27.40**
-- Azure_cli: **2.86.0-1~bookworm**
-- Dockerize: **0.9.9**
-- Duckdb: **1.5.2**
+- Act_runner: **5.4.1**
+- Actions_runner: **2.338.2**
+- Aws: **2.39.7**
+- Azure_cli: **2.92.0-1~bookworm**
+- Curl: **8.23.0-1**
+- Dockerize: **0.16.0**
+- Duckdb: **2.0.0**
 - Easyrsa: **3.2.2-1**
-- Jq: **1.7.1-6***
-- K9s: **0.50.18**
-- Kubectl: **1.36.1**
-- Kubelogin: **0.2.17**
+- Jq: **1.7.1-6+deb13u4**
+- K9s: **0.51.0**
+- Kubectl: **1.37.2**
+- Kubelogin: **0.2.22**
 - Neovim: **0.10.4-8**
 - Openssh_server: **1:10.0p1-7+deb13u4**
-- Openvpn: **2.6.14***
-- Psql17: **17.9-1.pgdg13+1**
-- Psql18: **18.3-1.pgdg13+1**
+- Openvpn: **2.6.14-1+deb13u3**
+- Psql17: **17.11-1.pgdg13+2**
+- Psql18: **18.6-1.pgdg13+2**
 - Sqlite3: **3.46.1-7+deb13u2**
 - Tini: **0.19.0**
-- Tofu: **1.11.7**
-- Watchexec: **2.3.2**
+- Tofu: **1.13.9**
+- Watchexec: **2.8.0**
 
 ## Examples
 

@@ -1,6 +1,6 @@
 ENV NODE_ENV=development
 ENV FNM_DIR=/work/opt/fnm
-ENV FNM_COREPACK_ENABLED=true
+ENV FNM_COREPACK_ENABLED=false
 
 RUN --mount=target=/root/.cache/node,type=cache,sharing=locked,mode=0755 \
     set -eux; \
@@ -15,7 +15,9 @@ RUN --mount=target=/root/.cache/node,type=cache,sharing=locked,mode=0755 \
 RUN cat <<EOF >> /tmp/fnm-init.sh
 #!/bin/bash
 eval "$$(/work/opt/bin/fnm env --use-on-cd --shell bash)"
-/work/opt/bin/fnm use ${NODE_VERSION} --install-if-missing --corepack-enabled;
+/work/opt/bin/fnm use ${NODE_VERSION} --install-if-missing;
+npm install --global corepack@$COREPACK_VERSION;
+corepack enable;
 EOF
 
 # install node
@@ -33,13 +35,14 @@ RUN set -eux; \
     unzip -d /tmp /tmp/bun.zip; \
     mv /tmp/$${ARCHIVE}/bun /work/opt/bin/bun;
 
-
-# install deno
+# Install the standalone Vite+ CLI and its toolchain using the official installer.
+# https://viteplus.dev/guide/global-cli#installation-variables
+ENV VP_HOME=/work/opt/vite-plus
 RUN set -eux; \
-    if [ "$$TARGETARCH" = "arm64" ]; then \
-    ARCH="aarch64"; \
-    else \
-    ARCH="x86_64"; \
-    fi; \
-    curl -o /tmp/deno.zip -LsSf "https://github.com/denoland/deno/releases/download/v$DENO_VERSION/deno-$${ARCH}-unknown-linux-gnu.zip"; \
-    unzip -d /work/opt/bin /tmp/deno.zip;
+    curl -o /tmp/vite-plus-install.sh -LsSf https://vite.plus; \
+    CI=1 VP_VERSION="$VITE_PLUS_VERSION" VP_SETUP_NODE_VERSION="$NODE_VERSION" \
+    VP_NODE_MANAGER=no VP_PM_MANAGER=no bash /tmp/vite-plus-install.sh; \
+    ln -s /work/opt/vite-plus/bin/vp /work/opt/bin/vp; \
+    ln -s /work/opt/vite-plus/bin/vpx /work/opt/bin/vpx; \
+    ln -s /work/opt/vite-plus/bin/vpr /work/opt/bin/vpr; \
+    rm /tmp/vite-plus-install.sh;

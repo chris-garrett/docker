@@ -77,9 +77,9 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     /work/opt/actions-runner/bin/installdependencies.sh; \
     rm -rf /var/lib/apt/lists/*
 
-# install gitea act_runner (single binary on PATH)
+# install Gitea runner (upstream renamed act_runner; keep the existing command)
 RUN set -eux; \
-    curl -o /work/opt/bin/act_runner -LsSf https://dl.gitea.com/act_runner/$ACT_RUNNER_VERSION/act_runner-$ACT_RUNNER_VERSION-linux-$${TARGETARCH}; \
+    curl -o /work/opt/bin/act_runner -LsSf https://gitea.com/gitea/runner/releases/download/v$ACT_RUNNER_VERSION/gitea-runner-$ACT_RUNNER_VERSION-linux-$${TARGETARCH}; \
     chmod +x /work/opt/bin/act_runner
 
 $BUILD_TEMPLATE
@@ -99,5 +99,6 @@ WORKDIR /work/app
 
 LABEL org.opencontainers.image.watchexec_version="$WATCHEXEC_VERSION"
 LABEL org.opencontainers.image.dockerize_version="$DOCKERIZE_VERSION"
+LABEL org.opencontainers.image.curl_version="$CURL_VERSION"
 LABEL org.opencontainers.image.actions_runner_version="$ACTIONS_RUNNER_VERSION"
 LABEL org.opencontainers.image.act_runner_version="$ACT_RUNNER_VERSION"

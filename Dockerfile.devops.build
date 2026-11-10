@@ -75,10 +75,10 @@ RUN set -eux; \
 
 # install duckdb
 RUN set -eux; \
-    curl -o /tmp/duckdb.zip -LsSf "https://github.com/duckdb/duckdb/releases/download/v$DUCKDB_VERSION/duckdb_cli-linux-$${TARGETARCH}.zip"; \
-    unzip -d /work/opt/bin /tmp/duckdb.zip; \
+    curl -o /tmp/duckdb.tar.gz -LsSf "https://github.com/duckdb/duckdb/releases/download/v$DUCKDB_VERSION/duckdb-cli-linux-$${TARGETARCH}.tar.gz"; \
+    tar -C /work/opt/bin -xzf /tmp/duckdb.tar.gz duckdb; \
     chmod +x /work/opt/bin/duckdb; \
-    rm /tmp/duckdb.zip
+    rm /tmp/duckdb.tar.gz
 
 # install tini
 RUN set -eux; \

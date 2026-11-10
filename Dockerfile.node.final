@@ -8,3 +8,5 @@ RUN set -eux; \
 LABEL org.opencontainers.image.node_version="$NODE_VERSION"
 LABEL org.opencontainers.image.fnm_version="$FNM_VERSION"
 LABEL org.opencontainers.image.bun_version="$BUN_VERSION"
+LABEL org.opencontainers.image.vite_plus_version="$VITE_PLUS_VERSION"
+LABEL org.opencontainers.image.corepack_version="$COREPACK_VERSION"

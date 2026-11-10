@@ -6,26 +6,27 @@ debian@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2
 
 ## Package Versions
 
-org.opencontainers.image.act_runner_version=0.6.1
-org.opencontainers.image.actions_runner_version=2.335.0
-org.opencontainers.image.aws_version=2.27.40
-org.opencontainers.image.azure_cli_version=2.86.0-1~bookworm
-org.opencontainers.image.dockerize_version=0.9.9
-org.opencontainers.image.duckdb_version=1.5.2
+org.opencontainers.image.act_runner_version=5.4.1
+org.opencontainers.image.actions_runner_version=2.338.2
+org.opencontainers.image.aws_version=2.39.7
+org.opencontainers.image.azure_cli_version=2.92.0-1~bookworm
+org.opencontainers.image.curl_version=8.23.0-1
+org.opencontainers.image.dockerize_version=0.16.0
+org.opencontainers.image.duckdb_version=2.0.0
 org.opencontainers.image.easyrsa_version=3.2.2-1
-org.opencontainers.image.jq_version=1.7.1-6*
-org.opencontainers.image.k9s_version=0.50.18
-org.opencontainers.image.kubectl_version=1.36.1
-org.opencontainers.image.kubelogin_version=0.2.17
+org.opencontainers.image.jq_version=1.7.1-6+deb13u4
+org.opencontainers.image.k9s_version=0.51.0
+org.opencontainers.image.kubectl_version=1.37.2
+org.opencontainers.image.kubelogin_version=0.2.22
 org.opencontainers.image.neovim_version=0.10.4-8
 org.opencontainers.image.openssh_server_version=1:10.0p1-7+deb13u4
-org.opencontainers.image.openvpn_version=2.6.14*
-org.opencontainers.image.psql17_version=17.9-1.pgdg13+1
-org.opencontainers.image.psql18_version=18.3-1.pgdg13+1
+org.opencontainers.image.openvpn_version=2.6.14-1+deb13u3
+org.opencontainers.image.psql17_version=17.11-1.pgdg13+2
+org.opencontainers.image.psql18_version=18.6-1.pgdg13+2
 org.opencontainers.image.sqlite3_version=3.46.1-7+deb13u2
 org.opencontainers.image.tini_version=0.19.0
-org.opencontainers.image.tofu_version=1.11.7
-org.opencontainers.image.watchexec_version=2.3.2
+org.opencontainers.image.tofu_version=1.13.9
+org.opencontainers.image.watchexec_version=2.8.0
 
 ## OS Versions
 
@@ -37,7 +38,7 @@ Desired=Unknown/Install/Remove/Purge/Hold
 ii  adduser                        3.152                             all          add and remove users and groups
 ii  apt                            3.0.4                             amd64        commandline package manager
 ii  apt-transport-https            3.0.4                             all          transitional package for https support
-ii  azure-cli                      2.86.0-1~bookworm                 amd64        Azure CLI
+ii  azure-cli                      2.92.0-1~bookworm                 amd64        Azure CLI
 ii  base-files                     13.8+deb13u7                      amd64        Debian base system miscellaneous files
 ii  base-passwd                    3.6.7                             amd64        Debian base system master password and group files
 ii  bash                           5.2.37-2+b10                      amd64        GNU Bourne Again SHell
@@ -266,8 +267,8 @@ ii  perl                           5.40.1-6+deb13u1                  amd64      
 ii  perl-base                      5.40.1-6+deb13u1                  amd64        minimal Perl system
 ii  perl-modules-5.40              5.40.1-6+deb13u1                  all          Core Perl modules
 ii  pinentry-curses                1.3.1-2                           amd64        curses-based PIN or pass-phrase entry dialog for GnuPG
-ii  postgresql-client-17           17.9-1.pgdg13+1                   amd64        front-end programs for PostgreSQL 17
-ii  postgresql-client-18           18.3-1.pgdg13+1                   amd64        front-end programs for PostgreSQL 18
+ii  postgresql-client-17           17.11-1.pgdg13+2                  amd64        front-end programs for PostgreSQL 17
+ii  postgresql-client-18           18.6-1.pgdg13+2                   amd64        front-end programs for PostgreSQL 18
 ii  postgresql-client-common       293.pgdg13+1                      all          manager for multiple PostgreSQL client versions
 ii  procps                         2:4.0.4-9                         amd64        /proc file system utilities
 ii  readline-common                8.2-6                             all          GNU readline and history libraries, common files

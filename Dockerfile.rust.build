@@ -1,6 +1,3 @@
-# install python via miniconda
-ENV PATH=/work/opt/venv/bin:$$PATH
-ENV UV_PYTHON_INSTALL_DIR=/work/opt/python
 ENV RUSTUP_HOME=/work/opt/rustup
 ENV CARGO_HOME=/work/opt/cargo
 
@@ -14,7 +11,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     ; \
     rm -rf /var/lib/apt/lists/*
 
-# install fnm/node
+# install the pinned stable Rust toolchain
 RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     if [ "$$TARGETARCH" = "arm64" ]; then \
@@ -23,8 +20,8 @@ RUN --mount=target=/root/.cache/pip,type=cache,sharing=locked,mode=0755 \
     ARCH="x86_64"; \
     fi; \
     curl -o /tmp/rustup.sh -sSf https://sh.rustup.rs; \
-    sh /tmp/rustup.sh -y --no-modify-path; \
-    rm -fr /work/opt/rustup/toolchains/stable-$${ARCH}-unknown-linux-gnu/share/doc;
+    sh /tmp/rustup.sh -y --no-modify-path --default-toolchain "$RUST_VERSION"; \
+    rm -fr /work/opt/rustup/toolchains/$RUST_VERSION-$${ARCH}-unknown-linux-gnu/share/doc;
 
 # install sccache
 RUN set -eux; \
