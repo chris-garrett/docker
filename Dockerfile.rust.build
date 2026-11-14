@@ -6,6 +6,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
     set -eux; \
     apt update; \
     apt install -y --no-install-recommends \
+    cmake \
     pkg-config \
     libssl-dev \
     ; \
