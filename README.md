@@ -2,13 +2,13 @@
 
 Kitchen sink developer images. These are intended for use with docker compose.
 
-The Rust image includes CMake from Debian's package repositories for native dependency builds.
-
-[![Python: Build](https://github.com/chris-garrett/docker/actions/workflows/build-python.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-python.yaml)
-[![Rust: Build](https://github.com/chris-garrett/docker/actions/workflows/build-rust.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-rust.yaml)
-[![Node: Build](https://github.com/chris-garrett/docker/actions/workflows/build-node.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-node.yaml)
-[![Postgres: Build](https://github.com/chris-garrett/docker/actions/workflows/build-postgres.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-postgres.yaml)
-[![Devops: Build](https://github.com/chris-garrett/docker/actions/workflows/build-devops.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-devops.yaml)
+[![Python: Build](https://github.com/chris-garrett/docker/actions/workflows/build-python.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-python.yaml) [![Python: Version](https://img.shields.io/badge/version-26.46.0-blue)](https://github.com/chris-garrett/docker/pkgs/container/python)
+[![Rust: Build](https://github.com/chris-garrett/docker/actions/workflows/build-rust.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-rust.yaml) [![Rust: Version](https://img.shields.io/badge/version-26.50.0-blue)](https://github.com/chris-garrett/docker/pkgs/container/rust)
+[![Node: Build](https://github.com/chris-garrett/docker/actions/workflows/build-node.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-node.yaml) [![Node: Version](https://img.shields.io/badge/version-26.47.0-blue)](https://github.com/chris-garrett/docker/pkgs/container/node)
+[![Postgres: Build](https://github.com/chris-garrett/docker/actions/workflows/build-postgres.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-postgres.yaml) [![Postgres: Version](https://img.shields.io/badge/version-26.23.0-blue)](https://github.com/chris-garrett/docker/pkgs/container/postgres)
+[![Devops: Build](https://github.com/chris-garrett/docker/actions/workflows/build-devops.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-devops.yaml) [![Devops: Version](https://img.shields.io/badge/version-26.43.0-blue)](https://github.com/chris-garrett/docker/pkgs/container/devops)
+[![Keycloak: Build](https://github.com/chris-garrett/docker/actions/workflows/build-keycloak.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-keycloak.yaml) [![Keycloak: Version](https://img.shields.io/badge/version-26.1.0-blue)](https://github.com/chris-garrett/docker/pkgs/container/keycloak)
+[![Java: Build](https://github.com/chris-garrett/docker/actions/workflows/build-java.yaml/badge.svg)](https://github.com/chris-garrett/docker/actions/workflows/build-java.yaml) [![Java: Version](https://img.shields.io/badge/version-26.1.0-blue)](https://github.com/chris-garrett/docker/pkgs/container/java)
 
 
 ## Versions
@@ -84,6 +84,19 @@ The Rust image includes CMake from Debian's package repositories for native depe
 - Tini: **0.19.0**
 - Tofu: **1.13.9**
 - Watchexec: **2.8.0**
+
+### Keycloak 26.1.0
+
+`docker pull ghcr.io/chris-garrett/keycloak:26.1.0`
+
+- Keycloak: **26.7.5**
+
+### Java 26.1.0
+
+`docker pull ghcr.io/chris-garrett/java:26.1.0`
+
+- Java: **21**
+- Maven: **3.9**
 
 ## Examples
 

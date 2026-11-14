@@ -1,0 +1,4 @@
+FROM maven:${MAVEN_VERSION}-eclipse-temurin-${JAVA_VERSION} AS build
+
+LABEL org.opencontainers.image.maven_version="$MAVEN_VERSION"
+LABEL org.opencontainers.image.java_version="$JAVA_VERSION"

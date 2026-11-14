@@ -1,0 +1,34 @@
+name: "Keycloak: Build"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - Dockerfile.keycloak
+      - Dockerfile.keycloak.sbom
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - Dockerfile.keycloak
+      - Dockerfile.keycloak.sbom
+
+concurrency:
+  group: keycloak-build-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  update:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Image
+        uses: ./.github/actions/build-image
+        with:
+          service_name: keycloak
+          github_token: ${{ secrets.GITHUB_TOKEN }}

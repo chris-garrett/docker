@@ -31,9 +31,9 @@ def _add_service(builder: TaskBuilder, mod: str, name: str):
     builder.add_task(mod, f"{name}:tag", lambda ctx: tag_service(ctx, name))
 
 
-def _add_postgres_service(builder: TaskBuilder, mod: str, name: str):
+def _add_template_service(builder: TaskBuilder, mod: str, name: str, platforms: str = None):
     builder.add_task(mod, f"{name}:update", lambda ctx: update_service(ctx, name))
-    builder.add_task(mod, f"{name}:build", lambda ctx: build_service(ctx, name, platforms="linux/amd64"))
+    builder.add_task(mod, f"{name}:build", lambda ctx: build_service(ctx, name, platforms=platforms))
     builder.add_task(mod, f"{name}:tag", lambda ctx: tag_service(ctx, name))
     builder.add_task(mod, f"{name}:pr", lambda ctx: pr_service(ctx, name))
     builder.add_task(mod, f"{name}:sbom", lambda ctx: update_sbom(ctx, name))
@@ -47,7 +47,9 @@ def configure(builder: TaskBuilder):
     _add_service(builder, mod, "node")
     _add_service(builder, mod, "rust")
     _add_service(builder, mod, "devops")
-    _add_postgres_service(builder, mod, "postgres")
+    _add_template_service(builder, mod, "postgres", platforms="linux/amd64")
+    _add_template_service(builder, mod, "keycloak")
+    _add_template_service(builder, mod, "java")
 
     builder.add_task(mod, "info", _info)
-    builder.add_task(mod, "update", lambda ctx: None, ["python:update", "node:update", "rust:update", "devops:update", "postgres:update"])
+    builder.add_task(mod, "update", lambda ctx: None, ["python:update", "node:update", "rust:update", "devops:update", "postgres:update", "keycloak:update", "java:update"])

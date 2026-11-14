@@ -4,6 +4,7 @@ import json
 import os
 import shlex
 import time
+import tempfile
 import urllib.parse
 from string import Template
 from textwrap import dedent
@@ -254,14 +255,42 @@ def update_sbom(
 
         # 2. get os package versions from base image
         tag = f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest"
-        ret = ctx.exec(f"docker run --rm {tag} dpkg --list", capture=True)
-        if ret.returncode != 0:
-            # try alpine next
-            ret = ctx.exec(f"docker run --rm {tag} apk list -I", capture=True)
-            if ret.returncode != 0:
-                ctx.log.error(f"Error getting package list {base_image}")
-                return ret.returncode
-        os_packages = ret.stdout
+        for command in (
+            f"docker run --rm --entrypoint dpkg {tag} --list",
+            f"docker run --rm --entrypoint apk {tag} list -I",
+            f"docker run --rm --entrypoint rpm {tag} -qa",
+        ):
+            ret = ctx.exec(command, capture=True)
+            if ret.returncode == 0:
+                os_packages = ret.stdout
+                break
+        else:
+            # UBI-micro retains its RPM database but has no RPM CLI.
+            with tempfile.TemporaryDirectory() as database_dir:
+                container = ctx.exec(
+                    f"docker create --entrypoint /bin/sh {tag}", capture=True
+                )
+                if container.returncode != 0:
+                    return container.returncode
+                container_id = container.stdout.strip()
+                try:
+                    ret = ctx.exec(
+                        f"docker cp {container_id}:/var/lib/rpm/. {shlex.quote(database_dir)}"
+                    )
+                    if ret.returncode != 0:
+                        return ret.returncode
+                    rpm_image = load_env(os.path.join(ctx.root_dir, "config.env"))["RPM_SBOM_IMAGE"]
+                    ret = ctx.exec(
+                        f"docker run --rm --user 0 -v {shlex.quote(database_dir)}:/database "
+                        f"--entrypoint rpm {rpm_image} --dbpath /database -qa",
+                        capture=True,
+                    )
+                    if ret.returncode != 0:
+                        ctx.log.error(f"Error getting package list {base_image}")
+                        return ret.returncode
+                    os_packages = ret.stdout
+                finally:
+                    ctx.exec(f"docker rm {container_id}")
 
         v = get_version(ctx, name)
 
@@ -607,7 +636,16 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False, platforms: str=Non
         if "_VERSION" in k:
             b.with_arg(k, v)
 
-    return ctx.exec(b.build()).returncode
+    ret = ctx.exec(b.build()).returncode
+    summary_path = os.getenv("GITHUB_STEP_SUMMARY")
+    if ret == 0 and summary_path:
+        with open(summary_path, "a") as summary:
+            summary.write(
+                f"### {name.capitalize()} image\n\n"
+                f"- Version: **{ver.semver_full}**\n"
+                f"- Image: `{tags[1]}`\n\n"
+            )
+    return ret
 
 
 def tag_service(ctx: TaskContext, name: str):
@@ -669,6 +707,20 @@ def update_readme(ctx: TaskContext, name: str):
     new_content = (
         f"""{readme_content[:start_pos]}{new_service}{readme_content[end_pos:]}"""
     )
+
+    for service, version in re.findall(r"^### (\w+) ([\d.]+)$", new_content, re.MULTILINE):
+        workflow = f"https://github.com/chris-garrett/docker/actions/workflows/build-{service.lower()}.yaml"
+        build_badge = f"[![{service}: Build]({workflow}/badge.svg)]({workflow})"
+        version_badge = (
+            f"[![{service}: Version](https://img.shields.io/badge/version-{version}-blue)]"
+            f"(https://github.com/chris-garrett/docker/pkgs/container/{service.lower()})"
+        )
+        new_content = re.sub(
+            rf"^{re.escape(build_badge)}.*$",
+            f"{build_badge} {version_badge}",
+            new_content,
+            flags=re.MULTILINE,
+        )
 
     with open("README.md", "w") as f:
         f.write(new_content)
