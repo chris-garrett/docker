@@ -32,3 +32,4 @@ jobs:
         with:
           service_name: python
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          ci_github_token: ${{ github.ref == 'refs/heads/main' && secrets.CI_GITHUB_TOKEN || '' }}
