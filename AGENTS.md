@@ -65,7 +65,7 @@ Templating is Python `string.Template` fed by `config.env`. Because `$` is the s
 - Successful image builds append the exact version and image tag to GitHub Actions' `GITHUB_STEP_SUMMARY`.
 - Auto-merge deliberately uses the PAT `CI_GITHUB_TOKEN` (not the default `GITHUB_TOKEN`). Pushing to `main` with `GITHUB_TOKEN` would not trigger the `build-*` workflows (GitHub anti-recursion), so the build would never fire. Keep merges on the PAT.
 - PR creation also uses `CI_GITHUB_TOKEN` so PR workflows run without manual workflow approval. PR reviews use the separate `GITHUB_TOKEN` bot identity because a PR author cannot approve their own PR. PR review approval does not approve workflow runs.
-- Keycloak's existing private GHCR package is linked to `chris-garrett/devops`. Its build/update workflows pass `CI_GITHUB_TOKEN` as `registry_token` for package access; retain `GITHUB_TOKEN` for Git operations and PR reviews.
+- Keycloak's existing private GHCR package is linked to `chris-garrett/devops`. Grant `chris-garrett/docker` Write access under the package's Manage Actions access settings so its standard `GITHUB_TOKEN` can publish; do not bypass missing package permissions with a PAT.
 
 ## Runtime behavior
 

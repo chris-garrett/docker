@@ -7,9 +7,6 @@ inputs:
   github_token:
     description: "GitHub token for creating/merging PR"
     required: true
-  registry_token:
-    description: "Optional package-access token; defaults to github_token"
-    required: false
 
 runs:
   using: "composite"
@@ -25,7 +22,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ inputs.registry_token || inputs.github_token }}
+        password: ${{ inputs.github_token }}
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
