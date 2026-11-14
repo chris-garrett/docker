@@ -24,11 +24,12 @@ Run `./task <task>`. Multiple tasks chain: `./task ex:restart ex:log`.
 | Task | Does |
 |------|------|
 | `<svc>:update` | Regenerate `Dockerfile.<svc>` from templates + `config.env`, build single-arch, refresh SBOM and README |
-| `<svc>:build`  | `docker buildx build` the generated Dockerfile (multi-arch + `--push` only when `CI` is set; local builds are single-arch `--load`) |
+| `<svc>:build`  | Build one explicit version tag; only main CI publishes multi-arch images, while PR/local builds use single-arch `--load` |
 | `<svc>:sbom`   | Regenerate `Dockerfile.<svc>.sbom` (base-image digest, package labels, OS package list) |
-| `<svc>:readme` | Rewrite the service's version block in `README.md` from image labels |
+| `<svc>:readme` | Rewrite the service's pinned README reference using its current release tag and tool-version labels |
 | `<svc>:pr`     | Branch, commit, open, approve, and squash-merge a version-bump PR (CI only) |
 | `<svc>:tag`    | Create/push the git tag `<svc>/vMAJOR.MINOR.PATCH` (CI only) |
+| `<svc>:publish-readme` | After a main release, update the pinned README section through GitHub's Contents API, preserving concurrent releases |
 
 `./task update` runs every service's `:update`. `./task info` prints paths.
 
@@ -42,27 +43,29 @@ Run `./task <task>`. Multiple tasks chain: `./task ex:restart ex:log`.
 
 There are two generation patterns:
 
-1. **Common/layered** (python, node, rust, devops): `Dockerfile.<svc>.build` + `Dockerfile.<svc>.final` are substituted into `$BUILD_TEMPLATE` / `$FINAL_TEMPLATE` placeholders in **`Dockerfile.common`**. `Dockerfile.common` provides the shared Debian base and tooling installed into `/work/opt/bin` (watchexec, dockerize, static curl, GitHub Actions runner, Gitea act_runner). The `.build` fragment adds the language toolchain; the `.final` fragment sets runtime env and version `LABEL`s. (`__ci__.py`: `_add_service` / `update_service_deprecated`.)
+1. **Common/layered** (python, node, rust, devops, java): `Dockerfile.<svc>.build` + `Dockerfile.<svc>.final` are substituted into `$BUILD_TEMPLATE` / `$FINAL_TEMPLATE` placeholders in **`Dockerfile.common`**. `Dockerfile.common` provides the shared Debian base and tooling installed into `/work/opt/bin` (watchexec, dockerize, static curl, GitHub Actions runner, Gitea act_runner). The `.build` fragment adds the language toolchain; the `.final` fragment sets runtime env and version `LABEL`s. Java copies JDK and Maven from the configured Maven/Temurin image. (`__ci__.py`: `_add_service` / `update_service_deprecated`.)
 
-2. **Standalone template** (postgres, keycloak, java): `Dockerfile.<svc>.templ` is a complete Dockerfile; no `Dockerfile.common`. Keycloak and Java preserve their upstream entrypoints and runtime defaults. (`.task/__task__.py`: `_add_template_service`; `__ci__.py`: `update_service`.)
+2. **Standalone template** (postgres, keycloak): `Dockerfile.<svc>.templ` is a complete Dockerfile; no `Dockerfile.common`. These images preserve their upstream entrypoints and runtime defaults. (`.task/__task__.py`: `_add_template_service`; `__ci__.py`: `update_service`.)
 
 Templating is Python `string.Template` fed by `config.env`. Because `$` is the substitution char, **literal shell `$` in a template must be escaped as `$$`** (e.g. `$$TARGETARCH`, `$$PATH`).
 
 ## Versioning & config
 
 - **All version pins live in `config.env`.** To bump a tool, change its `*_VERSION` there, then `./task <svc>:update`. Every `config.env` key ending in `_VERSION` is passed to the build as a `--build-arg`.
-- Image version = git tag per service, `<svc>/vMAJOR.MINOR.PATCH`, computed by `.task/__version__.py`. On `main` the patch bumps; on any other branch the minor bumps. `README.md` version blocks and `*.sbom` files are derived from `org.opencontainers.image.<tool>_version` labels, so those labels are load-bearing, not decorative.
+- Image version = git tag per service, `<svc>/vMAJOR.MINOR.PATCH`, computed by `.task/__version__.py`. On `main` the patch bumps; on any other branch the minor bumps. README tool-version lists and `*.sbom` files are derived from `org.opencontainers.image.<tool>_version` labels, so those labels are load-bearing, not decorative.
 - For new services, create and push an initial `<svc>/vYY.0.0` tag on an ancestor commit before pushing the implementation. `YY` is the two-digit year; use the existing version logic, not a code change, to produce the first release.
-- `:readme` refreshes version badges beside the build badges using the existing image-version sections.
+- Images are immutable: never build or publish a `:latest` alias, never overwrite an existing published version, and never force-update or delete release tags from PR workflows. README pull commands must pin explicit versions.
+- `:update` documents the exact local build version. `:readme` refreshes pins from release tags. Main CI runs `:publish-readme` after a successful publish/tag to keep README pins current; SHA conflicts are re-fetched so concurrent releases do not overwrite each other's sections. Version badges remain live service-tag badges.
 - SBOM generation supports Debian, Alpine, and RPM images. For UBI-micro images without an RPM CLI, it queries a temporary copy of the RPM database using `RPM_SBOM_IMAGE`; no tools are added to the runtime image.
 
 ## CI (GitHub Actions, `.github/workflows/`)
 
 - `update-<svc>.yaml` — daily cron → `<svc>:update` then `<svc>:pr` (auto version-bump PR). Uses the composite action `.github/actions/update-dockerfile`.
-- `build-<svc>.yaml` — on push to `main` (and PRs) touching `config.env`, `Dockerfile.<svc>`, or `Dockerfile.<svc>.sbom` → `<svc>:build` (multi-arch push) + `<svc>:tag`. Uses `.github/actions/build-image`.
+- `build-<svc>.yaml` validates PRs with a local single-architecture build. Only CI builds on `refs/heads/main` publish multi-architecture versioned images and release tags. PRs must never push images or tags. Uses `.github/actions/build-image`.
 - Successful image builds append the exact version and image tag to GitHub Actions' `GITHUB_STEP_SUMMARY`.
 - Auto-merge deliberately uses the PAT `CI_GITHUB_TOKEN` (not the default `GITHUB_TOKEN`). Pushing to `main` with `GITHUB_TOKEN` would not trigger the `build-*` workflows (GitHub anti-recursion), so the build would never fire. Keep merges on the PAT.
 - PR creation also uses `CI_GITHUB_TOKEN` so PR workflows run without manual workflow approval. PR reviews use the separate `GITHUB_TOKEN` bot identity because a PR author cannot approve their own PR. PR review approval does not approve workflow runs.
+- Keycloak's existing private GHCR package is linked to `chris-garrett/devops`. Its build/update workflows pass `CI_GITHUB_TOKEN` as `registry_token` for package access; retain `GITHUB_TOKEN` for Git operations and PR reviews.
 
 ## Runtime behavior
 

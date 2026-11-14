@@ -32,3 +32,4 @@ jobs:
         with:
           service_name: keycloak
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          registry_token: ${{ secrets.CI_GITHUB_TOKEN }}

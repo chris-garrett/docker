@@ -1,0 +1,2 @@
+COPY --from=maven:${MAVEN_VERSION}-eclipse-temurin-${JAVA_VERSION} /opt/java/openjdk /opt/java/openjdk
+COPY --from=maven:${MAVEN_VERSION}-eclipse-temurin-${JAVA_VERSION} /usr/share/maven /usr/share/maven

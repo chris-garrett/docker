@@ -7,6 +7,7 @@ from __ci__ import (
     update_service_deprecated,
     update_sbom,
     update_readme,
+    publish_readme,
 )
 from __tasklib__ import TaskBuilder, TaskContext, load_dotenv
 
@@ -27,6 +28,7 @@ def _add_service(builder: TaskBuilder, mod: str, name: str):
     builder.add_task(mod, f"{name}:build", lambda ctx: build_service(ctx, name))
     builder.add_task(mod, f"{name}:sbom", lambda ctx: update_sbom(ctx, name))
     builder.add_task(mod, f"{name}:readme", lambda ctx: update_readme(ctx, name))
+    builder.add_task(mod, f"{name}:publish-readme", lambda ctx: publish_readme(ctx, name))
     builder.add_task(mod, f"{name}:pr", lambda ctx: pr_service(ctx, name))
     builder.add_task(mod, f"{name}:tag", lambda ctx: tag_service(ctx, name))
 
@@ -38,6 +40,7 @@ def _add_template_service(builder: TaskBuilder, mod: str, name: str, platforms: 
     builder.add_task(mod, f"{name}:pr", lambda ctx: pr_service(ctx, name))
     builder.add_task(mod, f"{name}:sbom", lambda ctx: update_sbom(ctx, name))
     builder.add_task(mod, f"{name}:readme", lambda ctx: update_readme(ctx, name))
+    builder.add_task(mod, f"{name}:publish-readme", lambda ctx: publish_readme(ctx, name))
 
 
 def configure(builder: TaskBuilder):
@@ -47,9 +50,9 @@ def configure(builder: TaskBuilder):
     _add_service(builder, mod, "node")
     _add_service(builder, mod, "rust")
     _add_service(builder, mod, "devops")
+    _add_service(builder, mod, "java")
     _add_template_service(builder, mod, "postgres", platforms="linux/amd64")
     _add_template_service(builder, mod, "keycloak")
-    _add_template_service(builder, mod, "java")
 
     builder.add_task(mod, "info", _info)
     builder.add_task(mod, "update", lambda ctx: None, ["python:update", "node:update", "rust:update", "devops:update", "postgres:update", "keycloak:update", "java:update"])

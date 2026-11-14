@@ -7,6 +7,9 @@ inputs:
   github_token:
     description: "GitHub token for creating/merging PR"
     required: true
+  registry_token:
+    description: "Optional package-access token; defaults to github_token"
+    required: false
 
 runs:
   using: "composite"
@@ -17,11 +20,12 @@ runs:
         fetch-depth: 0
 
     - name: Log in to the Container registry
+      if: github.ref == 'refs/heads/main'
       uses: docker/login-action@v3.2.0
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ inputs.github_token }}
+        password: ${{ inputs.registry_token || inputs.github_token }}
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -45,3 +49,10 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       shell: bash
       run: ./task ${{ inputs.service_name }}:tag
+
+    - name: Publish released image version in README
+      if: github.ref == 'refs/heads/main'
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      shell: bash
+      run: ./task ${{ inputs.service_name }}:publish-readme

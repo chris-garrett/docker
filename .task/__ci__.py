@@ -1,6 +1,7 @@
 import re
 import http.client
 import json
+import base64
 import os
 import shlex
 import time
@@ -254,7 +255,8 @@ def update_sbom(
         digest = ret.stdout.strip("[]\n").split(",")[0].strip("'")
 
         # 2. get os package versions from base image
-        tag = f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest"
+        v = get_version(ctx, name)
+        tag = f"{os.getenv('DOCKER_REGISTRY')}/{name}:{v.semver_full}"
         for command in (
             f"docker run --rm --entrypoint dpkg {tag} --list",
             f"docker run --rm --entrypoint apk {tag} list -I",
@@ -291,8 +293,6 @@ def update_sbom(
                     os_packages = ret.stdout
                 finally:
                     ctx.exec(f"docker rm {container_id}")
-
-        v = get_version(ctx, name)
 
         # 3. get package versions that we are using (they are labels on this image)
         ret = ctx.exec(
@@ -338,7 +338,7 @@ def update_service_deprecated(ctx: TaskContext, name: str, custom_templates: dic
     if ret != 0:
         return ret
 
-    ret = update_readme(ctx, name)
+    ret = update_readme(ctx, name, version=get_version(ctx, name).semver_full)
     if ret != 0:
         return ret
 
@@ -360,7 +360,7 @@ def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
     if ret != 0:
         return ret
 
-    ret = update_readme(ctx, name)
+    ret = update_readme(ctx, name, version=get_version(ctx, name).semver_full)
     if ret != 0:
         return ret
 
@@ -376,19 +376,6 @@ def pr_service(ctx: TaskContext, name: str):
     max_merge_retries = 3
     merge_retry_delay = 5  # seconds
 
-    def _delete_tag_if_exists(tag: str):
-        if not tag:
-            return
-        # Best-effort cleanup. Don't mask the original failure.
-        try:
-            safe_tag = shlex.quote(tag)
-            ret = ctx.exec(f"git tag -l {safe_tag}", capture=True)
-            if ret.returncode == 0 and tag in ret.stdout.split():
-                ctx.log.warning(f"Deleting orphaned tag {tag}")
-                ctx.exec(f"git tag -d {safe_tag}")
-                ctx.exec(f"git push origin :refs/tags/{safe_tag}")
-        except Exception as ex:
-            ctx.log.warning(f"Failed to delete tag {tag}: {ex}")
 
     def _sync_branch_with_main(branch: str) -> int:
         """Keep branch mergeable when main moves between PR creation and merge."""
@@ -431,7 +418,7 @@ def pr_service(ctx: TaskContext, name: str):
             method="PUT",
         )
 
-    def _merge_pr_with_retry(pull_number: int, commit_title: str, branch: str, orphan_tag: str) -> int:
+    def _merge_pr_with_retry(pull_number: int, commit_title: str, branch: str) -> int:
         """Merge a PR, retrying with rebase if base branch moves (HTTP 405)."""
         for attempt in range(1, max_merge_retries + 1):
             ret = _merge_pr(pull_number, commit_title)
@@ -442,18 +429,15 @@ def pr_service(ctx: TaskContext, name: str):
             if ret[0] == 405 and "Base branch was modified" in body:
                 ctx.log.warning(f"Base branch moved during merge (attempt {attempt}/{max_merge_retries}). Syncing and retrying...")
                 if _sync_branch_with_main(branch) != 0:
-                    _delete_tag_if_exists(orphan_tag)
                     return 1
                 time.sleep(merge_retry_delay)
                 continue
 
             # Non-retryable error
             ctx.log.error(f"Error merging PR {ret[0]} | {ret[1]} | {ret[2]}")
-            _delete_tag_if_exists(orphan_tag)
             return 1
 
         ctx.log.error(f"Failed to merge PR after {max_merge_retries} attempts")
-        _delete_tag_if_exists(orphan_tag)
         return 1
 
     def _find_open_pr_number(head_branch: str) -> int | None:
@@ -522,15 +506,13 @@ def pr_service(ctx: TaskContext, name: str):
             ctx.log.error(f"Error checking out branch {branch}: {ret.stderr}")
             return 1
 
-        orphan_tag = f"{name}/v{ver.semver_full}"
         commit_title = f"chore: {name} {ver.semver_full}"
 
         if _sync_branch_with_main(branch) != 0:
-            _delete_tag_if_exists(orphan_tag)
             return 1
 
         ctx.log.info(f"Merging PR for {name} PR {pull_number}")
-        return _merge_pr_with_retry(pull_number, commit_title, branch, orphan_tag)
+        return _merge_pr_with_retry(pull_number, commit_title, branch)
 
     # create branch
     ret = ctx.exec(f"git checkout -b {branch}", capture=True)
@@ -597,24 +579,26 @@ def pr_service(ctx: TaskContext, name: str):
     time.sleep(sleep_sec)
 
     ctx.log.info(f"Merging PR for {name} PR {pull_number}")
-    orphan_tag = f"{name}/v{ver.semver_full}"
-    return _merge_pr_with_retry(pull_number, commit_msg, branch, orphan_tag)
+    return _merge_pr_with_retry(pull_number, commit_msg, branch)
 
 
 def build_service(ctx: TaskContext, name: str, skip_ci=False, platforms: str=None):
     ctx.log.info(f"Building container for {name}")
 
     ver = get_version(ctx, name)
-    tags = [
-        f"{os.getenv('DOCKER_REGISTRY')}/{name}:latest",
-        f"{os.getenv('DOCKER_REGISTRY')}/{name}:{ver.semver_full}",
-    ]
+    tag = f"{os.getenv('DOCKER_REGISTRY')}/{name}:{ver.semver_full}"
 
     b = DockerBuilder(ctx)
     b.with_repo(os.getenv("DOCKER_REGISTRY"))
-    for tag in tags:
-        b.add_tag(tag)
-    if not skip_ci and os.getenv("CI"):
+    b.add_tag(tag)
+    if not skip_ci and os.getenv("CI") and os.getenv("GITHUB_REF") == "refs/heads/main":
+        existing = ctx.exec(f"docker buildx imagetools inspect {tag}", capture=True)
+        if existing.returncode == 0:
+            ctx.log.error(f"Refusing to overwrite immutable image {tag}")
+            return 1
+        if not any(error in existing.stderr.lower() for error in ("manifest unknown", "not found")):
+            ctx.log.error(f"Cannot verify that image tag is unused: {existing.stderr}")
+            return existing.returncode
         target_platforms = platforms or os.getenv("TARGET_PLATFORMS")
         for p in target_platforms.split(","):
             b.add_platform(p)
@@ -643,7 +627,7 @@ def build_service(ctx: TaskContext, name: str, skip_ci=False, platforms: str=Non
             summary.write(
                 f"### {name.capitalize()} image\n\n"
                 f"- Version: **{ver.semver_full}**\n"
-                f"- Image: `{tags[1]}`\n\n"
+                f"- Image: `{tag}`\n\n"
             )
     return ret
 
@@ -652,13 +636,13 @@ def tag_service(ctx: TaskContext, name: str):
     ver = get_version(ctx, name)
     ctx.log.info(f"Tagging container for {name} with {ver.tag}")
 
-    ret = ctx.exec(f'git tag -f -a {ver.tag} -m "{ver.tag}"', env=git_env)
+    ret = ctx.exec(f'git tag -a {ver.tag} -m "{ver.tag}"', env=git_env)
     if ret.returncode != 0:
         ctx.log.error(f"Error tagging {ver.tag} {ret.stderr}")
         return 1
 
     if os.getenv("CI"):
-        ret = ctx.exec(f"git push --force origin {ver.tag}")
+        ret = ctx.exec(f"git push origin {ver.tag}")
         if ret.returncode != 0:
             ctx.log.error(f"Error pushing tag {ver.tag} {ret.stderr}")
             return 1
@@ -666,25 +650,18 @@ def tag_service(ctx: TaskContext, name: str):
     return 0
 
 
-def update_readme(ctx: TaskContext, name: str):
-    ver = get_version(ctx, name)
-
-    with open("README.md", "r") as f:
-        readme_content = f.read()
-
-    print("README", readme_content)
-
+def _render_readme(ctx: TaskContext, name: str, version: str, readme_content: str):
     start_title = f"### {name.capitalize()}"
     start_pos = readme_content.find(start_title)
-    print(f"search for title {start_title} at {start_pos}")
+    image = f"{os.getenv('DOCKER_REGISTRY')}/{name}:{version}"
     if start_pos == -1:
         ctx.log.error(f"Error finding section {name}")
-        return 1
+        return None
     end_pos = readme_content.find("##", start_pos + len(start_title))
 
     if end_pos == -1:
         ctx.log.error(f"Error finding section {name}")
-        return 1
+        return None
 
     with open(f"Dockerfile.{name}", "r") as f:
         content = f.read()
@@ -694,25 +671,25 @@ def update_readme(ctx: TaskContext, name: str):
         found = rx.findall(content)
         if not found:
             ctx.log.error(f"No versions found in Dockerfile.{name}")
-            return 1
+            return None
 
         # Sort items by name in ascending order.
         sorted_items = sorted(found, key=lambda item: item[0])
         vers = "\n".join([f"- {k.capitalize()}: **{v}**" for k, v in sorted_items])
 
     new_service = dedent(
-        f"""### {name.capitalize()} {ver.semver}\n\n`docker pull ghcr.io/chris-garrett/{name}:{ver.semver}`\n\n{vers}\n\n"""
+        f"""### {name.capitalize()} {version}\n\n`docker pull {image}`\n\n{vers}\n\n"""
     )
 
     new_content = (
         f"""{readme_content[:start_pos]}{new_service}{readme_content[end_pos:]}"""
     )
 
-    for service, version in re.findall(r"^### (\w+) ([\d.]+)$", new_content, re.MULTILINE):
+    for service in re.findall(r"^### (\w+)(?: [\d.]+)?$", new_content, re.MULTILINE):
         workflow = f"https://github.com/chris-garrett/docker/actions/workflows/build-{service.lower()}.yaml"
         build_badge = f"[![{service}: Build]({workflow}/badge.svg)]({workflow})"
         version_badge = (
-            f"[![{service}: Version](https://img.shields.io/badge/version-{version}-blue)]"
+            f"[![{service}: Version](https://img.shields.io/github/v/tag/chris-garrett/docker?filter={service.lower()}%2Fv*&label=version)]"
             f"(https://github.com/chris-garrett/docker/pkgs/container/{service.lower()})"
         )
         new_content = re.sub(
@@ -722,7 +699,70 @@ def update_readme(ctx: TaskContext, name: str):
             flags=re.MULTILINE,
         )
 
-    with open("README.md", "w") as f:
-        f.write(new_content)
+    return new_content
 
+
+def update_readme(ctx: TaskContext, name: str, version: str = None):
+    if version is None:
+        release = ctx.exec(
+            f"git describe --tags --abbrev=0 --match={name}/v* HEAD", capture=True
+        )
+        if release.returncode != 0:
+            ctx.log.error(f"Cannot find released version for {name}: {release.stderr}")
+            return release.returncode
+        version = release.stdout.strip().removeprefix(f"{name}/v")
+        if version.endswith(".0.0"):
+            version = get_version(ctx, name).semver_full
+    with open("README.md", "r") as f:
+        content = _render_readme(ctx, name, version, f.read())
+    if content is None:
+        return 1
+    with open("README.md", "w") as f:
+        f.write(content)
     return 0
+
+
+def publish_readme(ctx: TaskContext, name: str):
+    if os.getenv("GITHUB_REF") != "refs/heads/main":
+        ctx.log.error("README release updates are only allowed on main")
+        return 1
+    version = get_version(ctx, name).semver_full
+    url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/contents/README.md"
+    headers = {
+        "User-Agent": "CI Github Bot",
+        "Accept": "application/vnd.github+json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}",
+    }
+    for attempt in range(5):
+        status, reason, body = fetch(url, {}, headers, method="GET")
+        if status != 200:
+            ctx.log.error(f"Error reading released README: {status} {reason}")
+            return 1
+        current = json.loads(body)
+        content = base64.b64decode(current["content"]).decode()
+        updated = _render_readme(ctx, name, version, content)
+        if updated is None:
+            return 1
+        if updated == content:
+            return 0
+        status, reason, _ = fetch(
+            url,
+            {
+                "message": f"docs: update {name} image to {version}",
+                "content": base64.b64encode(updated.encode()).decode(),
+                "sha": current["sha"],
+                "branch": "main",
+            },
+            headers,
+            method="PUT",
+        )
+        if status == 200:
+            return 0
+        if status != 409:
+            ctx.log.error(f"Error publishing released README: {status} {reason}")
+            return 1
+        # Another image release or main commit advanced README; merge into its new content.
+        time.sleep(attempt + 1)
+    ctx.log.error("README changed during every release update attempt")
+    return 1

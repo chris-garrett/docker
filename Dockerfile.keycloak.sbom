@@ -6,6 +6,7 @@ quay.io/keycloak/keycloak@sha256:37dbaf6f0722c9ec246335f36e1ef8b2e6cb960f7c27e0d
 
 ## Package Versions
 
+org.opencontainers.image.dockerize_version=0.16.0
 org.opencontainers.image.keycloak_version=26.7.5
 
 ## OS Versions

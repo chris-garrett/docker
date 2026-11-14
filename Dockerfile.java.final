@@ -1,4 +1,6 @@
-FROM maven:${MAVEN_VERSION}-eclipse-temurin-${JAVA_VERSION} AS build
+ENV JAVA_HOME=/opt/java/openjdk
+ENV MAVEN_HOME=/usr/share/maven
+ENV PATH=/opt/java/openjdk/bin:/usr/share/maven/bin:$$PATH
 
 LABEL org.opencontainers.image.maven_version="$MAVEN_VERSION"
 LABEL org.opencontainers.image.java_version="$JAVA_VERSION"

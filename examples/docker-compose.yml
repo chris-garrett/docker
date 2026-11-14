@@ -17,7 +17,7 @@ services:
 
   py:
     profiles: ["all", "py"]
-    image: ghcr.io/chris-garrett/python:latest
+    image: ghcr.io/chris-garrett/python:26.46.0
     command: |
       dockerize
         -wait tcp://o2:5080
@@ -46,7 +46,7 @@ services:
 
   node:
     profiles: ["all", "node"]
-    image: ghcr.io/chris-garrett/node:latest
+    image: ghcr.io/chris-garrett/node:26.47.0
     command: |
       dockerize
         -wait tcp://o2:5080

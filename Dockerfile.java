@@ -1,4 +1,112 @@
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM debian:trixie-slim AS build
+
+ARG TARGETARCH
+
+ENV PUID=1000 PGID=1000
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/work/opt/bin:$PATH"
+ENV HOST_ENVIRONMENT=container
+
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    apt update; \
+    apt upgrade -y; \
+    apt install -y --no-install-recommends \
+    gosu \
+    ca-certificates \
+    libicu76 \
+    tzdata \
+    xz-utils \
+    vim \
+    git \
+    git-lfs \
+    build-essential \
+    iputils-ping \
+    iproute2 \
+    procps \
+    binutils \
+    ncdu \  
+    unzip \
+    curl \
+    file \
+    ; \
+    echo "alias l='ls -laFHh'" >> /root/.bashrc; \
+    echo "export PATH=\"/work/opt/bin:\$PATH\"" >> /root/.bashrc; \
+    mkdir -p /work/app /work/opt/bin; \
+    rm -rf /var/lib/apt/lists/*;
+
+# install watchexec
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else \
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/watchexec.tar.xz -LsSf --retry 5 --retry-all-errors --retry-delay 2 https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-${ARCH}-unknown-linux-gnu.tar.xz; \
+    tar -C /work/opt/bin --strip-components=1 -xf /tmp/watchexec.tar.xz watchexec-2.8.0-${ARCH}-unknown-linux-gnu/watchexec
+
+# install dockerize
+RUN set -eux; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v0.16.0/dockerize-linux-${TARGETARCH}-v0.16.0.tar.gz; \
+    tar -C /work/opt/bin -xf /tmp/dockerize.tgz 
+
+# add static curl
+RUN set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    ARCH="aarch64"; \
+    else\
+    ARCH="x86_64"; \
+    fi; \
+    curl -o /tmp/curl.tgz -L -C - https://github.com/stunnel/static-curl/releases/download/8.23.0-1/curl-linux-${ARCH}-glibc-8.23.0-1.tar.xz; \
+    tar -C /work/opt/bin -xf /tmp/curl.tgz
+
+# install github actions runner (extracted to /work/opt/actions-runner; run ./config.sh & ./run.sh from there)
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked,mode=0755 \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked,mode=0755 \
+    set -eux; \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+    RUNNER_ARCH="arm64"; \
+    else \
+    RUNNER_ARCH="x64"; \
+    fi; \
+    mkdir -p /work/opt/actions-runner; \
+    curl -o /tmp/actions-runner.tar.gz -LsSf https://github.com/actions/runner/releases/download/v2.338.2/actions-runner-linux-${RUNNER_ARCH}-2.338.2.tar.gz; \
+    tar -C /work/opt/actions-runner -xzf /tmp/actions-runner.tar.gz; \
+    rm /tmp/actions-runner.tar.gz; \
+    /work/opt/actions-runner/bin/installdependencies.sh; \
+    rm -rf /var/lib/apt/lists/*
+
+# install Gitea runner (upstream renamed act_runner; keep the existing command)
+RUN set -eux; \
+    curl -o /work/opt/bin/act_runner -LsSf https://gitea.com/gitea/runner/releases/download/v5.4.1/gitea-runner-5.4.1-linux-${TARGETARCH}; \
+    chmod +x /work/opt/bin/act_runner
+
+COPY --from=maven:3.9-eclipse-temurin-21 /opt/java/openjdk /opt/java/openjdk
+COPY --from=maven:3.9-eclipse-temurin-21 /usr/share/maven /usr/share/maven
+
+
+
+FROM build AS final
+
+ENV JAVA_HOME=/opt/java/openjdk
+ENV MAVEN_HOME=/usr/share/maven
+ENV PATH=/opt/java/openjdk/bin:/usr/share/maven/bin:$PATH
 
 LABEL org.opencontainers.image.maven_version="3.9"
 LABEL org.opencontainers.image.java_version="21"
+
+
+RUN set -eux; \
+    rm -rf /var/lib/apt/lists/*
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR /work/app
+
+LABEL org.opencontainers.image.watchexec_version="2.8.0"
+LABEL org.opencontainers.image.dockerize_version="0.16.0"
+LABEL org.opencontainers.image.curl_version="8.23.0-1"
+LABEL org.opencontainers.image.actions_runner_version="2.338.2"
+LABEL org.opencontainers.image.act_runner_version="5.4.1"

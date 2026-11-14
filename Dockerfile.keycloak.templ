@@ -1,3 +1,17 @@
+FROM debian:trixie-slim AS tools
+
+ARG TARGETARCH
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl; \
+    mkdir -p /work/opt/bin; \
+    curl -o /tmp/dockerize.tgz -LsSf https://github.com/jwilder/dockerize/releases/download/v$DOCKERIZE_VERSION/dockerize-linux-$${TARGETARCH}-v$DOCKERIZE_VERSION.tar.gz; \
+    tar -C /work/opt/bin -xf /tmp/dockerize.tgz
+
 FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION} AS build
 
+COPY --from=tools /work/opt/bin/dockerize /usr/local/bin/dockerize
+
 LABEL org.opencontainers.image.keycloak_version="$KEYCLOAK_VERSION"
+LABEL org.opencontainers.image.dockerize_version="$DOCKERIZE_VERSION"
