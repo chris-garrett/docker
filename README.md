@@ -101,7 +101,7 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Curl: **8.23.0-1**
 - Dockerize: **0.16.0**
 - Java: **21**
-- Maven: **3.9**
+- Maven: **3.10**
 - Watchexec: **2.8.0**
 
 ## Examples

@@ -82,8 +82,8 @@ RUN set -eux; \
     curl -o /work/opt/bin/act_runner -LsSf https://gitea.com/gitea/runner/releases/download/v5.4.1/gitea-runner-5.4.1-linux-${TARGETARCH}; \
     chmod +x /work/opt/bin/act_runner
 
-COPY --from=maven:3.9-eclipse-temurin-21 /opt/java/openjdk /opt/java/openjdk
-COPY --from=maven:3.9-eclipse-temurin-21 /usr/share/maven /usr/share/maven
+COPY --from=maven:3.10-eclipse-temurin-21 /opt/java/openjdk /opt/java/openjdk
+COPY --from=maven:3.10-eclipse-temurin-21 /usr/share/maven /usr/share/maven
 
 
 
@@ -93,7 +93,7 @@ ENV JAVA_HOME=/opt/java/openjdk
 ENV MAVEN_HOME=/usr/share/maven
 ENV PATH=/opt/java/openjdk/bin:/usr/share/maven/bin:$PATH
 
-LABEL org.opencontainers.image.maven_version="3.9"
+LABEL org.opencontainers.image.maven_version="3.10"
 LABEL org.opencontainers.image.java_version="21"
 
 
