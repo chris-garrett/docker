@@ -52,9 +52,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Vite_plus: **1.5.1**
 - Watchexec: **2.8.0**
 
-### Postgres 26.26.0
+### Postgres 26.27.0
 
-`docker pull ghcr.io/chris-garrett/postgres:26.26.0`
+`docker pull ghcr.io/chris-garrett/postgres:26.27.0`
 
 - Pg_trgm: **1.6**
 - Pgvector: **0.8.7**
