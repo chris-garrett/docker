@@ -41,11 +41,11 @@ Run `./task <task>`. Multiple tasks chain: `./task ex:restart ex:log`.
 
 **`Dockerfile.<svc>` and `Dockerfile.<svc>.sbom` are GENERATED. Never hand-edit them.** Edit the sources and run `./task <svc>:update`.
 
-There are two generation patterns:
+Every image uses `Dockerfile.<svc>.build` for build steps and `Dockerfile.<svc>.final` for runtime steps. `generate_service` in `.task/__ci__.py` renders both fragments:
 
-1. **Common/layered** (python, node, rust, devops, java): `Dockerfile.<svc>.build` + `Dockerfile.<svc>.final` are substituted into `$BUILD_TEMPLATE` / `$FINAL_TEMPLATE` placeholders in **`Dockerfile.common`**. `Dockerfile.common` provides the shared Debian base and tooling installed into `/work/opt/bin` (watchexec, dockerize, static curl, GitHub Actions runner, Gitea act_runner). The `.build` fragment adds the language toolchain; the `.final` fragment sets runtime env and version `LABEL`s. Java copies JDK and Maven from the configured Maven/Temurin image. (`__ci__.py`: `_add_service` / `update_service_deprecated`.)
+1. **Shared Debian base** (python, node, rust, devops, java): the fragments fill `$BUILD_TEMPLATE` / `$FINAL_TEMPLATE` in `Dockerfile.common`, which provides the base image and shared tools in `/work/opt/bin`. Java copies the JDK and Maven from the configured Maven/Temurin image.
 
-2. **Standalone template** (postgres, keycloak): `Dockerfile.<svc>.templ` is a complete Dockerfile; no `Dockerfile.common`. These images preserve their upstream entrypoints and runtime defaults. (`.task/__task__.py`: `_add_template_service`; `__ci__.py`: `update_service`.)
+2. **Upstream runtime base** (postgres, keycloak): the fragments are joined directly, without `Dockerfile.common`. The `.final` fragment starts from the upstream runtime image and preserves its entrypoint and defaults.
 
 Templating is Python `string.Template` fed by `config.env`. Because `$` is the substitution char, **literal shell `$` in a template must be escaped as `$$`** (e.g. `$$TARGETARCH`, `$$PATH`).
 

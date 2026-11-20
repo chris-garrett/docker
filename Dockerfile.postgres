@@ -34,5 +34,9 @@ COPY --from=pgvector /usr/local/lib/postgresql/vector.so /usr/local/lib/postgres
 COPY --from=pgvector /usr/local/share/postgresql/extension/vector* /usr/local/share/postgresql/extension/
 COPY --from=pgvector /usr/local/include/postgresql/server/extension/vector /usr/local/include/postgresql/server/extension/vector
 
+COPY <<'SQL' /docker-entrypoint-initdb.d/20_pg_trgm.sql
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+SQL
+
 LABEL org.opencontainers.image.postgis_version="17-3.7-alpine"
 LABEL org.opencontainers.image.pgvector_version="0.8.7"

@@ -117,83 +117,22 @@ def get_version(ctx: TaskContext, service_name: str):
     )
 
 
-def generate_service_deprecated(
-    ctx: TaskContext, name: str, custom_templates: dict = {}
-):
+def generate_service(ctx: TaskContext, name: str, *, use_common: bool = True):
     try:
         env = {
             **load_env(os.path.join(ctx.root_dir, "config.env")),
         }
 
-        base_templates = {
-            "BUILD_TEMPLATE": f"Dockerfile.{name}.build",
-            "FINAL_TEMPLATE": f"Dockerfile.{name}.final",
-        }
-        templates = {**custom_templates, **base_templates}
+        templates = {}
+        for stage in ("build", "final"):
+            with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}.{stage}")) as f:
+                templates[f"{stage.upper()}_TEMPLATE"] = Template(f.read()).substitute(env)
 
-        for k, v in templates.items():
-            with open(os.path.join(ctx.root_dir, v), "r") as f:
-                env[k] = Template(f.read()).substitute(env)
-
-        with open(os.path.join(ctx.root_dir, "Dockerfile.common"), "r") as f:
-            common_content = f.read()
-
-        final = Template(common_content).substitute(env)
-
-        with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "w") as f:
-            f.write(final)
-
-        # get image used by FROM as final
-        pattern = r"FROM\s+(\S+)\s+AS"
-
-        # Search for the pattern in the input string
-        match = re.search(pattern, final)
-        if not match:
-            ctx.log.error(f"Error parsing Dockerfile for final image {name}")
-            return 1
-        base_image = match.group(1)
-        ret = ctx.exec("docker pull " + base_image)
-        if ret.returncode != 0:
-            ctx.log.error(f"Error pulling base image {base_image}")
-            return ret.returncode
-        ret = ctx.exec(
-            "docker inspect --format='{{.RepoDigests}}' " + base_image, capture=True
-        )
-        if ret.returncode != 0:
-            ctx.log.error(f"Error inspecting base image {base_image}")
-            return ret.returncode
-
-    except Exception as e:
-        ctx.log.error(f"Error generating service {name}: {e}")
-        return 1
-    return 0
-
-
-def generate_service(
-    ctx: TaskContext,
-    name: str,
-    templates: dict = None,
-):
-    try:
-        env = {
-            **load_env(os.path.join(ctx.root_dir, "config.env")),
-        }
-
-        templates = templates or {
-            "FINAL_TEMPLATE": f"Dockerfile.{name}.templ",
-        }
-        if "FINAL_TEMPLATE" not in templates:
-            raise ValueError("FINAL_TEMPLATE is required")
-
-        rest_templates = {k: v for k, v in templates.items() if k != "FINAL_TEMPLATE"}
-        for k, v in rest_templates.items():
-            with open(os.path.join(ctx.root_dir, v), "r") as f:
-                env[k] = Template(f.read()).substitute(env)
-
-        with open(os.path.join(ctx.root_dir, templates["FINAL_TEMPLATE"]), "r") as f:
-            final_template = f.read()
-
-        final = Template(final_template).substitute(env)
+        if use_common:
+            with open(os.path.join(ctx.root_dir, "Dockerfile.common")) as f:
+                final = Template(f.read()).substitute(env | templates)
+        else:
+            final = "\n".join(templates.values())
 
         with open(os.path.join(ctx.root_dir, f"Dockerfile.{name}"), "w") as f:
             f.write(final)
@@ -323,30 +262,8 @@ def update_sbom(
     return 0
 
 
-def update_service_deprecated(ctx: TaskContext, name: str, custom_templates: dict = {}):
-    ret = generate_service_deprecated(ctx, name, custom_templates)
-    if ret != 0:
-        return ret
-
-    # build single arch for speed. we are doing this to get the sbom to determin
-    # if we actually need to build all the things
-    ret = build_service(ctx, name, skip_ci=True)
-    if ret != 0:
-        return ret
-
-    ret = update_sbom(ctx, name)
-    if ret != 0:
-        return ret
-
-    ret = update_readme(ctx, name, version=get_version(ctx, name).semver_full)
-    if ret != 0:
-        return ret
-
-    return 0
-
-
-def update_service(ctx: TaskContext, name: str, custom_templates: dict = {}):
-    ret = generate_service(ctx, name, custom_templates)
+def update_service(ctx: TaskContext, name: str, *, use_common: bool = True):
+    ret = generate_service(ctx, name, use_common=use_common)
     if ret != 0:
         return ret
 

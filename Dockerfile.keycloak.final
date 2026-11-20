@@ -1,0 +1,6 @@
+FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION} AS build
+
+COPY --from=tools /work/opt/bin/dockerize /usr/local/bin/dockerize
+
+LABEL org.opencontainers.image.keycloak_version="$KEYCLOAK_VERSION"
+LABEL org.opencontainers.image.dockerize_version="$DOCKERIZE_VERSION"
