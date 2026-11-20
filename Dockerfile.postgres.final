@@ -12,3 +12,4 @@ SQL
 
 LABEL org.opencontainers.image.postgis_version="$POSTGIS_VERSION"
 LABEL org.opencontainers.image.pgvector_version="$PGVECTOR_VERSION"
+LABEL org.opencontainers.image.pg_trgm_version="$PG_TRGM_VERSION"

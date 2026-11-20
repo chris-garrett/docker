@@ -40,3 +40,4 @@ SQL
 
 LABEL org.opencontainers.image.postgis_version="17-3.7-alpine"
 LABEL org.opencontainers.image.pgvector_version="0.8.7"
+LABEL org.opencontainers.image.pg_trgm_version="1.6"

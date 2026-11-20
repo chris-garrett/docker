@@ -56,6 +56,7 @@ Kitchen sink developer images. These are intended for use with docker compose.
 
 `docker pull ghcr.io/chris-garrett/postgres:26.26.0`
 
+- Pg_trgm: **1.6**
 - Pgvector: **0.8.7**
 - Postgis: **17-3.7-alpine**
 
