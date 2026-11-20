@@ -1,15 +1,29 @@
-FROM postgis/postgis:${POSTGIS_VERSION} AS final
+FROM ghcr.io/cloudnative-pg/postgis:${CNPG_POSTGIS_VERSION} AS final
 
-COPY --from=pgvector /usr/local/lib/postgresql/bitcode/vector.index.bc /usr/local/lib/postgresql/bitcode/vector.index.bc
-COPY --from=pgvector /usr/local/lib/postgresql/bitcode/vector /usr/local/lib/postgresql/bitcode/vector
-COPY --from=pgvector /usr/local/lib/postgresql/vector.so /usr/local/lib/postgresql/vector.so
-COPY --from=pgvector /usr/local/share/postgresql/extension/vector* /usr/local/share/postgresql/extension/
-COPY --from=pgvector /usr/local/include/postgresql/server/extension/vector /usr/local/include/postgresql/server/extension/vector
+USER root
 
-COPY <<'SQL' /docker-entrypoint-initdb.d/20_pg_trgm.sql
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
-SQL
+ENV PGDATA=/var/lib/postgresql/data
 
+# Docker Library Postgres 17/trixie at a4513295fc441ad260cf8b605f059ffe4fd4dd6c, with a local initdb default.
+COPY --chmod=755 vendor/postgres/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY vendor/postgres/LICENSE /usr/local/share/doc/docker-library-postgres/LICENSE
+
+RUN --mount=type=bind,from=build,source=/tmp/postgres-debs,target=/tmp/postgres-debs \
+    set -eux; \
+    dpkg -i /tmp/postgres-debs/*.deb; \
+    install -d /docker-entrypoint-initdb.d; \
+    install -d -o postgres -g postgres -m 3777 /run/postgresql; \
+    install -d -o postgres -g postgres -m 1777 "$$PGDATA"; \
+    sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" \
+        "$$(pg_config --sharedir)/postgresql.conf.sample"
+
+VOLUME /var/lib/postgresql/data
+STOPSIGNAL SIGINT
+EXPOSE 5432
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["postgres"]
+
+LABEL org.opencontainers.image.cnpg_postgis_version="$CNPG_POSTGIS_VERSION"
+LABEL org.opencontainers.image.postgres_version="$POSTGRES_VERSION"
 LABEL org.opencontainers.image.postgis_version="$POSTGIS_VERSION"
 LABEL org.opencontainers.image.pgvector_version="$PGVECTOR_VERSION"
-LABEL org.opencontainers.image.pg_trgm_version="$PG_TRGM_VERSION"

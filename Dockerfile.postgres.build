@@ -1,27 +1,11 @@
-FROM postgis/postgis:${POSTGIS_VERSION} AS build
+FROM ghcr.io/cloudnative-pg/postgis:${CNPG_POSTGIS_VERSION} AS build
 
-RUN --mount=type=cache,target=/var/cache/apk,sharing=locked set -x; \
-    apk update \
-    && apk add \
-    git \
-    build-base
+USER root
 
-
-FROM build AS pgvector
-
-RUN --mount=type=cache,target=/var/cache/apk,sharing=locked set -x; \
-    apk add \
-    clang21 \
-    llvm21-dev
-
-ENV LLVM_CONFIG=/usr/bin/llvm-config-21
-
-RUN set -x; \
-    cd /tmp \
-    && find / | grep postgresql | grep -v "/tmp" > /tmp/pg_paths_before.txt \
-    && git clone --depth 1 --branch v${PGVECTOR_VERSION} https://github.com/pgvector/pgvector.git \
-    && cd pgvector \
-    && make \
-    && make install \
-    && find / | grep postgresql | grep -v "/tmp" > /tmp/pg_paths_after.txt
-
+# Fetch only the packages needed by the Docker Library entrypoint.
+RUN set -eux; \
+    mkdir -p /tmp/postgres-debs/partial; \
+    apt-get update; \
+    apt-get install --yes --download-only --no-install-recommends \
+        -o Dir::Cache::archives=/tmp/postgres-debs \
+        gosu libnss-wrapper xz-utils zstd

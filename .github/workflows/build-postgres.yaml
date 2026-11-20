@@ -8,6 +8,7 @@ on:
     paths:
       - Dockerfile.postgres
       - Dockerfile.postgres.sbom
+      - vendor/postgres/**
 
   pull_request:
     branches:
@@ -15,6 +16,7 @@ on:
     paths:
       - Dockerfile.postgres
       - Dockerfile.postgres.sbom
+      - vendor/postgres/**
 
 concurrency:
   group: postgres-build-${{ github.ref }}
