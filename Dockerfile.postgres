@@ -1,4 +1,4 @@
-FROM ghcr.io/cloudnative-pg/postgis:17.12-3.7.0-202611201731-system-trixie AS build
+FROM ghcr.io/cloudnative-pg/postgis:17.12-3.7.0-202611201731-standard-trixie AS build
 
 USER root
 
@@ -10,7 +10,7 @@ RUN set -eux; \
         -o Dir::Cache::archives=/tmp/postgres-debs \
         gosu libnss-wrapper xz-utils zstd
 
-FROM ghcr.io/cloudnative-pg/postgis:17.12-3.7.0-202611201731-system-trixie AS final
+FROM ghcr.io/cloudnative-pg/postgis:17.12-3.7.0-202611201731-standard-trixie AS final
 
 USER root
 
@@ -35,7 +35,7 @@ EXPOSE 5432
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["postgres"]
 
-LABEL org.opencontainers.image.cnpg_postgis_version="17.12-3.7.0-202611201731-system-trixie"
+LABEL org.opencontainers.image.cnpg_postgis_version="17.12-3.7.0-202611201731-standard-trixie"
 LABEL org.opencontainers.image.postgres_version="17.12"
 LABEL org.opencontainers.image.postgis_version="3.7.0"
 LABEL org.opencontainers.image.pgvector_version="0.8.7"
