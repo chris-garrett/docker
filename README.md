@@ -61,9 +61,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Postgis: **3.7.0**
 - Postgres: **17.12**
 
-### Devops 26.44.0
+### Devops 26.45.0
 
-`docker pull ghcr.io/chris-garrett/devops:26.44.0`
+`docker pull ghcr.io/chris-garrett/devops:26.45.0`
 
 - Act_runner: **5.4.1**
 - Actions_runner: **2.338.2**
@@ -77,7 +77,7 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - K9s: **0.51.0**
 - Kubectl: **1.37.2**
 - Kubelogin: **0.2.22**
-- Neovim: **0.10.4-8**
+- Neovim: **0.10.4-8+deb13u1**
 - Openssh_server: **1:10.0p1-7+deb13u4**
 - Openvpn: **2.6.14-1+deb13u3**
 - Psql17: **17.11-1.pgdg13+2**
