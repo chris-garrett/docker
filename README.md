@@ -94,9 +94,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Dockerize: **0.16.0**
 - Keycloak: **26.7.5**
 
-### Java 26.7.0-java-26-7-0.8
+### Java 26.8.0
 
-`docker pull ghcr.io/chris-garrett/java:26.7.0-java-26-7-0.8`
+`docker pull ghcr.io/chris-garrett/java:26.8.0`
 
 - Act_runner: **5.4.1**
 - Actions_runner: **2.338.2**
