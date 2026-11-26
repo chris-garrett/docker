@@ -61,9 +61,9 @@ Kitchen sink developer images. These are intended for use with docker compose.
 - Postgis: **3.7.0**
 - Postgres: **17.12**
 
-### Devops 26.49.0
+### Devops 26.50.0
 
-`docker pull ghcr.io/chris-garrett/devops:26.49.0`
+`docker pull ghcr.io/chris-garrett/devops:26.50.0`
 
 - Act_runner: **5.4.1**
 - Actions_runner: **2.338.2**
